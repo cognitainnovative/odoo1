@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ hr.employee — Platform HRM tab ═══ -->
+    <record id="view_hr_employee_platform" model="ir.ui.view">
+        <field name="name">hr.employee.platform.hrm</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <!-- Platform HRM tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Platform HRM" name="platform_hrm">
+                    <group string="Emergency Contact">
+                        <group>
+                            <field name="emergency_contact_name"/>
+                            <field name="emergency_contact_phone"/>
+                            <field name="emergency_contact_relation"/>
+                        </group>
+                    </group>
+                    <group string="Contract">
+                        <group>
+                            <field name="contract_type"/>
+                            <field name="weekly_hours"/>
+                        </group>
+                        <group>
+                            <field name="probation_end_date"/>
+                            <field name="contract_renewal_date"/>
+                        </group>
+                    </group>
+                    <group string="Performance Review">
+                        <field name="last_performance_review"/>
+                        <field name="next_performance_review"/>
+                    </group>
+                    <group string="HR Notes" groups="hr.group_hr_manager">
+                        <field name="hr_notes" nolabel="1" widget="text"/>
+                    </group>
+                </page>
+                <page string="Certifications" name="certifications">
+                    <field name="platform_certification_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="issuer"/>
+                            <field name="issue_date"/>
+                            <field name="expiry_date"/>
+                            <field name="status"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Equipment" name="equipment">
+                    <field name="equipment_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="serial_number"/>
+                            <field name="assigned_date"/>
+                            <field name="returned"/>
+                            <field name="return_date"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Payslips" name="payslips" groups="hr.group_hr_manager">
+                    <field name="payslip_ids">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="period_start"/>
+                            <field name="period_end"/>
+                            <field name="gross_amount" string="Gross (€)"/>
+                            <field name="net_amount" string="Net (€)"/>
+                            <field name="attachment_id" string="PDF"/>
+                        </list>
+                    </field>
+                </page>
+                <page string="Onboarding" name="onboarding">
+                    <group>
+                        <field name="onboarding_completed"/>
+                        <field name="offboarding_started"/>
+                        <button name="action_initiate_onboarding" string="Create Onboarding Checklist"
+                                type="object" class="btn-secondary"
+                                invisible="onboarding_completed"/>
+                    </group>
+                    <field name="onboarding_checklist_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="checklist_type"/>
+                            <field name="done"/>
+                            <field name="done_date" readonly="1"/>
+                            <button name="action_mark_done" string="Done" type="object"
+                                    icon="fa-check" class="btn-sm btn-success"
+                                    invisible="done"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

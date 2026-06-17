@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Seed UTM sources for lead tracking (extends Odoo's utm.source model) -->
+    <record id="utm_source_website" model="utm.source">
+        <field name="name">Website Form</field>
+    </record>
+    <record id="utm_source_linkedin" model="utm.source">
+        <field name="name">LinkedIn</field>
+    </record>
+    <record id="utm_source_google_ads" model="utm.source">
+        <field name="name">Google Ads</field>
+    </record>
+    <record id="utm_source_referral" model="utm.source">
+        <field name="name">Referral / Word of Mouth</field>
+    </record>
+    <record id="utm_source_cold_call" model="utm.source">
+        <field name="name">Cold Call</field>
+    </record>
+    <record id="utm_source_event" model="utm.source">
+        <field name="name">Event / Trade Show</field>
+    </record>
+    <record id="utm_source_email_campaign" model="utm.source">
+        <field name="name">Email Campaign</field>
+    </record>
+</odoo>

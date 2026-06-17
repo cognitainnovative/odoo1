@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_ticket_1" model="helpdesk.ticket">
+        <field name="name">Cannot login to portal</field>
+        <field name="source">email</field>
+        <field name="priority">1</field>
+        <field name="category">technical</field>
+        <field name="description">Customer reports they cannot login to the customer portal after password reset.</field>
+    </record>
+    <record id="demo_ticket_2" model="helpdesk.ticket">
+        <field name="name">Invoice discrepancy — Q2 billing</field>
+        <field name="source">email</field>
+        <field name="priority">2</field>
+        <field name="category">billing</field>
+        <field name="description">Customer received an invoice for a service they cancelled 3 months ago.</field>
+        <field name="is_complaint">True</field>
+    </record>
+    <record id="demo_ticket_3" model="helpdesk.ticket">
+        <field name="name">Product delivery delayed</field>
+        <field name="source">phone</field>
+        <field name="priority">1</field>
+        <field name="category">product</field>
+        <field name="description">Customer is enquiring about a product shipment that has not arrived within the expected delivery window.</field>
+    </record>
+</odoo>

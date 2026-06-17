@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Chat Config form -->
+    <record id="view_chat_config_form" model="ir.ui.view">
+        <field name="name">chat.config.form</field>
+        <field name="model">chat.config</field>
+        <field name="arch" type="xml">
+            <form string="Chatbot Configuration">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="is_enabled"/>
+                            <field name="primary_color" placeholder="#1E40AF"/>
+                        </group>
+                        <group>
+                            <field name="collect_email"/>
+                            <field name="collect_company"/>
+                        </group>
+                    </group>
+                    <group string="Messages">
+                        <field name="greeting_message"/>
+                        <field name="offline_message"/>
+                        <field name="escalation_message"/>
+                    </group>
+                    <group string="Page Restrictions">
+                        <field name="allowed_paths"
+                               placeholder="Leave blank for all pages. E.g: /,/products,/contact"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_chat_config" model="ir.actions.act_window">
+        <field name="name">Chatbot Configuration</field>
+        <field name="res_model">chat.config</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <!-- Chat Sessions list -->
+    <record id="view_chat_session_list" model="ir.ui.view">
+        <field name="name">chat.session.list</field>
+        <field name="model">chat.session</field>
+        <field name="arch" type="xml">
+            <list string="Chat Sessions"
+                  decoration-danger="state == 'escalated'"
+                  decoration-primary="state == 'assigned'"
+                  decoration-muted="state in ('resolved','closed')">
+                <field name="name"/>
+                <field name="visitor_name"/>
+                <field name="visitor_email"/>
+                <field name="create_date" string="Started"/>
+                <field name="state" widget="badge"/>
+                <field name="sentiment"/>
+                <field name="escalation_reason"/>
+                <field name="assigned_agent_id"/>
+                <field name="message_count" string="Messages"/>
+                <button name="action_assign_to_me" string="Take" type="object"
+                        class="btn-sm btn-primary" invisible="state != 'escalated'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_chat_session_form" model="ir.ui.view">
+        <field name="name">chat.session.form</field>
+        <field name="model">chat.session</field>
+        <field name="arch" type="xml">
+            <form string="Chat Session">
+                <header>
+                    <button name="action_assign_to_me" string="Accept" type="object"
+                            class="btn-primary" invisible="state not in ('open','escalated')"/>
+                    <button name="action_suggest_reply" string="AI Suggest Reply" type="object"
+                            class="btn-secondary" invisible="state in ('resolved','closed')"/>
+                    <button name="action_resolve" string="Mark Resolved" type="object"
+                            class="btn-success" invisible="state in ('resolved','closed')"/>
+                    <button name="action_close" string="Close" type="object"
+                            class="btn-secondary" invisible="state == 'closed'"/>
+                    <button name="action_create_lead" string="Create Lead" type="object"
+                            class="btn-secondary" invisible="lead_id"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="open,escalated,assigned,resolved"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="visitor_name"/>
+                            <field name="visitor_email"/>
+                            <field name="visitor_company"/>
+                            <field name="language_code"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="sentiment"/>
+                            <field name="escalation_reason"/>
+                            <field name="assigned_agent_id"/>
+                            <field name="lead_id"/>
+                        </group>
+                    </group>
+                    <group string="AI Analysis" invisible="not ai_summary">
+                        <field name="ai_summary" nolabel="1" readonly="1" widget="text"/>
+                        <field name="suggested_next_action" readonly="1"/>
+                    </group>
+                    <field name="transcript_ids" readonly="1">
+                        <list>
+                            <field name="create_date" string="Time"/>
+                            <field name="role"/>
+                            <field name="content"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_chat_session_search" model="ir.ui.view">
+        <field name="name">chat.session.search</field>
+        <field name="model">chat.session</field>
+        <field name="arch" type="xml">
+            <search string="Chat Sessions">
+                <field name="visitor_name"/>
+                <field name="visitor_email"/>
+                <filter string="Open" name="open" domain="[('state','=','open')]"/>
+                <filter string="Escalated" name="escalated" domain="[('state','=','escalated')]"/>
+                <filter string="Assigned" name="assigned" domain="[('state','=','assigned')]"/>
+                <filter string="My Sessions" name="mine" domain="[('assigned_agent_id','=',uid)]"/>
+                <group>
+                    <filter string="State" name="by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Agent" name="by_agent" context="{'group_by': 'assigned_agent_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_chat_session" model="ir.actions.act_window">
+        <field name="name">Chat Sessions</field>
+        <field name="res_model">chat.session</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_chat_session_search"/>
+        <field name="context">{"search_default_open": 1}</field>
+    </record>
+
+    <record id="action_chat_escalated" model="ir.actions.act_window">
+        <field name="name">Escalated Chats — Queue</field>
+        <field name="res_model">chat.session</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('state','in',('escalated','assigned'))]</field>
+    </record>
+
+    <!-- Kanban: live agent queue — the employee support "app" view -->
+    <record id="view_chat_session_kanban" model="ir.ui.view">
+        <field name="name">chat.session.kanban</field>
+        <field name="model">chat.session</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column"
+                    group_create="false"
+                    quick_create="false">
+                <field name="name"/>
+                <field name="visitor_name"/>
+                <field name="visitor_email"/>
+                <field name="visitor_company"/>
+                <field name="sentiment"/>
+                <field name="escalation_reason"/>
+                <field name="assigned_agent_id"/>
+                <field name="message_count"/>
+                <field name="state"/>
+                <field name="create_date"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_global_click p-2">
+                            <div class="fw-bold">
+                                <t t-esc="record.visitor_name.value || 'Anonymous'"/>
+                            </div>
+                            <div class="text-muted small">
+                                <t t-esc="record.visitor_email.value || ''"/>
+                            </div>
+                            <div t-if="record.visitor_company.value" class="text-muted small">
+                                <t t-esc="record.visitor_company.value"/>
+                            </div>
+                            <div class="mt-1">
+                                <span class="badge" t-attf-class="badge-#{record.sentiment.value === 'angry' ? 'danger' : record.sentiment.value === 'frustrated' ? 'warning' : 'info'}">
+                                    <t t-esc="record.sentiment.value"/>
+                                </span>
+                                <span t-if="record.escalation_reason.value" class="badge badge-secondary ms-1">
+                                    <t t-esc="record.escalation_reason.value"/>
+                                </span>
+                            </div>
+                            <div class="mt-1 text-muted small">
+                                <t t-esc="record.message_count.value"/> messages |
+                                <t t-esc="record.create_date.value"/>
+                            </div>
+                            <div t-if="record.assigned_agent_id.value" class="mt-1 small">
+                                Agent: <t t-esc="record.assigned_agent_id.value"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Canned Replies -->
+    <record id="view_canned_reply_list" model="ir.ui.view">
+        <field name="name">chat.canned.reply.list</field>
+        <field name="model">chat.canned.reply</field>
+        <field name="arch" type="xml">
+            <list string="Canned Replies" editable="top">
+                <field name="shortcut"/>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="message" optional="hide"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_canned_reply_form" model="ir.ui.view">
+        <field name="name">chat.canned.reply.form</field>
+        <field name="model">chat.canned.reply</field>
+        <field name="arch" type="xml">
+            <form string="Canned Reply">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="shortcut"/>
+                            <field name="name"/>
+                            <field name="category"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="message" nolabel="1" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_canned_reply" model="ir.actions.act_window">
+        <field name="name">Canned Replies</field>
+        <field name="res_model">chat.canned.reply</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Visitors list -->
+    <record id="view_chat_visitor_list" model="ir.ui.view">
+        <field name="name">chat.visitor.list</field>
+        <field name="model">chat.visitor</field>
+        <field name="arch" type="xml">
+            <list string="Website Visitors">
+                <field name="last_seen"/>
+                <field name="email"/>
+                <field name="company_name"/>
+                <field name="tracking_consent"/>
+                <field name="page_view_count"/>
+                <field name="chat_session_count" string="Chats"/>
+                <field name="lead_id"/>
+                <field name="partner_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_chat_visitor" model="ir.actions.act_window">
+        <field name="name">Website Visitors</field>
+        <field name="res_model">chat.visitor</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_voice_flow_list" model="ir.ui.view">
+        <field name="name">voice.call.flow.list</field>
+        <field name="model">voice.call.flow</field>
+        <field name="arch" type="xml">
+            <list string="Call Flows" editable="bottom" decoration-muted="not is_active">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="flow_type"/>
+                <field name="provider_id"/>
+                <field name="max_turns"/>
+                <field name="use_rag"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_voice_flow_form" model="ir.ui.view">
+        <field name="name">voice.call.flow.form</field>
+        <field name="model">voice.call.flow</field>
+        <field name="arch" type="xml">
+            <form string="Call Flow">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="flow_type"/>
+                            <field name="provider_id"/>
+                            <field name="is_active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="max_turns"/>
+                            <field name="use_rag"/>
+                            <field name="rag_limit" invisible="not use_rag"/>
+                        </group>
+                    </group>
+                    <group string="Messages">
+                        <field name="greeting_text" widget="text"/>
+                        <field name="escalation_message" widget="text"/>
+                        <field name="callback_offer_message" widget="text"/>
+                    </group>
+                    <group string="AI System Prompt">
+                        <field name="ai_system_prompt" nolabel="1" widget="text"/>
+                    </group>
+                    <group string="Webhook URL (share with your VoIP provider)">
+                        <div class="alert alert-info" role="alert">
+                            Inbound webhook URL: <code>/voice/incoming/&lt;flow_id&gt;</code><br/>
+                            Status callback: <code>/voice/status/&lt;call_id&gt;</code><br/>
+                            Mock test: <code>POST /voice/mock/call/&lt;flow_id&gt;</code>
+                        </div>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_voice_flow" model="ir.actions.act_window">
+        <field name="name">Call Flows</field>
+        <field name="res_model">voice.call.flow</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

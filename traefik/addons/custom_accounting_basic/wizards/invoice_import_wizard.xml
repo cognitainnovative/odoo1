@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_invoice_import_wizard_form" model="ir.ui.view">
+        <field name="name">invoice.import.wizard.form</field>
+        <field name="model">invoice.import.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Import Incoming Invoice (AI OCR)">
+
+                <!-- Step 1: Upload -->
+                <group invisible="extraction_done">
+                    <group string="Upload Invoice">
+                        <field name="invoice_file" filename="invoice_filename" widget="binary"/>
+                        <field name="invoice_filename" invisible="1"/>
+                    </group>
+                </group>
+
+                <!-- Step 2: Extracted data (review) -->
+                <group invisible="not extraction_done" string="Extracted Data — Review before Approving">
+                    <group>
+                        <field name="supplier_name"/>
+                        <field name="invoice_number"/>
+                        <field name="invoice_date"/>
+                        <field name="due_date"/>
+                    </group>
+                    <group>
+                        <field name="amount_total"/>
+                        <field name="amount_tax"/>
+                        <field name="currency_name"/>
+                        <field name="iban"/>
+                        <field name="payment_reference"/>
+                    </group>
+
+                    <!-- Low confidence warning -->
+                    <div class="alert alert-warning" role="alert"
+                         invisible="extraction_confidence &gt;= 0.7">
+                        <strong>Low confidence extraction.</strong>
+                        Please review all fields carefully before approving.
+                        Confidence: <field name="extraction_confidence" readonly="1" widget="progressbar"/>
+                    </div>
+
+                    <!-- Approval state badge -->
+                    <div class="alert alert-info" role="alert"
+                         invisible="approval_state == 'approved'">
+                        <strong>Pending Approval.</strong>
+                        Review the extracted data, then click
+                        <em>Approve for Booking</em> before creating the invoice.
+                    </div>
+                    <div class="alert alert-success" role="alert"
+                         invisible="approval_state != 'approved'">
+                        <strong>Approved for Booking.</strong>
+                        Click <em>Create Draft Invoice</em> to proceed.
+                    </div>
+                </group>
+
+                <!-- Line items preview -->
+                <group string="Extracted Line Items" invisible="not line_items_json">
+                    <field name="line_items_json" readonly="1" nolabel="1" widget="text"/>
+                </group>
+
+                <!-- Suggested account -->
+                <group string="Journal Proposal" invisible="not extraction_done">
+                    <field name="suggested_account_id" readonly="1"
+                           help="Suggested from supplier's most recent bill."/>
+                </group>
+
+                <!-- Description -->
+                <group string="Description" invisible="not extraction_done">
+                    <field name="description" nolabel="1" widget="text"/>
+                </group>
+
+                <footer>
+                    <button name="action_extract" string="Extract with AI" type="object"
+                            class="btn-primary" invisible="extraction_done"/>
+                    <button name="action_approve" string="Approve for Booking" type="object"
+                            class="btn-warning"
+                            invisible="not extraction_done or approval_state == 'approved'"/>
+                    <button name="action_create_invoice" string="Create Draft Invoice"
+                            type="object" class="btn-success" invisible="not extraction_done"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_invoice_import_wizard" model="ir.actions.act_window">
+        <field name="name">Import Invoice (AI OCR)</field>
+        <field name="res_model">invoice.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

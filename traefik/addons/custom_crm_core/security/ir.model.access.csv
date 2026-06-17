@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_campaign_manager,crm.campaign manager,model_crm_campaign,sales_team.group_sale_manager,1,1,1,1
+access_crm_campaign_user,crm.campaign user,model_crm_campaign,sales_team.group_sale_salesman,1,1,1,0
+access_crm_campaign_readonly,crm.campaign readonly,model_crm_campaign,base.group_user,1,0,0,0
+access_crm_custom_field_manager,crm.custom.field manager,model_crm_custom_field,sales_team.group_sale_manager,1,1,1,1
+access_crm_custom_field_user,crm.custom.field user,model_crm_custom_field,base.group_user,1,0,0,0
+access_crm_custom_field_value_user,crm.custom.field.value user,model_crm_custom_field_value,base.group_user,1,1,1,1
+access_crm_custom_field_value_manager,crm.custom.field.value manager,model_crm_custom_field_value,sales_team.group_sale_manager,1,1,1,1

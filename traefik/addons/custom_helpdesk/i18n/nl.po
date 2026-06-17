@@ -1,0 +1,181 @@
+# Dutch translations for custom_helpdesk
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Helpdesk Ticket"
+msgstr "Helpdeskticket"
+
+msgid "SLA Policy"
+msgstr "SLA-beleid"
+
+msgid "Subject"
+msgstr "Onderwerp"
+
+msgid "Description"
+msgstr "Omschrijving"
+
+msgid "Customer"
+msgstr "Klant"
+
+msgid "Assigned To"
+msgstr "Toegewezen Aan"
+
+msgid "Team"
+msgstr "Team"
+
+msgid "Stage"
+msgstr "Fase"
+
+msgid "Normal"
+msgstr "Normaal"
+
+msgid "High"
+msgstr "Hoog"
+
+msgid "Urgent"
+msgstr "Dringend"
+
+msgid "Billing"
+msgstr "Facturering"
+
+msgid "Technical"
+msgstr "Technisch"
+
+msgid "Product / Service"
+msgstr "Product / Dienst"
+
+msgid "Complaint"
+msgstr "Klacht"
+
+msgid "General Inquiry"
+msgstr "Algemene Vraag"
+
+msgid "Other"
+msgstr "Overig"
+
+msgid "Chat"
+msgstr "Chat"
+
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+msgid "Social Media"
+msgstr "Social Media"
+
+msgid "Phone"
+msgstr "Telefoon"
+
+msgid "Manual"
+msgstr "Handmatig"
+
+msgid "Customer Portal"
+msgstr "Klantenportaal"
+
+msgid "Language"
+msgstr "Taal"
+
+msgid "SLA Policy"
+msgstr "SLA-beleid"
+
+msgid "SLA Deadline"
+msgstr "SLA-deadline"
+
+msgid "SLA Breached"
+msgstr "SLA Overschreden"
+
+msgid "AI-Suggested Category"
+msgstr "Door AI Voorgestelde Categorie"
+
+msgid "AI-Suggested Priority"
+msgstr "Door AI Voorgestelde Prioriteit"
+
+msgid "Sentiment"
+msgstr "Sentiment"
+
+msgid "Positive"
+msgstr "Positief"
+
+msgid "Neutral"
+msgstr "Neutraal"
+
+msgid "Frustrated"
+msgstr "Gefrustreerd"
+
+msgid "Angry"
+msgstr "Boos"
+
+msgid "AI Draft Reply"
+msgstr "AI-conceptantwoord"
+
+msgid "Reply Approval"
+msgstr "Goedkeuring Antwoord"
+
+msgid "No Draft"
+msgstr "Geen Concept"
+
+msgid "Pending Approval"
+msgstr "Wacht op Goedkeuring"
+
+msgid "Approved — Ready to Send"
+msgstr "Goedgekeurd — Klaar om te Verzenden"
+
+msgid "Rejected"
+msgstr "Afgewezen"
+
+msgid "Needs More Information"
+msgstr "Meer Informatie Nodig"
+
+msgid "Sent"
+msgstr "Verzonden"
+
+msgid "Edit Reason"
+msgstr "Reden voor Bewerking"
+
+msgid "Final Reply (edited)"
+msgstr "Definitief Antwoord (bewerkt)"
+
+msgid "Linked Order"
+msgstr "Gekoppelde Order"
+
+msgid "Linked Invoice"
+msgstr "Gekoppelde Factuur"
+
+msgid "Linked Deal"
+msgstr "Gekoppelde Deal"
+
+msgid "Internal Notes"
+msgstr "Interne Notities"
+
+msgid "Complaint Detected"
+msgstr "Klacht Gedetecteerd"
+
+msgid "Legal Risk Detected"
+msgstr "Juridisch Risico Gedetecteerd"
+
+msgid "Missing Info"
+msgstr "Ontbrekende Informatie"
+
+msgid "Days"
+msgstr "Dagen"
+
+msgid "Hours"
+msgstr "Uren"
+
+msgid "Reply must be approved before sending. AI replies are NEVER auto-sent without human approval."
+msgstr "Antwoord moet worden goedgekeurd voor verzending. AI-antwoorden worden NOOIT automatisch verzonden zonder menselijke goedkeuring."
+
+msgid "No customer linked to send reply to."
+msgstr "Geen klant gekoppeld om antwoord naar te sturen."

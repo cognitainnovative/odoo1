@@ -1,0 +1,20 @@
+{
+    "name": "Platform Email AI",
+    "version": "19.0.1.0.0",
+    "summary": "Mailbox integration, AI classification, pending-outbox approval flow.",
+    "author": "Cognita Innovative",
+    "license": "LGPL-3",
+    "category": "Technical",
+    "depends": ["mail", "custom_ai_core", "custom_helpdesk", "custom_platform_security"],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/record_rules.xml",
+        "views/mailbox_views.xml",
+        "views/pending_outbox_views.xml",
+        "views/menus.xml",
+    ],
+    "demo": ["data/demo/demo_data.xml"],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

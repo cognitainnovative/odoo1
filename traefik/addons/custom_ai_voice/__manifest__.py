@@ -1,0 +1,21 @@
+{
+    "name": "Platform AI Voice",
+    "version": "19.0.1.0.0",
+    "summary": "VoIP call flow, STT, TTS, RAG answers, call transcription, sentiment analysis.",
+    "author": "Cognita Innovative",
+    "license": "LGPL-3",
+    "category": "Technical",
+    "depends": ["mail", "custom_ai_core", "custom_helpdesk", "custom_platform_security"],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/record_rules.xml",
+        "data/voice_data.xml",
+        "views/call_flow_views.xml",
+        "views/call_record_views.xml",
+        "views/voip_settings_views.xml",
+        "views/menus.xml",
+    ],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

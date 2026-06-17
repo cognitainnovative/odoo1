@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── HR: Active Employees ── -->
+    <record id="action_hr_active_employees" model="ir.actions.act_window">
+        <field name="name">Active Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('active','=',True)]</field>
+    </record>
+
+    <!-- ── HR: Pending Leave Requests ── -->
+    <record id="action_hr_pending_leaves" model="ir.actions.act_window">
+        <field name="name">Pending Leave Requests</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','=','confirm')]</field>
+    </record>
+
+    <!-- ── HR: Employees on Leave Today ── -->
+    <record id="action_hr_on_leave_today" model="ir.actions.act_window">
+        <field name="name">On Leave Today</field>
+        <field name="res_model">hr.leave</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[
+            ('state','=','validate'),
+            ('date_from','&lt;=',context_today().strftime('%Y-%m-%d')),
+            ('date_to','&gt;=',context_today().strftime('%Y-%m-%d'))
+        ]</field>
+    </record>
+
+    <!-- ── HR: Recently hired employees (last 60 days) — contract proxy for Community ── -->
+    <record id="action_hr_expiring_contracts" model="ir.actions.act_window">
+        <field name="name">Recently Hired Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[
+            ('active','=',True),
+            ('create_date','&gt;=',(context_today() + relativedelta(days=-60)).strftime('%Y-%m-%d'))
+        ]</field>
+    </record>
+
+    <!-- ── HR: Sick Leave (current month) ── -->
+    <record id="action_hr_sick_leave_month" model="ir.actions.act_window">
+        <field name="name">Sick Leave This Month</field>
+        <field name="res_model">hr.sick.leave</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[
+            ('start_date','&gt;=',context_today().strftime('%Y-%m-01'))
+        ]</field>
+    </record>
+
+    <!-- ── HR: Open Onboarding Checklists ── -->
+    <record id="action_hr_open_onboarding" model="ir.actions.act_window">
+        <field name="name">Open Onboarding Tasks</field>
+        <field name="res_model">hr.onboarding.checklist.item</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('done','=',False)]</field>
+    </record>
+
+    <!-- ── Menus under HR > Dashboard ── -->
+    <menuitem id="menu_hr_dashboard_root"
+              name="HR Dashboard"
+              parent="hr.menu_hr_root"
+              sequence="1"
+              groups="hr.group_hr_user"/>
+
+    <menuitem id="menu_hr_active_employees"
+              name="Active Employees"
+              parent="menu_hr_dashboard_root"
+              action="action_hr_active_employees"
+              sequence="10"/>
+
+    <menuitem id="menu_hr_pending_leaves"
+              name="Pending Leave Requests"
+              parent="menu_hr_dashboard_root"
+              action="action_hr_pending_leaves"
+              sequence="20"/>
+
+    <menuitem id="menu_hr_on_leave_today"
+              name="On Leave Today"
+              parent="menu_hr_dashboard_root"
+              action="action_hr_on_leave_today"
+              sequence="30"/>
+
+    <menuitem id="menu_hr_expiring_contracts"
+              name="Expiring Contracts"
+              parent="menu_hr_dashboard_root"
+              action="action_hr_expiring_contracts"
+              sequence="40"/>
+
+    <menuitem id="menu_hr_sick_leave_month"
+              name="Sick Leave This Month"
+              parent="menu_hr_dashboard_root"
+              action="action_hr_sick_leave_month"
+              sequence="50"/>
+
+    <menuitem id="menu_hr_open_onboarding"
+              name="Onboarding Tasks"
+              parent="menu_hr_dashboard_root"
+              action="action_hr_open_onboarding"
+              sequence="60"/>
+
+</odoo>

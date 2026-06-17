@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_api_token_list" model="ir.ui.view">
+        <field name="name">platform.api.token.list</field>
+        <field name="model">platform.api.token</field>
+        <field name="arch" type="xml">
+            <list string="API Tokens">
+                <header>
+                    <button name="%(action_api_token_generate)d" type="action"
+                            string="Generate Token" class="btn-primary" display="always"/>
+                </header>
+                <field name="name"/>
+                <field name="service"/>
+                <field name="scope"/>
+                <field name="user_id"/>
+                <field name="expires_at" optional="show"/>
+                <field name="last_used_at" optional="show"/>
+                <field name="active" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_api_token_form" model="ir.ui.view">
+        <field name="name">platform.api.token.form</field>
+        <field name="model">platform.api.token</field>
+        <field name="arch" type="xml">
+            <form string="API Token">
+                <header>
+                    <button name="action_revoke" string="Revoke Token" type="object"
+                            class="btn-danger"
+                            confirm="Revoking this token immediately blocks any service using it. Continue?"
+                            invisible="not active"/>
+                </header>
+                <sheet>
+                    <widget name="web_ribbon" text="Revoked" bg_color="bg-danger"
+                            invisible="active"/>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="service"/>
+                            <field name="scope"/>
+                            <field name="user_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="expires_at"/>
+                            <field name="last_used_at"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <group string="Token Hash (SHA-256 — raw token not recoverable)">
+                        <field name="token_hash" nolabel="1" readonly="1"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_api_token" model="ir.actions.act_window">
+        <field name="name">API Tokens</field>
+        <field name="res_model">platform.api.token</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'active_test': False}</field>
+    </record>
+
+</odoo>

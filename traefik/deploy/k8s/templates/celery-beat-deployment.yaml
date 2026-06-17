@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "platform.fullname" . }}-celery-beat
+  labels: {{- include "platform.labels" . | nindent 4 }}
+spec:
+  replicas: 1   # beat must be a singleton
+  selector:
+    matchLabels: {{- include "platform.selectorLabels" (dict "component" "celery-beat" "context" .) | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "platform.selectorLabels" (dict "component" "celery-beat" "context" .) | nindent 8 }}
+    spec:
+      containers:
+        - name: celery-beat
+          image: {{ .Values.celery.image.repository }}:{{ .Values.celery.image.tag }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          command:
+            - celery
+            - -A
+            - celery_app
+            - beat
+            - --loglevel=info
+            - --scheduler=celery.beat.PersistentScheduler
+            - --schedule=/var/lib/celery/celerybeat-schedule
+          envFrom:
+            - configMapRef:
+                name: {{ include "platform.fullname" . }}-config
+          env:
+            - name: ODOO_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: ODOO_ADMIN_PASSWORD
+          volumeMounts:
+            - name: beat-data
+              mountPath: /var/lib/celery
+          resources: {{- toYaml .Values.celery.beat.resources | nindent 12 }}
+      volumes:
+        - name: beat-data
+          emptyDir: {}

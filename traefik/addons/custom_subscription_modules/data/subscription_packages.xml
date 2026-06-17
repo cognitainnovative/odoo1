@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="package_crm" model="platform.package">
+        <field name="name">CRM Base</field>
+        <field name="code">crm_base</field>
+        <field name="description">Lead management, deal pipeline, contacts, quotes, activity tracking, AI lead scoring.</field>
+        <field name="module_codes">crm</field>
+        <field name="sequence">10</field>
+        <field name="monthly_price">49.0</field>
+        <field name="annual_price">490.0</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="package_finance_basic" model="platform.package">
+        <field name="name">Finance Basic</field>
+        <field name="code">finance_basic</field>
+        <field name="description">Invoicing, bank import (CSV/MT940/CAMT.053), AI reconciliation, incoming invoice OCR.</field>
+        <field name="module_codes">accounting_basic</field>
+        <field name="sequence">20</field>
+        <field name="monthly_price">59.0</field>
+        <field name="annual_price">590.0</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="package_finance_advanced" model="platform.package">
+        <field name="name">Finance Advanced</field>
+        <field name="code">finance_advanced</field>
+        <field name="description">Chart of accounts, period locks, BV annual accounts, budget vs actual, audit-file export.</field>
+        <field name="module_codes">accounting_basic,accounting_advanced</field>
+        <field name="sequence">25</field>
+        <field name="monthly_price">89.0</field>
+        <field name="annual_price">890.0</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="package_hrm" model="platform.package">
+        <field name="name">HRM</field>
+        <field name="code">hrm</field>
+        <field name="description">Employee database, self-service portal, leave management, sick-leave flow, onboarding checklists.</field>
+        <field name="module_codes">hrm</field>
+        <field name="sequence">30</field>
+        <field name="monthly_price">39.0</field>
+        <field name="annual_price">390.0</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="package_payroll_nl" model="platform.package">
+        <field name="name">Payroll NL</field>
+        <field name="code">payroll_nl</field>
+        <field name="description">Dutch payroll engine, payslips, holiday allowance, employer costs, export for accountant/provider.</field>
+        <field name="module_codes">payroll_nl</field>
+        <field name="sequence">35</field>
+        <field name="monthly_price">59.0</field>
+        <field name="annual_price">590.0</field>
+        <field name="color">5</field>
+    </record>
+
+    <record id="package_inventory" model="platform.package">
+        <field name="name">Inventory</field>
+        <field name="code">inventory</field>
+        <field name="description">Products, warehouses, stock moves, purchase orders, reorder rules, valuation.</field>
+        <field name="module_codes">inventory</field>
+        <field name="sequence">40</field>
+        <field name="monthly_price">39.0</field>
+        <field name="annual_price">390.0</field>
+        <field name="color">6</field>
+    </record>
+
+    <record id="package_rental" model="platform.package">
+        <field name="name">Rental</field>
+        <field name="code">rental</field>
+        <field name="description">Rental workflow, pricing tiers (daily/weekly/monthly), deposit, availability calendar, discount tiers.</field>
+        <field name="module_codes">rental</field>
+        <field name="sequence">45</field>
+        <field name="monthly_price">49.0</field>
+        <field name="annual_price">490.0</field>
+        <field name="color">7</field>
+    </record>
+
+    <record id="package_helpdesk" model="platform.package">
+        <field name="name">Helpdesk</field>
+        <field name="code">helpdesk</field>
+        <field name="description">Tickets, SLA, AI classification, AI draft replies with human approval, customer portal.</field>
+        <field name="module_codes">helpdesk</field>
+        <field name="sequence">50</field>
+        <field name="monthly_price">39.0</field>
+        <field name="annual_price">390.0</field>
+        <field name="color">8</field>
+    </record>
+
+    <record id="package_planning" model="platform.package">
+        <field name="name">Planning</field>
+        <field name="code">planning</field>
+        <field name="description">Appointments, jobs, resources, employee availability, calendar, customer confirmations.</field>
+        <field name="module_codes">planning</field>
+        <field name="sequence">55</field>
+        <field name="monthly_price">29.0</field>
+        <field name="annual_price">290.0</field>
+        <field name="color">9</field>
+    </record>
+
+    <record id="package_ai_chat" model="platform.package">
+        <field name="name">AI Chat</field>
+        <field name="code">ai_chat</field>
+        <field name="description">Website chat widget, RAG knowledge base, lead capture, escalation to human agents.</field>
+        <field name="module_codes">ai_core,ai_chatbot</field>
+        <field name="sequence">60</field>
+        <field name="monthly_price">49.0</field>
+        <field name="annual_price">490.0</field>
+        <field name="color">10</field>
+    </record>
+
+    <record id="package_ai_voice" model="platform.package">
+        <field name="name">AI Voice</field>
+        <field name="code">ai_voice</field>
+        <field name="description">VoIP call flow, speech-to-text, text-to-speech, call transcription, sentiment analysis.</field>
+        <field name="module_codes">ai_core,ai_voice</field>
+        <field name="sequence">65</field>
+        <field name="monthly_price">69.0</field>
+        <field name="annual_price">690.0</field>
+        <field name="color">11</field>
+    </record>
+
+    <record id="package_social" model="platform.package">
+        <field name="name">Social Media</field>
+        <field name="code">social_media</field>
+        <field name="description">WhatsApp messaging, social inbox, content calendar, AI post drafting, scheduled publishing.</field>
+        <field name="module_codes">whatsapp_social</field>
+        <field name="sequence">70</field>
+        <field name="monthly_price">49.0</field>
+        <field name="annual_price">490.0</field>
+        <field name="color">0</field>
+    </record>
+
+    <record id="package_full_suite" model="platform.package">
+        <field name="name">Full Suite</field>
+        <field name="code">full_suite</field>
+        <field name="description">All modules included: CRM, Finance, HRM, Payroll NL, Inventory, Rental, Helpdesk, Planning, AI Chat, AI Voice, Social Media.</field>
+        <field name="module_codes">crm,accounting_basic,accounting_advanced,hrm,payroll_nl,inventory,rental,helpdesk,planning,ai_core,ai_chatbot,ai_voice,whatsapp_social</field>
+        <field name="sequence">99</field>
+        <field name="monthly_price">299.0</field>
+        <field name="annual_price">2990.0</field>
+        <field name="color">1</field>
+    </record>
+
+</odoo>

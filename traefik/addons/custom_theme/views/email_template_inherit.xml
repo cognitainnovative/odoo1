@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inject brand CSS into Odoo 19's base email layout head section. -->
+    <template id="platform_brand_email_style" inherit_id="mail.mail_notification_layout"
+              name="Platform Brand — Email Style">
+        <xpath expr="//head" position="inside">
+            <t t-set="brand_company" t-value="user.company_id if user else False"/>
+            <t t-if="brand_company and brand_company.brand_primary_color">
+                <style>
+                    body { font-family: <t t-esc="{'inter': 'Inter, sans-serif', 'roboto': 'Roboto, sans-serif', 'open_sans': 'Open Sans, sans-serif'}.get(brand_company.brand_font_family or 'inter', 'Inter, sans-serif')"/>; }
+                    a { color: <t t-esc="brand_company.brand_primary_color or '#1E40AF'"/>; }
+                </style>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Inject optional brand email header HTML before the message body. -->
+    <template id="platform_brand_email_header" inherit_id="mail.mail_notification_layout"
+              name="Platform Brand — Email Header">
+        <xpath expr="//div[@t-out='message.body']" position="before">
+            <t t-set="brand_company" t-value="user.company_id if user else False"/>
+            <t t-if="brand_company and brand_company.brand_email_header_html">
+                <div style="padding: 8px 0 8px 0;">
+                    <t t-out="brand_company.brand_email_header_html"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Inject optional brand email footer HTML after Odoo's footer section. -->
+    <template id="platform_brand_email_footer" inherit_id="mail.mail_notification_layout"
+              name="Platform Brand — Email Footer">
+        <xpath expr="(//div[@t-if='show_footer'])[last()]" position="after">
+            <t t-set="brand_company" t-value="user.company_id if user else False"/>
+            <t t-if="brand_company and brand_company.brand_email_footer_html">
+                <div style="margin-top: 8px; border-top: 1px solid #e2e8f0; padding-top: 8px; font-size: 11px; color: #555555;">
+                    <t t-out="brand_company.brand_email_footer_html"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

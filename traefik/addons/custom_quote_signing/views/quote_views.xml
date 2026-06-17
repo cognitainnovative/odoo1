@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ sale.order — Signing tab ═══ -->
+    <record id="view_sale_order_signing_form" model="ir.ui.view">
+        <field name="name">sale.order.signing.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Send for signing button in header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_send_for_signing" string="Send for Signing"
+                        type="object" class="btn-primary"
+                        invisible="signing_state not in ('draft',)"/>
+                <button name="action_confirm_signed" string="Confirm Signed Order"
+                        type="object" class="btn-success"
+                        invisible="signing_state != 'signed'"/>
+            </xpath>
+            <!-- Signing tab in notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Signing" name="signing_tab">
+                    <!-- Signing status bar (moved here from the form header) -->
+                    <header>
+                        <field name="signing_state" widget="statusbar"
+                               statusbar_visible="draft,sent,viewed,signed,confirmed"/>
+                    </header>
+                    <group>
+                        <group string="Portal Link">
+                            <field name="signing_token" readonly="1"/>
+                            <field name="portal_signing_url" readonly="1" widget="url"/>
+                            <field name="quote_expiry_date"/>
+                        </group>
+                        <group string="Terms">
+                            <field name="terms_version_id"/>
+                            <field name="requires_planning"/>
+                            <field name="require_qualified_signature"/>
+                        </group>
+                    </group>
+                    <group string="Payment Obligation Wording">
+                        <field name="payment_obligation_text" nolabel="1" widget="text"
+                               placeholder="Defaults to terms version wording if left blank."/>
+                    </group>
+                    <group string="Signing Record" invisible="not signing_id">
+                        <field name="signing_id" readonly="1"/>
+                        <field name="signer_name" readonly="1"/>
+                        <field name="signed_at" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ quote.signing — read-only list + form ═══ -->
+    <record id="view_quote_signing_list" model="ir.ui.view">
+        <field name="name">quote.signing.list</field>
+        <field name="model">quote.signing</field>
+        <field name="arch" type="xml">
+            <list string="Signing Records" create="false" edit="false" delete="false">
+                <field name="sale_order_id"/>
+                <field name="signer_name"/>
+                <field name="signer_email"/>
+                <field name="signed_at"/>
+                <field name="terms_accepted"/>
+                <field name="payment_obligation_accepted"/>
+                <field name="document_hash" optional="hide"/>
+                <field name="ip_address" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_quote_signing_form" model="ir.ui.view">
+        <field name="name">quote.signing.form</field>
+        <field name="model">quote.signing</field>
+        <field name="arch" type="xml">
+            <form string="Signing Audit Record" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group string="Signer Identity">
+                            <field name="sale_order_id" readonly="1"/>
+                            <field name="signer_name" readonly="1"/>
+                            <field name="signer_email" readonly="1"/>
+                            <field name="signed_at" readonly="1"/>
+                        </group>
+                        <group string="Technical Evidence">
+                            <field name="ip_address" readonly="1"/>
+                            <field name="user_agent" readonly="1"/>
+                            <field name="document_hash" readonly="1"/>
+                            <field name="document_version" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Acceptance">
+                        <field name="terms_version_id" readonly="1"/>
+                        <field name="terms_accepted" readonly="1"/>
+                        <field name="payment_obligation_accepted" readonly="1"/>
+                        <field name="signature_type" readonly="1"/>
+                    </group>
+                    <group string="Event Log">
+                        <field name="event_log" nolabel="1" readonly="1" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_quote_signing" model="ir.actions.act_window">
+        <field name="name">Signing Records</field>
+        <field name="res_model">quote.signing</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ═══ Terms versions ═══ -->
+    <record id="view_quote_terms_list" model="ir.ui.view">
+        <field name="name">quote.terms.version.list</field>
+        <field name="model">quote.terms.version</field>
+        <field name="arch" type="xml">
+            <list string="Terms Versions">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="version"/>
+                <field name="language"/>
+                <field name="is_active"/>
+                <field name="effective_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_quote_terms_form" model="ir.ui.view">
+        <field name="name">quote.terms.version.form</field>
+        <field name="model">quote.terms.version</field>
+        <field name="arch" type="xml">
+            <form string="Terms Version">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="version"/>
+                            <field name="language"/>
+                            <field name="is_active"/>
+                            <field name="effective_date"/>
+                        </group>
+                    </group>
+                    <group string="Payment Obligation Wording">
+                        <field name="payment_obligation_text" nolabel="1" widget="text"/>
+                    </group>
+                    <group string="Terms Content">
+                        <field name="content" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_quote_terms" model="ir.actions.act_window">
+        <field name="name">Terms Versions</field>
+        <field name="res_model">quote.terms.version</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

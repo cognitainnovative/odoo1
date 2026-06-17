@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Under Inventory > Products -->
+    <menuitem id="menu_product_bundles"
+              name="Product Bundles"
+              parent="stock.menu_product_variant_config_stock"
+              action="action_product_bundle"
+              sequence="20"
+              groups="stock.group_stock_user"/>
+
+    <!-- Under Inventory > Operations > Procurement -->
+    <menuitem id="menu_reorder_rules_platform"
+              name="Reorder Rules (AI)"
+              parent="stock.menu_stock_procurement"
+              action="action_reorder_rules"
+              sequence="30"
+              groups="stock.group_stock_manager"/>
+
+    <!-- Under Inventory > Operations > Adjustments -->
+    <menuitem id="menu_low_stock"
+              name="Low Stock"
+              parent="stock.menu_stock_adjustments"
+              action="action_low_stock_products"
+              sequence="20"
+              groups="stock.group_stock_user"/>
+
+    <menuitem id="menu_fast_movers"
+              name="Fast Movers"
+              parent="stock.menu_stock_adjustments"
+              action="action_fast_movers"
+              sequence="25"
+              groups="stock.group_stock_user"/>
+
+    <menuitem id="menu_stock_value"
+              name="Stock Value"
+              parent="stock.menu_stock_adjustments"
+              action="action_stock_value"
+              sequence="30"
+              groups="stock.group_stock_manager"/>
+
+    <menuitem id="menu_reserved_stock"
+              name="Reserved Stock"
+              parent="stock.menu_stock_adjustments"
+              action="action_reserved_stock"
+              sequence="35"
+              groups="stock.group_stock_user"/>
+
+    <menuitem id="menu_warehouse_overview"
+              name="Warehouse Overview"
+              parent="stock.menu_stock_adjustments"
+              action="action_warehouse_overview"
+              sequence="40"
+              groups="stock.group_stock_manager"/>
+
+    <menuitem id="menu_warehouse_quant_overview"
+              name="Stock Levels by Location"
+              parent="stock.menu_stock_adjustments"
+              action="action_warehouse_quant_overview"
+              sequence="45"
+              groups="stock.group_stock_manager"/>
+
+    <!-- Under Inventory > Operations — Physical Counts -->
+    <menuitem id="menu_stock_count"
+              name="Physical Counts"
+              parent="stock.menu_stock_adjustments"
+              action="action_stock_count"
+              sequence="50"
+              groups="stock.group_stock_manager"/>
+
+    <!-- Under Inventory > Reporting — Audit Log -->
+    <menuitem id="menu_stock_audit_log"
+              name="Stock Audit Log"
+              parent="stock.menu_stock_adjustments"
+              action="action_stock_audit_log"
+              sequence="60"
+              groups="stock.group_stock_manager"/>
+
+</odoo>

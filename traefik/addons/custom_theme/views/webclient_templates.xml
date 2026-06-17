@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Brand CSS link ──────────────────────────────────────────────────
+         web.layout is the root layout for BOTH the backend web client
+         (via web.webclient_bootstrap) and frontend/portal pages
+         (via web.frontend_layout), so one inherit covers everything.
+         The link is static — company resolution happens in the controller —
+         so no QWeb context variables are needed here. -->
+    <template id="platform_brand_css_link" inherit_id="web.layout"
+              name="Platform Brand — CSS Variables Link">
+        <xpath expr="//head" position="inside">
+            <link rel="stylesheet" type="text/css" href="/web/platform/brand.css"/>
+            <t t-if="request and request.env.company.sudo().brand_favicon">
+                <link rel="icon" type="image/x-icon" href="/web/platform/favicon"/>
+                <link rel="shortcut icon" type="image/x-icon" href="/web/platform/favicon"/>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- ── Portal footer text ──────────────────────────────────────────────
+         Renders the company's configured portal footer at the bottom of
+         every frontend/portal page. Guarded so it is a no-op when unset. -->
+    <template id="platform_brand_portal_footer" inherit_id="web.frontend_layout"
+              name="Platform Brand — Portal Footer">
+        <xpath expr="//div[@id='wrapwrap']" position="inside">
+            <t t-if="request and request.env.company.sudo().brand_portal_footer">
+                <footer class="o_portal_footer container py-3 text-muted small">
+                    <t t-out="request.env.company.sudo().brand_portal_footer"/>
+                </footer>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

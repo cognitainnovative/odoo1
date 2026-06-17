@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Mailbox configuration ═══ -->
+    <record id="view_email_ai_mailbox_list" model="ir.ui.view">
+        <field name="name">email.ai.mailbox.list</field>
+        <field name="model">email.ai.mailbox</field>
+        <field name="arch" type="xml">
+            <list string="Mailboxes"
+                  decoration-success="state == 'connected'"
+                  decoration-danger="state == 'error'">
+                <field name="name"/>
+                <field name="email_address"/>
+                <field name="connection_type"/>
+                <field name="state" widget="badge"/>
+                <field name="last_sync"/>
+                <field name="message_count" string="Messages"/>
+                <button name="action_import_emails" string="Sync" type="object"
+                        icon="fa-refresh" class="btn-sm"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_email_ai_mailbox_form" model="ir.ui.view">
+        <field name="name">email.ai.mailbox.form</field>
+        <field name="model">email.ai.mailbox</field>
+        <field name="arch" type="xml">
+            <form string="Mailbox Connection">
+                <header>
+                    <button name="action_test_connection" string="Test Connection"
+                            type="object" class="btn-secondary"/>
+                    <button name="action_import_emails" string="Sync Now"
+                            type="object" class="btn-primary"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,connected,error"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        <strong>Security note:</strong> Email credentials (password / OAuth secret)
+                        are stored encrypted via the platform secrets manager — never enter them
+                        as plain text in this form. Use the environment variable / secrets config.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="email_address"/>
+                            <field name="connection_type"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="state" readonly="1"/>
+                            <field name="last_sync" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="IMAP / SMTP" invisible="connection_type != 'imap'">
+                        <group>
+                            <field name="imap_host"/>
+                            <field name="imap_port"/>
+                            <field name="imap_ssl"/>
+                            <field name="imap_password" password="True"
+                                   placeholder="Enter to set — stored encrypted"/>
+                        </group>
+                        <group>
+                            <field name="smtp_host"/>
+                            <field name="smtp_port"/>
+                            <field name="smtp_tls"/>
+                            <field name="smtp_password" password="True"
+                                   placeholder="Enter to set — stored encrypted"/>
+                        </group>
+                    </group>
+                    <group string="Microsoft Graph (Office 365)"
+                           invisible="connection_type != 'graph'">
+                        <field name="graph_tenant_id"/>
+                        <field name="graph_client_id"/>
+                        <field name="graph_client_secret" password="True"
+                               placeholder="Enter to set — stored encrypted"/>
+                    </group>
+                    <group string="Auto-send Configuration (optional)">
+                        <field name="auto_send_enabled"/>
+                        <field name="auto_send_categories"
+                               invisible="not auto_send_enabled"
+                               placeholder="e.g. general"/>
+                        <div class="alert alert-warning" role="alert"
+                             invisible="not auto_send_enabled">
+                            ⚠️ <strong>Auto-send is active.</strong>
+                            AI replies for the categories above will be sent without human review.
+                            Only enable this for genuinely low-risk, high-volume categories.
+                        </div>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_email_ai_mailbox" model="ir.actions.act_window">
+        <field name="name">Mailboxes</field>
+        <field name="res_model">email.ai.mailbox</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ═══ Email Reply Templates ═══ -->
+    <record id="view_email_ai_template_list" model="ir.ui.view">
+        <field name="name">email.ai.template.list</field>
+        <field name="model">email.ai.template</field>
+        <field name="arch" type="xml">
+            <list string="Reply Templates" editable="top">
+                <field name="name"/>
+                <field name="category"/>
+                <field name="language_code" string="Lang"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_email_ai_template_form" model="ir.ui.view">
+        <field name="name">email.ai.template.form</field>
+        <field name="model">email.ai.template</field>
+        <field name="arch" type="xml">
+            <form string="Email Reply Template">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="category"/>
+                            <field name="language_code"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Subject Template">
+                        <field name="subject_template" nolabel="1"
+                               placeholder="Re: {subject}"/>
+                    </group>
+                    <group string="Body Template">
+                        <field name="body_template" nolabel="1" widget="text"
+                               placeholder="Dear {name},&#10;&#10;{summary}&#10;&#10;Kind regards"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_email_ai_template" model="ir.actions.act_window">
+        <field name="name">Reply Templates</field>
+        <field name="res_model">email.ai.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ═══ Inbox ═══ -->
+    <record id="view_email_ai_message_list" model="ir.ui.view">
+        <field name="name">email.ai.message.list</field>
+        <field name="model">email.ai.message</field>
+        <field name="arch" type="xml">
+            <list string="Inbox"
+                  decoration-primary="state == 'new'"
+                  decoration-warning="state == 'draft_reply'"
+                  decoration-muted="state in ('archived','replied')">
+                <field name="date"/>
+                <field name="from_name" string="From"/>
+                <field name="name" string="Subject"/>
+                <field name="ai_category" optional="show"/>
+                <field name="ai_sentiment" optional="show"/>
+                <field name="state" widget="badge"/>
+                <field name="partner_id" optional="show"/>
+                <field name="ticket_id" optional="show"/>
+                <button name="action_ai_classify" string="Classify" type="object"
+                        icon="fa-magic" class="btn-sm"
+                        invisible="ai_classification_done"/>
+                <button name="action_ai_draft_reply" string="Draft Reply" type="object"
+                        icon="fa-reply" class="btn-sm"
+                        invisible="state == 'replied'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_email_ai_message_form" model="ir.ui.view">
+        <field name="name">email.ai.message.form</field>
+        <field name="model">email.ai.message</field>
+        <field name="arch" type="xml">
+            <form string="Email Message">
+                <header>
+                    <button name="action_ai_classify" string="Classify" type="object"
+                            class="btn-secondary" invisible="ai_classification_done"/>
+                    <button name="action_ai_draft_reply" string="Draft AI Reply" type="object"
+                            class="btn-primary"
+                            invisible="state in ('replied', 'draft_reply')"/>
+                    <button name="action_archive" string="Archive" type="object"
+                            class="btn-secondary" invisible="state == 'archived'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,classified,draft_reply,replied"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="from_name"/>
+                            <field name="from_email"/>
+                            <field name="date"/>
+                            <field name="name" string="Subject"/>
+                        </group>
+                        <group>
+                            <field name="ai_category" readonly="1"/>
+                            <field name="ai_sentiment" readonly="1"/>
+                            <field name="ai_summary" readonly="1" widget="text"/>
+                            <field name="partner_id"/>
+                        </group>
+                    </group>
+                    <group string="Body">
+                        <field name="body_text" nolabel="1" widget="text" readonly="1"/>
+                    </group>
+                    <group string="Linked Records">
+                        <field name="ticket_id"/>
+                        <field name="lead_id"/>
+                        <field name="invoice_id"/>
+                        <field name="finance_task_id" readonly="1"/>
+                        <field name="mailbox_id" readonly="1"/>
+                        <field name="thread_root_id" readonly="1"/>
+                        <field name="template_id"/>
+                    </group>
+                    <group string="Internal Note (staff only)">
+                        <field name="internal_note" nolabel="1" widget="text"
+                               placeholder="Internal note — not visible to sender."/>
+                    </group>
+                    <group string="Thread (Replies)" invisible="not reply_ids">
+                        <field name="reply_ids" nolabel="1" readonly="1">
+                            <list>
+                                <field name="date"/>
+                                <field name="from_name" string="From"/>
+                                <field name="name" string="Subject"/>
+                                <field name="state" widget="badge"/>
+                            </list>
+                        </field>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_email_ai_inbox" model="ir.actions.act_window">
+        <field name="name">Email Inbox</field>
+        <field name="res_model">email.ai.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','not in',('archived',))]</field>
+    </record>
+
+    <!-- ═══ Finance Tasks ═══ -->
+    <record id="view_email_ai_finance_task_list" model="ir.ui.view">
+        <field name="name">email.ai.finance.task.list</field>
+        <field name="model">email.ai.finance.task</field>
+        <field name="arch" type="xml">
+            <list string="Finance Tasks"
+                  decoration-primary="state == 'pending'"
+                  decoration-warning="state == 'in_progress'"
+                  decoration-muted="state in ('done','cancelled')">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="invoice_id" optional="show"/>
+                <field name="assigned_to_id"/>
+                <field name="due_date"/>
+                <field name="priority" widget="priority"/>
+                <field name="state" widget="badge"/>
+                <button name="action_mark_in_progress" string="Start" type="object"
+                        class="btn-sm" invisible="state != 'pending'"/>
+                <button name="action_mark_done" string="Done" type="object"
+                        class="btn-sm btn-success" invisible="state not in ('pending','in_progress')"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_email_ai_finance_task_form" model="ir.ui.view">
+        <field name="name">email.ai.finance.task.form</field>
+        <field name="model">email.ai.finance.task</field>
+        <field name="arch" type="xml">
+            <form string="Finance Task">
+                <header>
+                    <button name="action_mark_in_progress" string="Start" type="object"
+                            class="btn-secondary" invisible="state != 'pending'"/>
+                    <button name="action_mark_done" string="Mark Done" type="object"
+                            class="btn-success" invisible="state not in ('pending','in_progress')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="pending,in_progress,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="assigned_to_id"/>
+                            <field name="due_date"/>
+                            <field name="priority" widget="priority"/>
+                        </group>
+                        <group>
+                            <field name="invoice_id"/>
+                            <field name="email_message_id" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1" widget="text"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_email_ai_finance_task" model="ir.actions.act_window">
+        <field name="name">Finance Tasks</field>
+        <field name="res_model">email.ai.finance.task</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','not in',('done','cancelled'))]</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_bundle_manager,product.bundle manager,model_product_bundle,stock.group_stock_manager,1,1,1,1
+access_product_bundle_user,product.bundle user,model_product_bundle,stock.group_stock_user,1,1,1,0
+access_product_bundle_line_manager,product.bundle.line manager,model_product_bundle_line,stock.group_stock_manager,1,1,1,1
+access_product_bundle_line_user,product.bundle.line user,model_product_bundle_line,stock.group_stock_user,1,1,1,0
+access_stock_audit_log_admin,stock.audit.log admin,model_stock_audit_log,base.group_system,1,0,1,0
+access_stock_audit_log_manager,stock.audit.log manager,model_stock_audit_log,stock.group_stock_manager,1,0,1,0
+access_stock_audit_log_user,stock.audit.log user,model_stock_audit_log,stock.group_stock_user,1,0,0,0
+access_platform_stock_count_manager,platform.stock.count manager,model_platform_stock_count,stock.group_stock_manager,1,1,1,1
+access_platform_stock_count_user,platform.stock.count user,model_platform_stock_count,stock.group_stock_user,1,1,1,0
+access_platform_stock_count_line_manager,platform.stock.count.line manager,model_platform_stock_count_line,stock.group_stock_manager,1,1,1,1
+access_platform_stock_count_line_user,platform.stock.count.line user,model_platform_stock_count_line,stock.group_stock_user,1,1,1,0

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_hr_sick_leave_list" model="ir.ui.view">
+        <field name="name">hr.sick.leave.list</field>
+        <field name="model">hr.sick.leave</field>
+        <field name="arch" type="xml">
+            <list string="Sick Leave Reports"
+                  decoration-success="state == 'closed'"
+                  decoration-warning="state in ('reported','in_progress')"
+                  decoration-muted="state == 'recovered'">
+                <field name="employee_id"/>
+                <field name="start_date"/>
+                <field name="expected_end_date"/>
+                <field name="actual_end_date"/>
+                <field name="duration_days" string="Days"/>
+                <field name="state" widget="badge"/>
+                <field name="has_doctor_certificate"/>
+                <field name="manager_notified"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_hr_sick_leave_form" model="ir.ui.view">
+        <field name="name">hr.sick.leave.form</field>
+        <field name="model">hr.sick.leave</field>
+        <field name="arch" type="xml">
+            <form string="Sick Leave Report">
+                <header>
+                    <button name="action_partial_recovery" string="Partial Recovery"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('reported','in_progress')"/>
+                    <button name="action_recovery" string="Recovered — Return to Work"
+                            type="object" class="btn-success"
+                            invisible="state in ('recovered','closed')"/>
+                    <button name="action_reintegration" string="Reintegration"
+                            type="object" class="btn-warning"
+                            invisible="state != 'recovered'"/>
+                    <button name="action_close" string="Close" type="object"
+                            class="btn-secondary" invisible="state == 'closed'"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="reported,in_progress,recovered,closed"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-info" role="alert">
+                        <strong>Privacy Notice:</strong> Only administrative information is stored.
+                        No medical diagnoses or symptoms should be recorded here.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="manager_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="start_date"/>
+                            <field name="expected_end_date"/>
+                            <field name="actual_end_date" readonly="1"/>
+                            <field name="duration_days" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Administrative">
+                        <field name="has_doctor_certificate"/>
+                        <field name="notes" widget="text"
+                               placeholder="Administrative notes only — no diagnoses or medical information."/>
+                    </group>
+                    <group string="Notifications">
+                        <field name="manager_notified" readonly="1"/>
+                        <field name="hr_notified" readonly="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_sick_leave" model="ir.actions.act_window">
+        <field name="name">Sick Leave Reports</field>
+        <field name="res_model">hr.sick.leave</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'not in', ('closed',))]</field>
+    </record>
+
+    <record id="action_hr_sick_leave_all" model="ir.actions.act_window">
+        <field name="name">All Sick Leave</field>
+        <field name="res_model">hr.sick.leave</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

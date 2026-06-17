@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Platform Overview shortcuts for models owned by custom_crm_core's dependency chain.
+     The root menu lives in custom_platform_security so all modules can contribute items.
+     Optional-module items (helpdesk, rental, email_ai, voice) are in those modules' views. -->
+<odoo>
+
+    <!-- CRM -->
+    <record id="action_platform_open_deals" model="ir.actions.act_window">
+        <field name="name">Open Deals</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('type','=','opportunity'),('probability','&lt;',100),('active','=',True)]</field>
+    </record>
+
+    <!-- Finance -->
+    <record id="action_platform_overdue_invoices" model="ir.actions.act_window">
+        <field name="name">Overdue Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[
+            ('move_type','=','out_invoice'),
+            ('state','=','posted'),
+            ('payment_state','not in',['paid','reversed']),
+            ('invoice_date_due','&lt;',context_today().strftime('%Y-%m-%d'))
+        ]</field>
+    </record>
+
+    <!-- AI -->
+    <record id="action_platform_ai_errors" model="ir.actions.act_window">
+        <field name="name">AI Errors (Last 7 Days)</field>
+        <field name="res_model">ai.audit.log</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[
+            ('status','=','error'),
+            ('create_date','&gt;=',(context_today() + relativedelta(days=-7)).strftime('%Y-%m-%d'))
+        ]</field>
+    </record>
+
+    <!-- Inventory (product.product available via sale_crm → sale → product) -->
+    <record id="action_platform_low_stock" model="ir.actions.act_window">
+        <field name="name">Low / Zero Stock</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">list,kanban</field>
+        <field name="domain">[('qty_available','&lt;=',0),('is_storable','=',True)]</field>
+    </record>
+
+    <menuitem id="menu_platform_open_deals"
+              name="Open Deals"
+              parent="custom_platform_security.menu_platform_overview_root"
+              action="action_platform_open_deals"
+              sequence="10"/>
+
+    <menuitem id="menu_platform_overdue_invoices"
+              name="Overdue Invoices"
+              parent="custom_platform_security.menu_platform_overview_root"
+              action="action_platform_overdue_invoices"
+              sequence="20"/>
+
+    <menuitem id="menu_platform_low_stock"
+              name="Low / Zero Stock"
+              parent="custom_platform_security.menu_platform_overview_root"
+              action="action_platform_low_stock"
+              sequence="70"/>
+
+    <menuitem id="menu_platform_ai_errors"
+              name="AI Errors"
+              parent="custom_platform_security.menu_platform_overview_root"
+              action="action_platform_ai_errors"
+              sequence="80"/>
+
+</odoo>

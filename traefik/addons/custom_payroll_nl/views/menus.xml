@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_payroll_root"
+              name="Payroll NL"
+              sequence="42"
+              groups="hr.group_hr_manager"/>
+
+    <menuitem id="menu_payroll_runs"
+              name="Payroll Runs"
+              parent="menu_payroll_root"
+              action="action_payroll_run"
+              sequence="10"
+              groups="hr.group_hr_manager"/>
+
+    <menuitem id="menu_payslips"
+              name="All Payslips"
+              parent="menu_payroll_root"
+              action="action_payslip_all"
+              sequence="20"
+              groups="hr.group_hr_manager"/>
+
+    <menuitem id="menu_payroll_reports"
+              name="Reports"
+              parent="menu_payroll_root"
+              sequence="30"
+              groups="hr.group_hr_manager"/>
+
+    <menuitem id="menu_payroll_wage_cost"
+              name="Wage Cost Report"
+              parent="menu_payroll_reports"
+              action="action_wage_cost_report"
+              sequence="10"
+              groups="hr.group_hr_manager"/>
+
+    <menuitem id="menu_payroll_employer_cost"
+              name="Employer Cost Report"
+              parent="menu_payroll_reports"
+              action="action_employer_cost_report"
+              sequence="20"
+              groups="hr.group_hr_manager"/>
+
+    <menuitem id="menu_payroll_access_log"
+              name="Access Audit Log"
+              parent="menu_payroll_reports"
+              action="action_payroll_access_log"
+              sequence="30"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_payroll_config"
+              name="Configuration"
+              parent="menu_payroll_root"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_payroll_rules"
+              name="Rule Versions (NL)"
+              parent="menu_payroll_config"
+              action="action_payroll_rule"
+              sequence="10"
+              groups="base.group_system"/>
+
+</odoo>

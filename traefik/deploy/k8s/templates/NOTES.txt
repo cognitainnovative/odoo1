@@ -1,0 +1,23 @@
+Platform has been deployed.
+
+Access endpoints (after DNS is configured for {{ .Values.global.domain }}):
+
+  Odoo ERP:            https://{{ .Values.global.domain }}
+  AI Gateway:          https://ai.{{ .Values.global.domain }}
+  Integration Gateway: https://hooks.{{ .Values.global.domain }}
+  Support Console:     https://support.{{ .Values.global.domain }}
+  MinIO Console:       https://minio.{{ .Values.global.domain }}
+  MinIO S3 API:        https://s3.{{ .Values.global.domain }}
+
+Initial Odoo admin:
+  User:     {{ .Values.odoo.adminUser }}
+  Password: (see secret {{ include "platform.fullname" . }}-secrets key ODOO_ADMIN_PASSWORD)
+
+To watch rollout:
+  kubectl rollout status deployment/{{ include "platform.fullname" . }}-odoo
+
+Override secrets for production:
+  helm upgrade platform . \
+    --set secrets.anthropicApiKey=sk-ant-... \
+    --set postgres.password=... \
+    --set minio.rootPassword=...

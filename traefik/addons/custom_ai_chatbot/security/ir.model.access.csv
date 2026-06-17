@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_chat_visitor_admin,chat.visitor admin,model_chat_visitor,custom_platform_security.group_support_manager,1,1,1,1
+access_chat_visitor_agent,chat.visitor agent,model_chat_visitor,custom_platform_security.group_support_agent,1,0,0,0
+access_chat_visitor_public,chat.visitor public,model_chat_visitor,base.group_public,0,0,1,0
+access_chat_session_admin,chat.session admin,model_chat_session,custom_platform_security.group_support_manager,1,1,1,1
+access_chat_session_agent,chat.session agent,model_chat_session,custom_platform_security.group_support_agent,1,1,1,0
+access_chat_session_public,chat.session public,model_chat_session,base.group_public,0,0,1,0
+access_chat_transcript_admin,chat.transcript.line admin,model_chat_transcript_line,custom_platform_security.group_support_manager,1,1,1,1
+access_chat_transcript_agent,chat.transcript.line agent,model_chat_transcript_line,custom_platform_security.group_support_agent,1,1,1,0
+access_chat_transcript_public,chat.transcript.line public,model_chat_transcript_line,base.group_public,0,0,1,0
+access_chat_config_admin,chat.config admin,model_chat_config,custom_platform_security.group_support_manager,1,1,1,1
+access_chat_config_agent,chat.config agent,model_chat_config,custom_platform_security.group_support_agent,1,0,0,0
+access_canned_reply_admin,chat.canned.reply admin,model_chat_canned_reply,custom_platform_security.group_support_manager,1,1,1,1
+access_canned_reply_agent,chat.canned.reply agent,model_chat_canned_reply,custom_platform_security.group_support_agent,1,1,1,0
+access_chat_agent_skill_admin,chat.agent.skill admin,model_chat_agent_skill,custom_platform_security.group_support_manager,1,1,1,1
+access_chat_agent_skill_agent,chat.agent.skill agent,model_chat_agent_skill,custom_platform_security.group_support_agent,1,0,0,0

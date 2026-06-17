@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- AI top-level menu (system admin only) -->
+    <menuitem id="menu_ai_root"
+              name="AI Platform"
+              sequence="95"
+              groups="base.group_system"/>
+
+    <!-- Config sub-menu -->
+    <menuitem id="menu_ai_config"
+              name="Configuration"
+              parent="menu_ai_root"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_ai_providers"
+              name="Providers"
+              parent="menu_ai_config"
+              action="action_ai_provider"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_ai_prompt_templates"
+              name="Prompt Templates"
+              parent="menu_ai_config"
+              action="action_ai_prompt_template"
+              sequence="20"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_ai_prompt_evaluations"
+              name="Prompt Evaluations"
+              parent="menu_ai_config"
+              action="action_ai_prompt_evaluation"
+              sequence="25"
+              groups="base.group_system"/>
+
+    <!-- Knowledge base -->
+    <menuitem id="menu_ai_knowledge"
+              name="Knowledge Base"
+              parent="menu_ai_root"
+              sequence="20"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_ai_documents"
+              name="Documents"
+              parent="menu_ai_knowledge"
+              action="action_ai_document"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <!-- Quality / audit -->
+    <menuitem id="menu_ai_quality"
+              name="Quality &amp; Audit"
+              parent="menu_ai_root"
+              sequence="30"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_ai_audit_log"
+              name="Audit Log"
+              parent="menu_ai_quality"
+              action="action_ai_audit_log"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_ai_feedback"
+              name="Feedback &amp; Corrections"
+              parent="menu_ai_quality"
+              action="action_ai_feedback"
+              sequence="20"
+              groups="base.group_system"/>
+
+</odoo>

@@ -1,0 +1,15 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_provider_admin,ai.provider admin,model_ai_provider,custom_platform_security.group_ai_admin,1,1,1,1
+access_ai_provider_user,ai.provider user,model_ai_provider,base.group_user,1,0,0,0
+access_ai_prompt_template_admin,ai.prompt.template admin,model_ai_prompt_template,custom_platform_security.group_ai_admin,1,1,1,1
+access_ai_prompt_template_user,ai.prompt.template user,model_ai_prompt_template,base.group_user,1,0,0,0
+access_ai_audit_log_admin,ai.audit.log admin,model_ai_audit_log,custom_platform_security.group_ai_admin,1,0,0,0
+access_ai_audit_log_user,ai.audit.log user,model_ai_audit_log,base.group_user,1,0,0,0
+access_ai_feedback_admin,ai.feedback admin,model_ai_feedback,custom_platform_security.group_ai_admin,1,1,1,1
+access_ai_feedback_user,ai.feedback user,model_ai_feedback,base.group_user,1,1,1,0
+access_ai_document_admin,ai.document admin,model_ai_document,custom_platform_security.group_ai_admin,1,1,1,1
+access_ai_document_user,ai.document user,model_ai_document,base.group_user,1,0,0,0
+access_ai_document_chunk_admin,ai.document.chunk admin,model_ai_document_chunk,custom_platform_security.group_ai_admin,1,1,1,1
+access_ai_document_chunk_user,ai.document.chunk user,model_ai_document_chunk,base.group_user,1,0,0,0
+access_ai_prompt_evaluation_admin,ai.prompt.evaluation admin,model_ai_prompt_evaluation,custom_platform_security.group_ai_admin,1,1,1,1
+access_ai_prompt_evaluation_user,ai.prompt.evaluation user,model_ai_prompt_evaluation,base.group_user,1,0,0,0

@@ -1,0 +1,61 @@
+# Dutch translations for custom_accounting_basic
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Imported via AI / OCR"
+msgstr "Geïmporteerd via AI / OCR"
+
+msgid "Extraction Confidence"
+msgstr "Extractievertrouwen"
+
+msgid "Import Reference"
+msgstr "Importreferentie"
+
+msgid "Potential Duplicates"
+msgstr "Mogelijke Duplicaten"
+
+msgid "Duplicate Count"
+msgstr "Aantal Duplicaten"
+
+msgid "Payment Reminder Sent"
+msgstr "Betalingsherinnering Verzonden"
+
+msgid "Reminder Sent On"
+msgstr "Herinnering Verzonden Op"
+
+msgid "Days Overdue"
+msgstr "Dagen Achterstallig"
+
+msgid "AI Match Confidence"
+msgstr "AI-afstemvertrouwen"
+
+msgid "AI-Suggested Invoice"
+msgstr "Door AI Voorgestelde Factuur"
+
+msgid "AI Match Reason"
+msgstr "Reden AI-afstemming"
+
+msgid "AI Match Run"
+msgstr "AI-afstemming Uitgevoerd"
+
+msgid "AI Extraction"
+msgstr "AI-extractie"
+
+msgid "Payment Reminder"
+msgstr "Betalingsherinnering"
+
+msgid "Invoice"
+msgstr "Factuur"

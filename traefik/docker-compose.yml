@@ -1,0 +1,296 @@
+# Platform services: Traefik · PostgreSQL 16+pgvector · Redis · MinIO · Odoo · Celery · React support app
+#
+# Quick start:
+#   cp .env.example .env
+#   docker compose up -d
+#   docker compose logs -f odoo
+#
+# Access:
+#   Platform  → http://platform.localhost
+#   Support   → http://support.localhost
+#   MinIO     → http://minio.localhost
+#   Traefik   → http://traefik.localhost:8080
+#
+# Host port map (for tests / direct access from the host):
+#   Container Postgres → localhost:5433   (native Postgres keeps 5432, untouched)
+#   Redis              → localhost:6379
+#   MinIO S3 API       → localhost:9000
+#   MinIO console      → localhost:9001
+
+services:
+
+  # ── Reverse proxy ─────────────────────────────────────────────────────────
+  traefik:
+    image: traefik:v3.0
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"    # dashboard (disable in prod)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./deploy/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+    networks:
+      - platform
+
+  # ── Database (PostgreSQL 16 + pgvector) ───────────────────────────────────
+  db:
+    image: pgvector/pgvector:pg16
+    restart: unless-stopped
+    ports:
+      - "5433:5432"    # native Postgres keeps 5432; container DB reachable on host:5433
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-odoo}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+      POSTGRES_DB: ${POSTGRES_DB:-platform_dev}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./deploy/postgres/init.sql:/docker-entrypoint-initdb.d/01_pgvector.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-odoo} -d ${POSTGRES_DB:-platform_dev}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - platform
+
+  # ── Message broker ────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - "6379:6379"    # reachable on host:6379
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - platform
+
+  # ── Object storage ────────────────────────────────────────────────────────
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    ports:
+      - "9000:9000"    # S3 API on host:9000
+      - "9001:9001"    # console on host:9001
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      # MinIO console
+      - "traefik.http.routers.minio-console.rule=Host(`minio.localhost`)"
+      - "traefik.http.routers.minio-console.service=minio-console"
+      - "traefik.http.services.minio-console.loadbalancer.server.port=9001"
+      # MinIO S3 API
+      - "traefik.http.routers.minio-api.rule=Host(`s3.localhost`)"
+      - "traefik.http.routers.minio-api.service=minio-api"
+      - "traefik.http.services.minio-api.loadbalancer.server.port=9000"
+    networks:
+      - platform
+
+  # ── MinIO bucket initialiser (runs once, exits) ───────────────────────────
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy
+    entrypoint: >
+      /bin/sh -c "
+        mc alias set local http://minio:9000
+          $${MINIO_ROOT_USER:-minioadmin}
+          $${MINIO_ROOT_PASSWORD:-minioadmin} &&
+        mc mb --ignore-existing local/platform-attachments &&
+        mc mb --ignore-existing local/platform-backups &&
+        mc mb --ignore-existing local/platform-documents &&
+        echo 'MinIO buckets ready.'
+      "
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    restart: "no"
+    networks:
+      - platform
+
+  # ── Odoo ERP ──────────────────────────────────────────────────────────────
+  odoo:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      HOST: db
+      PORT: "5432"
+      USER: ${POSTGRES_USER:-odoo}
+      PASSWORD: ${POSTGRES_PASSWORD:-odoo}
+      REDIS_URL: redis://redis:6379/0
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-minioadmin}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-minioadmin}
+    volumes:
+      - odoo_data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons:ro
+      - ./config/odoo_docker.conf:/etc/odoo/odoo.conf:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.odoo.rule=Host(`platform.localhost`)"
+      - "traefik.http.services.odoo.loadbalancer.server.port=8069"
+      # Long-poll endpoint gets a longer timeout
+      - "traefik.http.middlewares.odoo-longpoll.headers.customrequestheaders.X-Accel-Buffering=no"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8069/web/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 90s
+    networks:
+      - platform
+
+  # ── Celery worker (all queues) ────────────────────────────────────────────
+  celery-worker:
+    build:
+      context: services/celery_worker
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      ODOO_URL: http://odoo:8069
+      ODOO_DB: ${POSTGRES_DB:-platform_dev}
+      ODOO_ADMIN_USER: ${ODOO_ADMIN_USER:-admin}
+      ODOO_ADMIN_PASSWORD: ${ODOO_ADMIN_PASSWORD:-admin}
+      OCR_PROVIDER: ${OCR_PROVIDER:-mock}
+      MINDEE_API_KEY: ${MINDEE_API_KEY:-}
+      AZURE_DOCAI_ENDPOINT: ${AZURE_DOCAI_ENDPOINT:-}
+      AZURE_DOCAI_KEY: ${AZURE_DOCAI_KEY:-}
+    command: >
+      celery -A celery_app worker
+        --loglevel=info
+        --queues=default,ai,accounting,social,inventory,payroll,reminders,ocr
+        --concurrency=4
+    networks:
+      - platform
+
+  # ── Celery beat scheduler ─────────────────────────────────────────────────
+  celery-beat:
+    build:
+      context: services/celery_worker
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      redis:
+        condition: service_healthy
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      ODOO_URL: http://odoo:8069
+      ODOO_DB: ${POSTGRES_DB:-platform_dev}
+      ODOO_ADMIN_USER: ${ODOO_ADMIN_USER:-admin}
+      ODOO_ADMIN_PASSWORD: ${ODOO_ADMIN_PASSWORD:-admin}
+    command: >
+      celery -A celery_app beat
+        --loglevel=info
+        --scheduler=celery.beat.PersistentScheduler
+        --schedule=/var/lib/celery/celerybeat-schedule
+    volumes:
+      - celery_beat_data:/var/lib/celery
+    networks:
+      - platform
+
+  # ── React support console ─────────────────────────────────────────────────
+  support-app:
+    build:
+      context: services/support_app
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - odoo
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.support.rule=Host(`support.localhost`)"
+      - "traefik.http.services.support.loadbalancer.server.port=80"
+    networks:
+      - platform
+
+  # ── FastAPI gateways ──────────────────────────────────────────────────────
+  ai-gateway:
+    build: services/ai_gateway
+    restart: unless-stopped
+    depends_on:
+      - db
+      - redis
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-odoo}:${POSTGRES_PASSWORD:-odoo}@db:5432/${POSTGRES_DB:-platform_dev}
+      REDIS_URL: redis://redis:6379/0
+      DEFAULT_PROVIDER: ${AI_DEFAULT_PROVIDER:-mock}
+      DEFAULT_MODEL: ${AI_DEFAULT_MODEL:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY:-}
+      AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT:-}
+      AZURE_OPENAI_DEPLOYMENT: ${AZURE_OPENAI_DEPLOYMENT:-}
+      OLLAMA_BASE_URL: ${OLLAMA_BASE_URL:-http://host.docker.internal:11434}
+      EMBEDDING_PROVIDER: ${EMBEDDING_PROVIDER:-mock}
+      EMBEDDING_MODEL: ${EMBEDDING_MODEL:-nomic-embed-text}
+      API_SECRET: ${AI_GATEWAY_SECRET:-}
+      REDACT_PII_EXTERNAL: ${REDACT_PII_EXTERNAL:-true}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ai.rule=Host(`ai.localhost`)"
+      - "traefik.http.services.ai.loadbalancer.server.port=8000"
+    networks:
+      - platform
+
+  integration-gateway:
+    build: services/integration_gateway
+    restart: unless-stopped
+    depends_on:
+      - odoo
+    environment:
+      ODOO_URL: http://odoo:8069
+      ODOO_DB: ${POSTGRES_DB:-platform_dev}
+      ODOO_ADMIN_USER: ${ODOO_ADMIN_USER:-admin}
+      ODOO_ADMIN_PASSWORD: ${ODOO_ADMIN_PASSWORD:-admin}
+      WHATSAPP_APP_SECRET: ${WHATSAPP_APP_SECRET:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      BANK_IMPORT_SECRET: ${BANK_IMPORT_SECRET:-}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.hooks.rule=Host(`hooks.localhost`)"
+      - "traefik.http.services.hooks.loadbalancer.server.port=8001"
+    networks:
+      - platform
+
+volumes:
+  db_data:
+  redis_data:
+  minio_data:
+  odoo_data:
+  celery_beat_data:
+
+networks:
+  platform:
+    name: platform_net

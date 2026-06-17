@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_company_ai_settings" model="ir.ui.view">
+        <field name="name">res.company.ai.settings.form</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="AI Settings" name="ai_settings">
+                    <group string="Global AI Policy">
+                        <field name="ai_allow_external"/>
+                        <field name="ai_privacy_redaction"/>
+                        <field name="ai_default_provider_id"/>
+                    </group>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="ai_allow_external">
+                        <strong>External AI is disabled.</strong>
+                        Only local providers (Ollama, Mock) will be used.
+                        Payroll and financial content is never sent externally regardless.
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

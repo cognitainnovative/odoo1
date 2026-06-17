@@ -1,0 +1,44 @@
+// Platform Theme — Portal
+// Consumes brand variables from /web/platform/brand.css (no :root here,
+// to avoid overriding the runtime company colors).
+
+body {
+  background-color: var(--plt-bg);
+  color: #1E293B;
+}
+
+// Portal navbar
+.navbar {
+  background: #FFFFFF !important;
+  border-bottom: 2px solid var(--plt-primary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+// Portal buttons
+.btn-primary {
+  background-color: var(--plt-primary);
+  border-color: var(--plt-primary);
+
+  &:hover {
+    background-color: var(--plt-accent);
+    border-color: var(--plt-accent);
+  }
+}
+
+// Cards
+.card {
+  border-radius: 10px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+// Footer
+footer,
+.o_portal_footer {
+  background: #1E293B;
+  color: #CBD5E1;
+}
+
+body {
+  font-family: var(--plt-font);
+}

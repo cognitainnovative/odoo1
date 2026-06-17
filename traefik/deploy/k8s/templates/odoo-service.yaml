@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "platform.fullname" . }}-odoo
+  labels: {{- include "platform.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: http
+      port: 8069
+      targetPort: 8069
+    - name: longpoll
+      port: 8072
+      targetPort: 8072
+  selector: {{- include "platform.selectorLabels" (dict "component" "odoo" "context" .) | nindent 4 }}

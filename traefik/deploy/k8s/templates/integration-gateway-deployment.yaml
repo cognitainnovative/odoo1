@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "platform.fullname" . }}-integration-gateway
+  labels: {{- include "platform.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.integrationGateway.replicas }}
+  selector:
+    matchLabels: {{- include "platform.selectorLabels" (dict "component" "integration-gateway" "context" .) | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "platform.selectorLabels" (dict "component" "integration-gateway" "context" .) | nindent 8 }}
+    spec:
+      containers:
+        - name: integration-gateway
+          image: {{ .Values.integrationGateway.image.repository }}:{{ .Values.integrationGateway.image.tag }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          ports:
+            - containerPort: 8001
+          envFrom:
+            - configMapRef:
+                name: {{ include "platform.fullname" . }}-config
+          env:
+            - name: ODOO_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: ODOO_ADMIN_PASSWORD
+            - name: WHATSAPP_APP_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: WHATSAPP_APP_SECRET
+            - name: TWILIO_AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: TWILIO_AUTH_TOKEN
+            - name: BANK_IMPORT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: BANK_IMPORT_SECRET
+          resources: {{- toYaml .Values.integrationGateway.resources | nindent 12 }}

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_ai_feedback_list" model="ir.ui.view">
+        <field name="name">ai.feedback.list</field>
+        <field name="model">ai.feedback</field>
+        <field name="arch" type="xml">
+            <list string="AI Feedback"
+                  decoration-success="approval_status == 'approved'"
+                  decoration-danger="approval_status == 'rejected'"
+                  decoration-warning="approval_status == 'pending'">
+                <field name="create_date" string="Date"/>
+                <field name="user_id"/>
+                <field name="category"/>
+                <field name="edit_reason"/>
+                <field name="was_edited"/>
+                <field name="add_to_kb"/>
+                <field name="approval_status" widget="badge"/>
+                <button name="action_approve" string="Approve" type="object"
+                        icon="fa-check" class="btn-sm btn-success"
+                        invisible="approval_status != 'pending'"/>
+                <button name="action_reject" string="Reject" type="object"
+                        icon="fa-times" class="btn-sm btn-danger"
+                        invisible="approval_status != 'pending'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_feedback_form" model="ir.ui.view">
+        <field name="name">ai.feedback.form</field>
+        <field name="model">ai.feedback</field>
+        <field name="arch" type="xml">
+            <form string="AI Response Feedback">
+                <header>
+                    <button name="action_approve" string="Approve"
+                            type="object" class="btn-primary"
+                            invisible="approval_status != 'pending'"/>
+                    <button name="action_reject" string="Reject"
+                            type="object" class="btn-danger"
+                            invisible="approval_status != 'pending'"/>
+                    <field name="approval_status" widget="statusbar"
+                           statusbar_visible="pending,approved,rejected"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="user_id"/>
+                            <field name="category"/>
+                            <field name="edit_reason"/>
+                            <field name="was_edited" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="add_to_kb"/>
+                            <field name="knowledge_source"/>
+                            <field name="approver_id" readonly="1"/>
+                            <field name="audit_log_id"/>
+                        </group>
+                    </group>
+                    <group string="AI Draft">
+                        <field name="original_draft" nolabel="1" widget="text" readonly="1"/>
+                    </group>
+                    <group string="Final Reply Sent">
+                        <field name="final_reply" nolabel="1" widget="text"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_feedback" model="ir.actions.act_window">
+        <field name="name">AI Feedback</field>
+        <field name="res_model">ai.feedback</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

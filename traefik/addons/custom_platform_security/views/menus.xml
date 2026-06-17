@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Platform Overview — cross-module KPI shortcuts (sequence 1, leftmost) -->
+    <menuitem id="menu_platform_overview_root"
+              name="Platform Overview"
+              sequence="1"
+              groups="base.group_user"/>
+
+    <!-- Top-level Security & Compliance menu — visible to company admins and system admins -->
+    <menuitem id="menu_platform_security_root"
+              name="Security &amp; Compliance"
+              sequence="99"
+              web_icon="custom_platform_security,static/description/icon.png"
+              groups="custom_platform_security.group_company_admin,base.group_system"/>
+
+    <!-- ── Audit Log ──────────────────────────────────────────────────────── -->
+    <menuitem id="menu_audit_log"
+              name="Audit Log"
+              parent="menu_platform_security_root"
+              action="action_audit_log"
+              sequence="10"
+              groups="custom_platform_security.group_company_admin,base.group_system,custom_platform_security.group_ai_admin,custom_platform_security.group_payroll_manager"/>
+
+    <!-- ── GDPR ───────────────────────────────────────────────────────────── -->
+    <menuitem id="menu_gdpr"
+              name="GDPR"
+              parent="menu_platform_security_root"
+              sequence="20"
+              groups="custom_platform_security.group_company_admin,base.group_system"/>
+
+    <menuitem id="menu_gdpr_requests"
+              name="Data Subject Requests"
+              parent="menu_gdpr"
+              action="action_gdpr_request"
+              sequence="10"/>
+
+    <menuitem id="menu_gdpr_retention"
+              name="Retention Policies"
+              parent="menu_gdpr"
+              action="action_gdpr_retention"
+              sequence="20"/>
+
+    <!-- ── API Tokens ─────────────────────────────────────────────────────── -->
+    <menuitem id="menu_api_tokens"
+              name="API Tokens"
+              parent="menu_platform_security_root"
+              action="action_api_token"
+              sequence="30"
+              groups="custom_platform_security.group_company_admin,base.group_system"/>
+
+</odoo>

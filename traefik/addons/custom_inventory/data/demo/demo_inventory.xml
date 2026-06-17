@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_product_schroeven_set" model="product.template">
+        <field name="name">Boutenschroeven Set M8</field>
+        <field name="type">consu</field>
+        <field name="platform_sku">SKU-SCHROEF-M8-001</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">True</field>
+        <field name="fast_mover">True</field>
+    </record>
+
+    <record id="demo_product_gereedschap_kit" model="product.template">
+        <field name="name">Gereedschapskit Montage</field>
+        <field name="type">consu</field>
+        <field name="platform_sku">SKU-GEREI-KIT-002</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">True</field>
+        <field name="fast_mover">False</field>
+    </record>
+</odoo>

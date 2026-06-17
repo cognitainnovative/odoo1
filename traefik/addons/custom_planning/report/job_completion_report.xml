@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_job_completion" model="ir.actions.report">
+        <field name="name">Job Completion Report</field>
+        <field name="model">platform.planning.job</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_planning.report_job_completion</field>
+        <field name="report_file">custom_planning.report_job_completion</field>
+        <field name="binding_model_id" ref="model_platform_planning_job"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'Job Completion - %s' % object.name</field>
+    </record>
+
+    <template id="report_job_completion">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="job">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Job Completion Report</h2>
+                        <h3 t-field="job.name"/>
+
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td class="fw-bold">Type</td>
+                                        <td><span t-field="job.job_type"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Status</td>
+                                        <td><span t-field="job.state"/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Customer</td>
+                                        <td><span t-field="job.partner_id"/></td>
+                                    </tr>
+                                    <tr t-if="job.employee_id">
+                                        <td class="fw-bold">Assigned To</td>
+                                        <td><span t-field="job.employee_id"/></td>
+                                    </tr>
+                                    <tr t-if="job.sale_order_id">
+                                        <td class="fw-bold">Sale Order</td>
+                                        <td><span t-field="job.sale_order_id"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td class="fw-bold">Start</td>
+                                        <td><span t-field="job.start_datetime"
+                                                  t-options='{"format": "dd MMM yyyy HH:mm"}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">End</td>
+                                        <td><span t-field="job.end_datetime"
+                                                  t-options='{"format": "dd MMM yyyy HH:mm"}'/></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Duration</td>
+                                        <td><span t-field="job.duration_hours"/> h</td>
+                                    </tr>
+                                    <tr t-if="job.location">
+                                        <td class="fw-bold">Location</td>
+                                        <td><span t-field="job.location"/></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <t t-if="job.location_notes">
+                            <h4 class="mt-3">Travel / Location Notes</h4>
+                            <p t-field="job.location_notes"/>
+                        </t>
+
+                        <t t-if="job.description">
+                            <h4 class="mt-3">Job Description</h4>
+                            <div t-field="job.description"/>
+                        </t>
+
+                        <t t-if="job.completion_notes">
+                            <h4 class="mt-3">Completion Notes</h4>
+                            <p t-field="job.completion_notes"/>
+                        </t>
+
+                        <t t-if="job.customer_sign_off_required">
+                            <h4 class="mt-3">Customer Sign-off</h4>
+                            <table class="table table-sm table-borderless">
+                                <tr>
+                                    <td class="fw-bold">Required</td>
+                                    <td>Yes</td>
+                                </tr>
+                                <tr>
+                                    <td class="fw-bold">Signed Off</td>
+                                    <td>
+                                        <t t-if="job.customer_signed_off">
+                                            ✓ Yes —
+                                            <span t-field="job.customer_sign_off_date"
+                                                  t-options='{"format": "dd MMM yyyy HH:mm"}'/>
+                                        </t>
+                                        <t t-else="">Pending</t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </t>
+
+                        <t t-if="job.team_ids">
+                            <h4 class="mt-3">Team Members</h4>
+                            <ul>
+                                <t t-foreach="job.team_ids" t-as="member">
+                                    <li><span t-field="member.name"/></li>
+                                </t>
+                            </ul>
+                        </t>
+
+                        <t t-if="job.resource_ids">
+                            <h4 class="mt-3">Resources Used</h4>
+                            <ul>
+                                <t t-foreach="job.resource_ids" t-as="res">
+                                    <li><span t-field="res.name"/> (<span t-field="res.resource_type"/>)</li>
+                                </t>
+                            </ul>
+                        </t>
+
+                        <div class="mt-5 text-muted small">
+                            Generated on <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d %b %Y %H:%M')"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

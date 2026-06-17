@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_helpdesk_root"
+              name="Helpdesk"
+              sequence="44"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_helpdesk_tickets"
+              name="Tickets"
+              parent="menu_helpdesk_root"
+              action="action_helpdesk_ticket"
+              sequence="10"/>
+
+    <menuitem id="menu_helpdesk_pending_ai"
+              name="Pending AI Approval"
+              parent="menu_helpdesk_root"
+              action="action_helpdesk_pending_approval"
+              sequence="20"/>
+
+    <menuitem id="menu_helpdesk_overdue"
+              name="Overdue / SLA Breached"
+              parent="menu_helpdesk_root"
+              action="action_helpdesk_overdue"
+              sequence="25"/>
+
+    <menuitem id="menu_helpdesk_reporting"
+              name="Reporting"
+              parent="menu_helpdesk_root"
+              sequence="40"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_helpdesk_ticket_analysis"
+              name="Ticket Analysis"
+              parent="menu_helpdesk_reporting"
+              action="action_helpdesk_ticket_analysis"
+              sequence="10"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_helpdesk_complaints_report"
+              name="Complaints"
+              parent="menu_helpdesk_reporting"
+              action="action_helpdesk_complaints"
+              sequence="20"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_helpdesk_config"
+              name="Configuration"
+              parent="menu_helpdesk_root"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_helpdesk_teams"
+              name="Teams"
+              parent="menu_helpdesk_config"
+              action="action_helpdesk_team"
+              sequence="10"/>
+
+    <menuitem id="menu_helpdesk_stages"
+              name="Stages"
+              parent="menu_helpdesk_config"
+              action="action_helpdesk_stage"
+              sequence="20"/>
+
+    <!-- Platform Overview shortcut: SLA-breached tickets (M16 cross-module dashboard) -->
+    <record id="action_platform_sla_breached" model="ir.actions.act_window">
+        <field name="name">SLA Breached Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('sla_deadline','&lt;', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')),('stage_id.is_closed','=',False)]</field>
+    </record>
+
+    <menuitem id="menu_platform_sla_breached"
+              name="SLA Breached Tickets"
+              parent="custom_platform_security.menu_platform_overview_root"
+              action="action_platform_sla_breached"
+              sequence="30"/>
+
+</odoo>

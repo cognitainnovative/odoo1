@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Under Sales > Configuration -->
+    <menuitem id="menu_quote_terms"
+              name="Terms &amp; Conditions Versions"
+              parent="sale.menu_sale_config"
+              action="action_quote_terms"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <!-- Under Sales > Reporting (or Orders) -->
+    <menuitem id="menu_quote_signing_records"
+              name="Signing Audit Records"
+              parent="sale.menu_sale_config"
+              action="action_quote_signing"
+              sequence="55"
+              groups="base.group_system"/>
+
+</odoo>

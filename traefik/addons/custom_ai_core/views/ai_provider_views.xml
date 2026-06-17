@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_ai_provider_list" model="ir.ui.view">
+        <field name="name">ai.provider.list</field>
+        <field name="model">ai.provider</field>
+        <field name="arch" type="xml">
+            <list string="AI Providers" decoration-muted="not is_active">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="model_name"/>
+                <field name="allow_external"/>
+                <field name="privacy_mode"/>
+                <field name="is_active"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <button name="action_test_connection" string="Test" type="object"
+                        icon="fa-plug" class="btn-sm"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_provider_form" model="ir.ui.view">
+        <field name="name">ai.provider.form</field>
+        <field name="model">ai.provider</field>
+        <field name="arch" type="xml">
+            <form string="AI Provider">
+                <header>
+                    <button name="action_test_connection" string="Test Connection"
+                            type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group string="Identity">
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                            <field name="is_active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Connection">
+                            <field name="base_url" placeholder="Leave blank for default endpoint"/>
+                            <field name="api_key" password="True"
+                                   placeholder="Enter API key (stored encrypted)"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Model Settings">
+                            <field name="model_name" placeholder="e.g. claude-haiku-4-5-20251001"/>
+                            <field name="embedding_model" placeholder="e.g. nomic-embed-text"/>
+                            <field name="temperature"/>
+                            <field name="max_tokens"/>
+                        </group>
+                        <group string="Privacy &amp; Security">
+                            <field name="allow_external"/>
+                            <field name="privacy_mode"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="allow_external or code in ('mock', 'ollama')">
+                        <strong>External calls are disabled.</strong>
+                        Enable "Allow External Calls" to use this provider.
+                    </div>
+                    <div class="alert alert-info" role="alert" invisible="code != 'mock'">
+                        Mock provider is active — no real AI calls are made.
+                        Suitable for testing and CI only.
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_provider" model="ir.actions.act_window">
+        <field name="name">AI Providers</field>
+        <field name="res_model">ai.provider</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

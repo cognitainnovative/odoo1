@@ -1,0 +1,130 @@
+# Dutch translations for custom_crm_core
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "CRM Campaign"
+msgstr "CRM-campagne"
+
+msgid "Draft"
+msgstr "Concept"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Paused"
+msgstr "Gepauzeerd"
+
+msgid "Done"
+msgstr "Gereed"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Social Media"
+msgstr "Social Media"
+
+msgid "Paid Search"
+msgstr "Betaalde Zoekopdracht"
+
+msgid "Organic Search"
+msgstr "Organische Zoekopdracht"
+
+msgid "Referral"
+msgstr "Doorverwijzing"
+
+msgid "Event"
+msgstr "Evenement"
+
+msgid "Cold Call"
+msgstr "Koud Telefoongesprek"
+
+msgid "Partner"
+msgstr "Relatie"
+
+msgid "Other"
+msgstr "Overig"
+
+msgid "Budget (€)"
+msgstr "Budget (€)"
+
+msgid "Target Leads"
+msgstr "Doelstelling Leads"
+
+msgid "Description"
+msgstr "Omschrijving"
+
+msgid "UTM Source"
+msgstr "UTM-bron"
+
+msgid "UTM Medium"
+msgstr "UTM-medium"
+
+msgid "UTM Campaign Name"
+msgstr "UTM-campagnenaam"
+
+msgid "Leads"
+msgstr "Leads"
+
+msgid "Lead Score"
+msgstr "Leadscore"
+
+msgid "AI Summary"
+msgstr "AI-samenvatting"
+
+msgid "Summary Generated"
+msgstr "Samenvatting Gegenereerd"
+
+msgid "Platform Campaign"
+msgstr "Platformcampagne"
+
+msgid "Source Detail"
+msgstr "Brondetail"
+
+msgid "GDPR Consent Given"
+msgstr "AVG-toestemming Gegeven"
+
+msgid "Consent Date"
+msgstr "Toestemmingsdatum"
+
+msgid "Consent IP"
+msgstr "Toestemming IP"
+
+msgid "Privacy Policy Version"
+msgstr "Versie Privacybeleid"
+
+msgid "Anonymized"
+msgstr "Geanonimiseerd"
+
+msgid "Duplicate Leads"
+msgstr "Dubbele Leads"
+
+msgid "Next Follow-up"
+msgstr "Volgende Opvolging"
+
+msgid "Follow-up Notes"
+msgstr "Opvolgingsnotities"
+
+msgid "Last Contacted"
+msgstr "Laatst Contact"
+
+msgid "Contact Attempts"
+msgstr "Contactpogingen"
+
+msgid "Campaign"
+msgstr "Campagne"
+
+msgid "Opportunity"
+msgstr "Kans"

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rental_product_list" model="ir.ui.view">
+        <field name="name">rental.product.list</field>
+        <field name="model">rental.product</field>
+        <field name="arch" type="xml">
+            <list string="Rental Products" decoration-muted="not active">
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="price_per_day" string="Day (€)"/>
+                <field name="price_per_week" string="Week (€)"/>
+                <field name="price_per_month" string="Month (€)"/>
+                <field name="deposit_amount" string="Deposit (€)"/>
+                <field name="total_units" string="Units"/>
+                <field name="active_rental_count" string="Active"/>
+                <field name="available_units" string="Available"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_rental_product_form" model="ir.ui.view">
+        <field name="name">rental.product.form</field>
+        <field name="model">rental.product</field>
+        <field name="arch" type="xml">
+            <form string="Rental Product">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <div class="oe_stat_button" icon="fa-file-text">
+                            <field name="active_rental_count" widget="statinfo" string="Active"/>
+                        </div>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="product_id"/>
+                            <field name="total_units"/>
+                            <field name="minimum_days"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Availability">
+                            <field name="active_rental_count" readonly="1"/>
+                            <field name="available_units" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Pricing">
+                        <group>
+                            <field name="price_per_day"/>
+                            <field name="price_per_week"/>
+                            <field name="price_per_month"/>
+                            <field name="weekend_surcharge_pct"/>
+                        </group>
+                        <group>
+                            <field name="deposit_amount"/>
+                            <field name="insurance_per_day"/>
+                            <field name="cleaning_fee"/>
+                            <field name="damage_waiver_per_day"/>
+                            <field name="late_fee_per_day"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_rental_product" model="ir.actions.act_window">
+        <field name="name">Rental Products</field>
+        <field name="res_model">rental.product</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Discount tiers list -->
+    <record id="view_rental_discount_tier_list" model="ir.ui.view">
+        <field name="name">rental.discount.tier.list</field>
+        <field name="model">rental.discount.tier</field>
+        <field name="arch" type="xml">
+            <list string="Discount Tiers" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="min_annual_spend" string="Min Spend (€/yr)"/>
+                <field name="discount_pct" string="Discount %"/>
+                <field name="requires_approval_above" string="Approval Above (€)"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_rental_discount_tier" model="ir.actions.act_window">
+        <field name="name">Discount Tiers</field>
+        <field name="res_model">rental.discount.tier</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Verification list -->
+    <record id="view_rental_verification_list" model="ir.ui.view">
+        <field name="name">rental.verification.list</field>
+        <field name="model">rental.verification</field>
+        <field name="arch" type="xml">
+            <list string="Customer Verifications"
+                  decoration-success="status == 'verified'"
+                  decoration-danger="status in ('expired','rejected')"
+                  decoration-warning="status == 'pending'">
+                <field name="partner_id"/>
+                <field name="verification_type"/>
+                <field name="status" widget="badge"/>
+                <field name="risk_flag"/>
+                <field name="expiry_date"/>
+                <field name="verified_date"/>
+                <button name="action_verify" string="Verify" type="object"
+                        class="btn-sm btn-success" invisible="status == 'verified'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_rental_verification" model="ir.actions.act_window">
+        <field name="name">Customer Verifications</field>
+        <field name="res_model">rental.verification</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

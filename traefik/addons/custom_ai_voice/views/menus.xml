@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_voice_root"
+              name="AI Voice"
+              sequence="48"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_voice_calls"
+              name="Call Records"
+              parent="menu_voice_root"
+              action="action_voice_call"
+              sequence="10"/>
+
+    <menuitem id="menu_voice_escalated"
+              name="Escalated Calls"
+              parent="menu_voice_root"
+              action="action_voice_call_angry"
+              sequence="20"/>
+
+    <menuitem id="menu_voice_config"
+              name="Configuration"
+              parent="menu_voice_root"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_voice_flows"
+              name="Call Flows"
+              parent="menu_voice_config"
+              action="action_voice_flow"
+              sequence="10"/>
+
+    <menuitem id="menu_voice_providers"
+              name="VoIP Providers"
+              parent="menu_voice_config"
+              action="action_voice_provider"
+              sequence="20"/>
+
+    <!-- Platform Overview shortcut: escalated calls (M16 cross-module dashboard) -->
+    <record id="action_platform_escalated_calls" model="ir.actions.act_window">
+        <field name="name">Escalated Calls</field>
+        <field name="res_model">voice.call</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('sentiment_escalation_triggered','=',True),('state','not in',['completed','transferred'])]</field>
+    </record>
+
+    <menuitem id="menu_platform_escalated_calls"
+              name="Escalated Calls"
+              parent="custom_platform_security.menu_platform_overview_root"
+              action="action_platform_escalated_calls"
+              sequence="60"/>
+
+</odoo>

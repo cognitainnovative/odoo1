@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_rental_active" model="ir.actions.act_window">
+        <field name="name">Active Rentals</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('state','in',('confirmed','picked_up','active'))]</field>
+    </record>
+
+    <record id="action_rental_overdue" model="ir.actions.act_window">
+        <field name="name">Overdue Returns</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('expected_return_date','&lt;',datetime.datetime.now()),('state','in',('picked_up','active'))]</field>
+    </record>
+
+    <record id="action_rental_upcoming" model="ir.actions.act_window">
+        <field name="name">Upcoming Pickups</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','=','confirmed'),('pickup_date','&gt;=',datetime.datetime.now())]</field>
+    </record>
+
+    <record id="action_rental_returned" model="ir.actions.act_window">
+        <field name="name">Returned — Awaiting Inspection</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','=','returned')]</field>
+    </record>
+
+    <record id="action_rental_pending_deposit" model="ir.actions.act_window">
+        <field name="name">Pending Deposit</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('deposit_paid','=',False),('deposit_amount','&gt;',0),('state','not in',('cancelled','closed'))]</field>
+    </record>
+
+    <!-- Revenue: closed orders — graph + pivot first, list as fallback -->
+    <record id="action_rental_revenue" model="ir.actions.act_window">
+        <field name="name">Rental Revenue</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="domain">[('state','=','closed')]</field>
+        <field name="context">{"group_by": "pickup_date:month", "orderby": "pickup_date desc"}</field>
+    </record>
+
+    <!-- Utilization: rental products sorted by active rental count -->
+    <record id="action_rental_utilization" model="ir.actions.act_window">
+        <field name="name">Product Utilization</field>
+        <field name="res_model">rental.product</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+    </record>
+
+    <!-- Damaged items: orders where a damage cost was recorded -->
+    <record id="action_rental_damaged" model="ir.actions.act_window">
+        <field name="name">Damaged Items</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('damage_amount','&gt;',0)]</field>
+    </record>
+
+    <!-- Rental analysis: full graph + pivot KPI action -->
+    <record id="action_rental_analysis" model="ir.actions.act_window">
+        <field name="name">Rental Analysis</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="domain">[]</field>
+        <field name="context">{"search_default_by_state": 1}</field>
+    </record>
+
+    <!-- Best products: rental products with the most bookings -->
+    <record id="action_rental_best_products" model="ir.actions.act_window">
+        <field name="name">Best Rental Products</field>
+        <field name="res_model">rental.product</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{"group_by": "name"}</field>
+    </record>
+
+    <!-- Customer rental value: partners with recorded annual spend -->
+    <record id="action_rental_customer_value" model="ir.actions.act_window">
+        <field name="name">Customer Rental Value</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('rental_annual_spend','&gt;',0)]</field>
+    </record>
+
+</odoo>

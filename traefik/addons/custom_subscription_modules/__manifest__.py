@@ -1,0 +1,21 @@
+{
+    "name": "Platform Module Licensing",
+    "version": "19.0.1.0.0",
+    "summary": "Module registry, per-company subscriptions, feature flags, trial mode, menu gating.",
+    "author": "Cognita Innovative",
+    "license": "LGPL-3",
+    "category": "Technical",
+    "depends": ["base", "mail", "web", "custom_platform_security"],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/record_rules.xml",
+        "data/subscription_packages.xml",
+        "data/menu_gate_mapping.xml",
+        "views/subscription_views.xml",
+        "views/menus.xml",
+        "views/admin_dashboard_views.xml",
+    ],
+    "installable": True,
+    "application": True,
+    "auto_install": False,
+}

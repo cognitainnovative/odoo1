@@ -1,0 +1,13 @@
+apiVersion: v2
+name: platform
+description: "Odoo 19 ERP platform — Traefik · PostgreSQL/pgvector · Redis · MinIO · Odoo · Celery · FastAPI gateways"
+type: application
+version: 1.0.0
+appVersion: "19.0"
+keywords:
+  - odoo
+  - erp
+  - platform
+maintainers:
+  - name: Cognita Innovative
+    email: dev@cognita-innovative.com

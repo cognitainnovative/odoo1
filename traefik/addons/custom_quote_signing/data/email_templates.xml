@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="0">
+
+    <!-- Email sent to customer with the signing link -->
+    <record id="email_template_quote_signing" model="mail.template">
+        <field name="name">Quote: Signing Request</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="subject">Please sign your quotation</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="email_from">{{ object.company_id.email or user.email }}</field>
+        <field name="body_html" type="html"><div style="font-family:Arial,sans-serif;max-width:600px;">
+<p>Dear <t t-out="object.partner_id.name"/>,</p>
+<p>Thank you for your interest. Please review and sign your quotation <strong><t t-out="object.name"/></strong>.</p>
+<p>
+    <a t-attf-href="#{object.portal_signing_url}"
+       style="display:inline-block;background-color:#1E40AF;color:#1E40AF;padding:14px 32px;border-radius:6px;font-weight:bold;font-size:15px;border:2px solid #1E40AF;text-decoration:none;">
+        <span style="color:#ffffff;">Review and Sign Quote</span>
+    </a>
+</p>
+<p>
+    <strong>Signing link:</strong>
+    <a t-attf-href="#{object.portal_signing_url}" style="color:#1E40AF;font-weight:bold;">
+        <t t-out="object.portal_signing_url"/>
+    </a>
+</p>
+<p>This link is unique to you. Do not share it.</p>
+<p>Kind regards,<br/><strong><t t-out="object.company_id.name"/></strong></p>
+</div></field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Confirmation email after signing -->
+    <record id="email_template_quote_signed" model="mail.template">
+        <field name="name">Quote: Signed Confirmation</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="subject">Your quotation has been signed</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="email_from">{{ object.company_id.email or user.email }}</field>
+        <field name="body_html" type="html"><div>
+<p>Dear <t t-out="object.partner_id.name"/>,</p>
+<p>Thank you for signing quotation <strong><t t-out="object.name"/></strong>.</p>
+<p>We have received your signature and will be in touch shortly to arrange next steps.</p>
+<p><strong>Signed by:</strong> <t t-out="object.signer_name"/></p>
+<p>Kind regards,<br/><t t-out="object.company_id.name"/></p>
+</div></field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+</data>
+</odoo>

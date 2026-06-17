@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Company settings — Payroll tab -->
+    <record id="view_company_payroll_settings" model="ir.ui.view">
+        <field name="name">res.company.payroll.nl.settings</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Payroll NL" name="payroll_nl">
+                    <group string="Dutch Payroll Settings">
+                        <field name="loonheffingsnummer" placeholder="0000.00.000"/>
+                        <field name="payroll_period_type"/>
+                        <field name="payroll_kvk"/>
+                    </group>
+                    <group string="Legal Notice" groups="base.group_no_one">
+                        <field name="payroll_legal_disclaimer" nolabel="1" widget="text"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Employee payroll profile tab -->
+    <record id="view_hr_employee_payroll_nl" model="ir.ui.view">
+        <field name="name">hr.employee.payroll.nl</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Payroll NL" name="payroll_nl" groups="hr.group_hr_manager">
+                    <div class="alert alert-info" role="alert">
+                        Payroll data is confidential. Access is restricted to Payroll/HR managers.
+                        All access is audited.
+                    </div>
+                    <group string="Salary">
+                        <group>
+                            <field name="payroll_gross_monthly"/>
+                            <field name="payroll_hourly_wage"/>
+                            <field name="payroll_contract_hours"/>
+                        </group>
+                        <group>
+                            <field name="payroll_loonheffingskorting"/>
+                            <field name="payroll_vakantiegeld_pct"/>
+                        </group>
+                    </group>
+                    <group string="Pension">
+                        <group>
+                            <field name="payroll_pension_employee_pct"/>
+                            <field name="payroll_pension_employer_pct"/>
+                        </group>
+                    </group>
+                    <group string="Travel &amp; Allowances">
+                        <group>
+                            <field name="payroll_travel_km"/>
+                            <field name="payroll_travel_days"/>
+                            <field name="payroll_other_allowances"/>
+                        </group>
+                        <group>
+                            <field name="payroll_has_company_car"/>
+                            <field name="payroll_company_car_ev" invisible="not payroll_has_company_car"/>
+                        </group>
+                    </group>
+                    <group string="Tax Data">
+                        <field name="bsn_last4" placeholder="Last 4 digits only"/>
+                        <field name="sofi_number_provided"/>
+                    </group>
+                    <group string="Year-to-Date" invisible="not ytd_gross">
+                        <group>
+                            <field name="ytd_gross" readonly="1"/>
+                            <field name="ytd_net" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="ytd_loonheffing" readonly="1"/>
+                            <field name="ytd_vakantiegeld" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

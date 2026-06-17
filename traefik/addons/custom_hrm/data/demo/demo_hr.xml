@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_hr_department_tech" model="hr.department">
+        <field name="name">Technische Dienst</field>
+    </record>
+
+    <record id="demo_hr_employee_jan" model="hr.employee">
+        <field name="name">Jan de Boer</field>
+        <field name="job_title">Technisch Medewerker</field>
+        <field name="department_id" ref="demo_hr_department_tech"/>
+        <field name="work_email">j.deboer@bedrijf.nl</field>
+        <field name="contract_type">permanent</field>
+        <field name="weekly_hours">40</field>
+    </record>
+
+    <record id="demo_hr_employee_anita" model="hr.employee">
+        <field name="name">Anita van der Berg</field>
+        <field name="job_title">Senior Technicus</field>
+        <field name="department_id" ref="demo_hr_department_tech"/>
+        <field name="work_email">a.vanderberg@bedrijf.nl</field>
+        <field name="contract_type">permanent</field>
+        <field name="weekly_hours">40</field>
+    </record>
+
+    <record id="demo_hr_employee_pieter" model="hr.employee">
+        <field name="name">Pieter Janssen</field>
+        <field name="job_title">Monteur</field>
+        <field name="department_id" ref="demo_hr_department_tech"/>
+        <field name="work_email">p.janssen@bedrijf.nl</field>
+        <field name="contract_type">permanent</field>
+        <field name="weekly_hours">40</field>
+    </record>
+</odoo>

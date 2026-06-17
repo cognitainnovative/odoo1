@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Pivot view: expected revenue by stage / user ── -->
+    <record id="view_crm_lead_pivot_revenue" model="ir.ui.view">
+        <field name="name">crm.lead.pivot.platform</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <pivot string="Revenue Analysis">
+                <field name="stage_id" type="row"/>
+                <field name="user_id" type="col"/>
+                <field name="expected_revenue" type="measure"/>
+                <field name="lead_score" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- ── Graph view: pipeline bar chart ── -->
+    <record id="view_crm_lead_graph_pipeline" model="ir.ui.view">
+        <field name="name">crm.lead.graph.platform</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <graph string="Pipeline by Stage" type="bar">
+                <field name="stage_id" type="row"/>
+                <field name="expected_revenue" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ── Graph view: leads over time (line) ── -->
+    <record id="view_crm_lead_graph_overtime" model="ir.ui.view">
+        <field name="name">crm.lead.graph.overtime</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <graph string="New Leads Over Time" type="line">
+                <field name="create_date" interval="week" type="row"/>
+                <field name="lead_score" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ── Dashboard actions ── -->
+
+    <record id="action_crm_new_leads" model="ir.actions.act_window">
+        <field name="name">New Leads</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('type', '=', 'lead')]</field>
+        <field name="context">{"default_type": "lead"}</field>
+    </record>
+
+    <record id="action_crm_open_deals" model="ir.actions.act_window">
+        <field name="name">Open Deals</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('type', '=', 'opportunity'), ('probability', '&lt;', 100)]</field>
+        <field name="context">{"default_type": "opportunity"}</field>
+    </record>
+
+    <record id="action_crm_won_deals" model="ir.actions.act_window">
+        <field name="name">Won Deals</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('type', '=', 'opportunity'), ('probability', '=', 100)]</field>
+    </record>
+
+    <record id="action_crm_overdue_followups" model="ir.actions.act_window">
+        <field name="name">Overdue Follow-ups</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('next_follow_up_date', '&lt;', context_today()), ('probability', '&lt;', 100)]</field>
+    </record>
+
+    <record id="action_crm_high_score_leads" model="ir.actions.act_window">
+        <field name="name">Hot Leads (Score ≥ 60)</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('lead_score', '&gt;=', 60), ('probability', '&lt;', 100)]</field>
+    </record>
+
+    <record id="action_crm_gdpr_no_consent" model="ir.actions.act_window">
+        <field name="name">Missing GDPR Consent</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('gdpr_consent', '=', False), ('gdpr_anonymized', '=', False)]</field>
+    </record>
+
+    <!-- Revenue / conversion analysis dashboard (pivot + graph) -->
+    <record id="action_crm_revenue_analysis" model="ir.actions.act_window">
+        <field name="name">Revenue Analysis</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+    </record>
+
+    <!-- Lead source / campaign performance (pivot) -->
+    <record id="action_crm_source_performance" model="ir.actions.act_window">
+        <field name="name">Lead Source Performance</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="domain">[]</field>
+        <field name="context">{"pivot_row_groupby": ["platform_campaign_id"], "pivot_measures": ["expected_revenue", "lead_score"]}</field>
+    </record>
+
+    <!-- Lost deals -->
+    <record id="action_crm_lost_deals" model="ir.actions.act_window">
+        <field name="name">Lost Deals</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('type', '=', 'opportunity'), ('active', '=', False)]</field>
+        <field name="context">{"active_test": False}</field>
+    </record>
+
+    <!-- Conversion rate: pivot of won vs. total opportunities by stage / period -->
+    <record id="view_crm_conversion_pivot" model="ir.ui.view">
+        <field name="name">crm.lead.pivot.conversion</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <pivot string="Conversion Rate">
+                <field name="stage_id" type="row"/>
+                <field name="user_id" type="col"/>
+                <field name="probability" type="measure"/>
+                <field name="expected_revenue" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_crm_conversion_rate" model="ir.actions.act_window">
+        <field name="name">Conversion Rate</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+        <field name="context">{"pivot_row_groupby": ["stage_id"], "pivot_measures": ["probability", "expected_revenue"]}</field>
+    </record>
+
+    <!-- Employee performance: deals + revenue per salesperson -->
+    <record id="view_crm_employee_perf_pivot" model="ir.ui.view">
+        <field name="name">crm.lead.pivot.employee_perf</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <pivot string="Employee Performance">
+                <field name="user_id" type="row"/>
+                <field name="stage_id" type="col"/>
+                <field name="expected_revenue" type="measure"/>
+                <field name="lead_score" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_crm_employee_perf_graph" model="ir.ui.view">
+        <field name="name">crm.lead.graph.employee_perf</field>
+        <field name="model">crm.lead</field>
+        <field name="arch" type="xml">
+            <graph string="Revenue by Employee" type="bar" stacked="1">
+                <field name="user_id" type="row"/>
+                <field name="expected_revenue" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_crm_employee_performance" model="ir.actions.act_window">
+        <field name="name">Employee Performance</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="domain">[('type', '=', 'opportunity')]</field>
+        <field name="context">{"pivot_row_groupby": ["user_id"], "pivot_measures": ["expected_revenue", "lead_score"]}</field>
+    </record>
+
+    <!-- Server action: export leads CSV -->
+    <record id="action_crm_export_csv" model="ir.actions.server">
+        <field name="name">Export Leads as CSV</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_view_types">list</field>
+        <field name="state">code</field>
+        <field name="code">action = records.action_export_csv()</field>
+    </record>
+
+</odoo>

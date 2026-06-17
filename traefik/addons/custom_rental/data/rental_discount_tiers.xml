@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <record id="seq_rental_order" model="ir.sequence">
+        <field name="name">Rental Order</field>
+        <field name="code">rental.order</field>
+        <field name="prefix">REN/%(year)s/</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+    <record id="tier_standard" model="rental.discount.tier">
+        <field name="name">Standard</field>
+        <field name="code">standard</field>
+        <field name="sequence">10</field>
+        <field name="min_annual_spend">0</field>
+        <field name="discount_pct">0</field>
+        <field name="color">0</field>
+    </record>
+
+    <record id="tier_silver" model="rental.discount.tier">
+        <field name="name">Silver</field>
+        <field name="code">silver</field>
+        <field name="sequence">20</field>
+        <field name="min_annual_spend">1000</field>
+        <field name="discount_pct">5</field>
+        <field name="color">1</field>
+        <field name="requires_approval_above">5000</field>
+    </record>
+
+    <record id="tier_gold" model="rental.discount.tier">
+        <field name="name">Gold</field>
+        <field name="code">gold</field>
+        <field name="sequence">30</field>
+        <field name="min_annual_spend">5000</field>
+        <field name="discount_pct">10</field>
+        <field name="color">3</field>
+        <field name="requires_approval_above">10000</field>
+    </record>
+
+    <record id="tier_platinum" model="rental.discount.tier">
+        <field name="name">Platinum</field>
+        <field name="code">platinum</field>
+        <field name="sequence">40</field>
+        <field name="min_annual_spend">20000</field>
+        <field name="discount_pct">15</field>
+        <field name="color">4</field>
+        <field name="requires_approval_above">25000</field>
+    </record>
+
+    <record id="tier_negotiated" model="rental.discount.tier">
+        <field name="name">Negotiated</field>
+        <field name="code">negotiated</field>
+        <field name="sequence">50</field>
+        <field name="min_annual_spend">0</field>
+        <field name="discount_pct">0</field>
+        <field name="color">5</field>
+    </record>
+
+    <record id="cron_expire_verifications" model="ir.cron">
+        <field name="name">Rental: Expire Customer Verifications</field>
+        <field name="model_id" ref="model_rental_verification"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_expire_verifications()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="cron_update_rental_tiers" model="ir.cron">
+        <field name="name">Rental: Update Customer Discount Tiers</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_update_rental_tiers()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="cron_send_overdue_reminders" model="ir.cron">
+        <field name="name">Rental: Send Overdue / Due-Soon Return Reminders</field>
+        <field name="model_id" ref="model_rental_order"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_send_overdue_reminders()</field>
+        <field name="interval_number">6</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="cron_generate_recurring_billing" model="ir.cron">
+        <field name="name">Rental: Generate Recurring Billing Invoices</field>
+        <field name="model_id" ref="model_rental_order"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_generate_recurring_billing()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+</data>
+</odoo>

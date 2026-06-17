@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Minimal valid CAMT.053 bank statement used by bank-import tests. -->
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:camt.053.001.02">
+  <BkToCstmrStmt>
+    <GrpHdr>
+      <MsgId>E2E-CAMT-0001</MsgId>
+      <CreDtTm>2026-06-01T08:00:00</CreDtTm>
+    </GrpHdr>
+    <Stmt>
+      <Id>STMT-0001</Id>
+      <Acct>
+        <Id><IBAN>NL00BANK0123456789</IBAN></Id>
+        <Ccy>EUR</Ccy>
+      </Acct>
+      <Bal>
+        <Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp>
+        <Amt Ccy="EUR">1000.00</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt><Dt>2026-06-01</Dt></Dt>
+      </Bal>
+      <Bal>
+        <Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp>
+        <Amt Ccy="EUR">1242.50</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Dt><Dt>2026-06-01</Dt></Dt>
+      </Bal>
+      <Ntry>
+        <Amt Ccy="EUR">242.50</Amt>
+        <CdtDbtInd>CRDT</CdtDbtInd>
+        <Sts>BOOK</Sts>
+        <BookgDt><Dt>2026-06-01</Dt></BookgDt>
+        <NtryDtls>
+          <TxDtls>
+            <RmtInf><Ustrd>Invoice INV/2026/0001</Ustrd></RmtInf>
+            <RltdPties>
+              <Dbtr><Nm>Acme Test BV</Nm></Dbtr>
+              <DbtrAcct><Id><IBAN>NL11RABO0987654321</IBAN></Id></DbtrAcct>
+            </RltdPties>
+          </TxDtls>
+        </NtryDtls>
+      </Ntry>
+    </Stmt>
+  </BkToCstmrStmt>
+</Document>

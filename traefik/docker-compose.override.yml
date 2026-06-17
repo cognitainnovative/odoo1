@@ -1,0 +1,70 @@
+# docker-compose.override.yml — DEV conveniences.
+#
+# Compose auto-merges this on top of docker-compose.yml for local development
+# (no -f flag needed). It is intentionally NOT used in production: deploy with
+#   docker compose -f docker-compose.yml up -d
+# and keep this file out of the prod invocation.
+#
+# What it adds for dev:
+#   * Live addon reload (rw mount + Odoo --dev=reload)
+#   * Source mounts for the FastAPI gateways with --reload (edit-and-refresh)
+#   * Vite dev server for the support app with HMR
+#   * Direct host port exposure for the gateways (8000 / 8001)
+
+services:
+
+  odoo:
+    # Dev mode: reload Python on change, regenerate assets, readable QWeb.
+    command: >
+      odoo
+        --config=/etc/odoo/odoo.conf
+        --dev=reload,qweb,xml
+        --log-level=debug
+    volumes:
+      - odoo_data:/var/lib/odoo
+      - ./addons:/mnt/extra-addons:rw          # rw so scaffolding/migrations work in dev
+      - ./config/odoo_docker.conf:/etc/odoo/odoo.conf:ro
+    ports:
+      - "8069:8069"                            # direct host access, bypassing Traefik
+
+  ai-gateway:
+    volumes:
+      - ./services/ai_gateway:/app:rw
+    command: >
+      uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+    environment:
+      LOG_LEVEL: debug
+
+  integration-gateway:
+    volumes:
+      - ./services/integration_gateway:/app:rw
+    command: >
+      uvicorn main:app --host 0.0.0.0 --port 8001 --reload
+    ports:
+      - "8001:8001"
+    environment:
+      LOG_LEVEL: debug
+
+  support-app:
+    # Run Vite dev server (HMR) instead of the production nginx image.
+    build:
+      context: services/support_app
+      dockerfile: Dockerfile
+      target: builder            # stop at the node build stage (see support_app/Dockerfile)
+    command: npm run dev -- --host 0.0.0.0 --port 5173
+    volumes:
+      - ./services/support_app/src:/app/src:rw
+      - ./services/support_app/index.html:/app/index.html:rw
+    ports:
+      - "5173:5173"
+
+  celery-worker:
+    volumes:
+      - ./services/celery_worker:/app:rw
+    command: >
+      celery -A celery_app worker
+        --loglevel=debug
+        --queues=default,ai,accounting,social,inventory,payroll,reminders,ocr
+        --concurrency=2

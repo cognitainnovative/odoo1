@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_email_ai_finance_task_manager,email.ai.finance.task manager,model_email_ai_finance_task,custom_platform_security.group_support_manager,1,1,1,1
+access_email_ai_finance_task_user,email.ai.finance.task user,model_email_ai_finance_task,custom_platform_security.group_support_agent,1,1,1,0
+access_email_ai_message_manager,email.ai.message manager,model_email_ai_message,custom_platform_security.group_support_manager,1,1,1,1
+access_email_ai_message_user,email.ai.message user,model_email_ai_message,custom_platform_security.group_support_agent,1,1,1,0
+access_email_ai_outbox_manager,email.ai.outbox manager,model_email_ai_outbox,custom_platform_security.group_support_manager,1,1,1,1
+access_email_ai_outbox_user,email.ai.outbox user,model_email_ai_outbox,custom_platform_security.group_support_agent,1,1,1,0
+access_email_ai_mailbox_admin,email.ai.mailbox admin,model_email_ai_mailbox,custom_platform_security.group_support_manager,1,1,1,1
+access_email_ai_mailbox_user,email.ai.mailbox user,model_email_ai_mailbox,custom_platform_security.group_support_agent,1,0,0,0
+access_email_ai_template_admin,email.ai.template admin,model_email_ai_template,custom_platform_security.group_support_manager,1,1,1,1
+access_email_ai_template_user,email.ai.template user,model_email_ai_template,custom_platform_security.group_support_agent,1,0,0,0

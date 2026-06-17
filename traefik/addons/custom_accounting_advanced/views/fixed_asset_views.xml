@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_fixed_asset_list" model="ir.ui.view">
+        <field name="name">account.fixed.asset.list</field>
+        <field name="model">account.fixed.asset</field>
+        <field name="arch" type="xml">
+            <list string="Fixed Assets"
+                  decoration-success="state == 'active'"
+                  decoration-muted="state == 'disposed'">
+                <field name="name"/>
+                <field name="category"/>
+                <field name="acquisition_date"/>
+                <field name="acquisition_value" string="Cost (€)"/>
+                <field name="accumulated_depreciation" string="Acc. Dep. (€)"/>
+                <field name="net_book_value" string="NBV (€)"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_fixed_asset_form" model="ir.ui.view">
+        <field name="name">account.fixed.asset.form</field>
+        <field name="model">account.fixed.asset</field>
+        <field name="arch" type="xml">
+            <form string="Fixed Asset">
+                <header>
+                    <button name="action_start" string="Activate" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="generate_depreciation_schedule" string="Generate Schedule"
+                            type="object" class="btn-secondary"
+                            invisible="state == 'disposed'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,disposed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="category"/>
+                            <field name="acquisition_date"/>
+                            <field name="acquisition_value"/>
+                            <field name="residual_value"/>
+                        </group>
+                        <group>
+                            <field name="depreciation_method"/>
+                            <field name="useful_life_years"/>
+                            <field name="annual_depreciation" readonly="1"/>
+                            <field name="accumulated_depreciation" readonly="1"/>
+                            <field name="net_book_value" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Disposal" invisible="state != 'disposed'">
+                        <field name="disposal_date" readonly="1"/>
+                        <field name="disposal_value" readonly="1"/>
+                        <field name="gain_loss" readonly="1"/>
+                    </group>
+                    <field name="depreciation_line_ids" readonly="1">
+                        <list>
+                            <field name="date"/>
+                            <field name="depreciation_amount" string="Depreciation (€)"/>
+                            <field name="accumulated_depreciation" string="Accumulated (€)"/>
+                            <field name="net_book_value" string="NBV (€)"/>
+                            <field name="posted"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fixed_asset" model="ir.actions.act_window">
+        <field name="name">Fixed Assets</field>
+        <field name="res_model">account.fixed.asset</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

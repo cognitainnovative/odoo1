@@ -1,0 +1,196 @@
+# Dutch translations for custom_hrm
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Employee Certification"
+msgstr "Medewerkerscertificering"
+
+msgid "Employee Equipment Assignment"
+msgstr "Apparaattoewijzing Medewerker"
+
+msgid "Onboarding / Offboarding Checklist Item"
+msgstr "Onboarding / Offboarding Checklistitem"
+
+msgid "Sick Leave Report"
+msgstr "Ziekteverzuimrapport"
+
+msgid "Emergency Contact Name"
+msgstr "Naam Noodcontact"
+
+msgid "Emergency Contact Phone"
+msgstr "Telefoon Noodcontact"
+
+msgid "Relation"
+msgstr "Relatie"
+
+msgid "Weekly Hours"
+msgstr "Wekelijkse Uren"
+
+msgid "Permanent"
+msgstr "Vast"
+
+msgid "Temporary / Fixed-term"
+msgstr "Tijdelijk / Bepaalde Tijd"
+
+msgid "Freelance"
+msgstr "Freelance"
+
+msgid "Internship"
+msgstr "Stage"
+
+msgid "On-call"
+msgstr "Oproepkracht"
+
+msgid "Probation End Date"
+msgstr "Einddatum Proeftijd"
+
+msgid "Contract Renewal Date"
+msgstr "Datum Contractverlenging"
+
+msgid "Certifications"
+msgstr "Certificeringen"
+
+msgid "Assigned Equipment"
+msgstr "Toegewezen Apparatuur"
+
+msgid "Onboarding Completed"
+msgstr "Onboarding Voltooid"
+
+msgid "Offboarding Started"
+msgstr "Offboarding Gestart"
+
+msgid "Onboarding Checklist"
+msgstr "Onboardingchecklist"
+
+msgid "HR Internal Notes"
+msgstr "HR Interne Notities"
+
+msgid "Portal Access Enabled"
+msgstr "Portaaltoegang Ingeschakeld"
+
+msgid "Next Performance Review"
+msgstr "Volgende Beoordelingsgesprek"
+
+msgid "Last Performance Review"
+msgstr "Laatste Beoordelingsgesprek"
+
+msgid "Certification / Qualification"
+msgstr "Certificering / Kwalificatie"
+
+msgid "Issuing Body"
+msgstr "Uitgevende Instantie"
+
+msgid "Issue Date"
+msgstr "Uitgiftedatum"
+
+msgid "Expiry Date"
+msgstr "Vervaldatum"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Expired"
+msgstr "Verlopen"
+
+msgid "Pending Renewal"
+msgstr "Wacht op Verlenging"
+
+msgid "Equipment"
+msgstr "Apparatuur"
+
+msgid "Serial / Asset Number"
+msgstr "Serie- / Activanummer"
+
+msgid "Assigned On"
+msgstr "Toegewezen Op"
+
+msgid "Returned On"
+msgstr "Teruggebracht Op"
+
+msgid "Returned"
+msgstr "Teruggebracht"
+
+msgid "Onboarding"
+msgstr "Onboarding"
+
+msgid "Offboarding"
+msgstr "Offboarding"
+
+msgid "Completed"
+msgstr "Voltooid"
+
+msgid "Completed On"
+msgstr "Voltooid Op"
+
+msgid "Completed By"
+msgstr "Voltooid Door"
+
+msgid "Manager"
+msgstr "Manager"
+
+msgid "Start Date"
+msgstr "Begindatum"
+
+msgid "Expected End Date"
+msgstr "Verwachte Einddatum"
+
+msgid "Actual Return Date"
+msgstr "Werkelijke Terugkeerdatum"
+
+msgid "Duration (days)"
+msgstr "Duur (dagen)"
+
+msgid "Reported"
+msgstr "Gemeld"
+
+msgid "In Progress"
+msgstr "In Uitvoering"
+
+msgid "Partial Recovery"
+msgstr "Gedeeltelijk Hersteld"
+
+msgid "Recovered"
+msgstr "Hersteld"
+
+msgid "Reintegration"
+msgstr "Re-integratie"
+
+msgid "Closed"
+msgstr "Gesloten"
+
+msgid "Administrative Notes"
+msgstr "Administratieve Notities"
+
+msgid "Doctor Certificate Provided"
+msgstr "Doktersverklaring Aangeleverd"
+
+msgid "Manager Notified"
+msgstr "Manager Geïnformeerd"
+
+msgid "HR Notified"
+msgstr "HR Geïnformeerd"
+
+msgid "Annual Leave"
+msgstr "Jaarlijks verlof"
+
+msgid "Sick Leave"
+msgstr "Ziekteverlof"
+
+msgid "Employee"
+msgstr "Medewerker"
+
+msgid "Department"
+msgstr "Afdeling"

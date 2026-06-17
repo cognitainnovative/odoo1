@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Under Accounting > Customers -->
+    <menuitem id="menu_overdue_invoices"
+              name="Overdue Invoices"
+              parent="account.menu_finance_receivables"
+              action="action_overdue_invoices"
+              sequence="20"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_debtor_aging"
+              name="Debtor Aging"
+              parent="account.menu_finance_receivables"
+              action="action_debtor_aging"
+              sequence="25"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_recurring_invoices"
+              name="Recurring Invoices"
+              parent="account.menu_finance_receivables"
+              action="action_recurring_invoice_templates"
+              sequence="30"
+              groups="account.group_account_invoice"/>
+
+    <!-- Under Accounting > Vendors / Suppliers -->
+    <menuitem id="menu_ai_extracted_bills"
+              name="AI-Extracted Bills (Review)"
+              parent="account.menu_finance_payables"
+              action="action_ai_extracted_bills"
+              sequence="20"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_invoice_import"
+              name="Import Invoice (AI OCR)"
+              parent="account.menu_finance_payables"
+              action="action_invoice_import_wizard"
+              sequence="30"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_creditor_aging"
+              name="Creditor Aging"
+              parent="account.menu_finance_payables"
+              action="action_creditor_aging"
+              sequence="35"
+              groups="account.group_account_invoice"/>
+
+    <!-- Under Accounting > Accounting (journal entries) -->
+    <menuitem id="menu_bank_import"
+              name="Import Bank Statement"
+              parent="account.menu_finance_entries"
+              action="action_bank_import_wizard"
+              sequence="50"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_bank_ai_match"
+              name="Bank Lines — AI Match"
+              parent="account.menu_finance_entries"
+              action="action_bank_lines_ai_match"
+              sequence="55"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_unknown_payments"
+              name="Unknown Payments Queue"
+              parent="account.menu_finance_entries"
+              action="action_unknown_payments_queue"
+              sequence="60"
+              groups="account.group_account_invoice"/>
+
+    <!-- Under Accounting > Reporting -->
+    <menuitem id="menu_revenue_overview"
+              name="Revenue Overview"
+              parent="account.menu_finance_reports"
+              action="action_revenue_overview"
+              sequence="20"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_expense_overview"
+              name="Expense Overview"
+              parent="account.menu_finance_reports"
+              action="action_expense_overview"
+              sequence="25"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_vat_overview"
+              name="VAT Overview"
+              parent="account.menu_finance_reports"
+              action="action_vat_overview"
+              sequence="30"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_invoice_export"
+              name="Export Invoices (CSV)"
+              parent="account.menu_finance_reports"
+              action="action_invoice_export_wizard"
+              sequence="95"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_accounting_audit_log"
+              name="Accounting Audit Log"
+              parent="account.menu_finance_reports"
+              action="action_accounting_audit_log"
+              sequence="100"
+              groups="account.group_account_manager"/>
+
+</odoo>

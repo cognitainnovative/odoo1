@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_voice_provider_list" model="ir.ui.view">
+        <field name="name">voice.provider.list</field>
+        <field name="model">voice.provider</field>
+        <field name="arch" type="xml">
+            <list string="VoIP Providers" editable="bottom" decoration-muted="not is_active">
+                <field name="name"/>
+                <field name="provider_type"/>
+                <field name="stt_provider"/>
+                <field name="tts_provider"/>
+                <field name="recording_enabled"/>
+                <field name="escalation_sentiment_threshold"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_voice_provider_form" model="ir.ui.view">
+        <field name="name">voice.provider.form</field>
+        <field name="model">voice.provider</field>
+        <field name="arch" type="xml">
+            <form string="VoIP Provider">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="provider_type"/>
+                            <field name="is_active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="stt_provider"/>
+                            <field name="stt_language" invisible="stt_provider == 'mock'"/>
+                            <field name="tts_provider"/>
+                            <field name="tts_voice_id" invisible="tts_provider == 'twiml'"/>
+                        </group>
+                    </group>
+                    <group string="Twilio Credentials" invisible="provider_type != 'twilio'">
+                        <field name="account_sid"/>
+                        <field name="twilio_phone_number"/>
+                        <field name="twiml_app_sid"/>
+                    </group>
+                    <group string="Webhook Security">
+                        <div class="alert alert-info" role="alert"
+                             invisible="provider_type != 'sip'">
+                            The SIP webhook secret is stored encrypted via the platform secrets
+                            manager. Set <code>APP_SECRET_ENCRYPTION_KEY</code> in your
+                            environment, then store the encrypted value in
+                            <code>_sip_webhook_secret_encrypted</code> via the Odoo shell.
+                        </div>
+                    </group>
+                    <group string="Call Recording">
+                        <div class="alert alert-warning" role="alert">
+                            ⚠️ <strong>Legal Notice:</strong> Call recording legality varies by jurisdiction.
+                            Always enable consent-based recording. In some US states and other regions,
+                            ALL parties must consent (two-party consent). Verify local laws before enabling.
+                        </div>
+                        <field name="recording_enabled"/>
+                        <field name="recording_consent_required" invisible="not recording_enabled"/>
+                        <field name="recording_two_party_consent" invisible="not recording_enabled"/>
+                        <field name="recording_retention_days" invisible="not recording_enabled"/>
+                    </group>
+                    <group string="Escalation">
+                        <field name="escalation_sentiment_threshold"/>
+                        <field name="max_no_input_attempts"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_voice_provider" model="ir.actions.act_window">
+        <field name="name">VoIP Providers</field>
+        <field name="res_model">voice.provider</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

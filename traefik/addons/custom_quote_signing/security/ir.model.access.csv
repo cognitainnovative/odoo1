@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_quote_terms_admin,quote.terms.version admin,model_quote_terms_version,custom_platform_security.group_company_admin,1,1,1,1
+access_quote_terms_user,quote.terms.version user,model_quote_terms_version,base.group_user,1,0,0,0
+access_quote_signing_admin,quote.signing admin,model_quote_signing,base.group_system,1,0,1,0
+access_quote_signing_user,quote.signing user,model_quote_signing,base.group_user,1,0,0,0
+access_quote_signing_portal,quote.signing portal,model_quote_signing,base.group_portal,1,0,0,0
+access_quote_signing_public,quote.signing public,model_quote_signing,base.group_public,0,0,1,0

@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_payroll_rule_admin,hr.payroll.rule.version admin,model_hr_payroll_rule_version,custom_platform_security.group_payroll_manager,1,1,1,1
+access_payroll_rule_payroll,hr.payroll.rule.version payroll,model_hr_payroll_rule_version,hr.group_hr_manager,1,0,0,0
+access_payroll_run_admin,hr.payroll.run admin,model_hr_payroll_run,custom_platform_security.group_payroll_manager,1,1,1,1
+access_payroll_run_payroll,hr.payroll.run payroll,model_hr_payroll_run,hr.group_hr_manager,1,1,1,0
+access_payroll_payslip_admin,hr.payroll.payslip admin,model_hr_payroll_payslip,custom_platform_security.group_payroll_manager,1,1,1,1
+access_payroll_payslip_payroll,hr.payroll.payslip payroll,model_hr_payroll_payslip,hr.group_hr_manager,1,1,1,0
+access_payroll_payslip_employee,hr.payroll.payslip employee,model_hr_payroll_payslip,base.group_user,1,0,0,0
+access_payroll_override_admin,hr.payroll.override admin,model_hr_payroll_override,custom_platform_security.group_payroll_manager,1,1,1,0
+access_payroll_override_payroll,hr.payroll.override payroll,model_hr_payroll_override,hr.group_hr_manager,1,1,1,0
+access_payroll_access_log_admin,hr.payroll.access.log admin,model_hr_payroll_access_log,custom_platform_security.group_payroll_manager,1,1,1,0
+access_payroll_access_log_payroll,hr.payroll.access.log payroll,model_hr_payroll_access_log,hr.group_hr_manager,1,0,0,0

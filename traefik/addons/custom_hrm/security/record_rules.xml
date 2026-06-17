@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Sick leave: employees see only their own; HR/managers see all -->
+    <record id="rule_sick_leave_own" model="ir.rule">
+        <field name="name">Sick Leave: employee sees own</field>
+        <field name="model_id" ref="model_hr_sick_leave"/>
+        <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="rule_sick_leave_hr" model="ir.rule">
+        <field name="name">Sick Leave: HR sees all</field>
+        <field name="model_id" ref="model_hr_sick_leave"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('hr.group_hr_manager'))]"/>
+    </record>
+
+    <!-- Payslip: employees see only their own; HR sees all -->
+    <record id="rule_payslip_own" model="ir.rule">
+        <field name="name">Payslip: employee sees own</field>
+        <field name="model_id" ref="model_hr_employee_payslip"/>
+        <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="rule_payslip_hr" model="ir.rule">
+        <field name="name">Payslip: HR sees all</field>
+        <field name="model_id" ref="model_hr_employee_payslip"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('hr.group_hr_manager'))]"/>
+    </record>
+</odoo>

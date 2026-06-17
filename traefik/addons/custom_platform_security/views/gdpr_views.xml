@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── GDPR Requests ──────────────────────────────────────────────────── -->
+
+    <record id="view_gdpr_request_list" model="ir.ui.view">
+        <field name="name">platform.gdpr.request.list</field>
+        <field name="model">platform.gdpr.request</field>
+        <field name="arch" type="xml">
+            <list string="GDPR Requests" decoration-danger="state == 'pending' and deadline &lt; current_date">
+                <field name="partner_id"/>
+                <field name="email" optional="show"/>
+                <field name="request_type"/>
+                <field name="state"
+                       decoration-success="state == 'completed'"
+                       decoration-warning="state == 'in_progress'"
+                       decoration-danger="state == 'pending'"/>
+                <field name="requested_date"/>
+                <field name="deadline"
+                       decoration-danger="state in ('pending','in_progress') and deadline &lt; current_date"/>
+                <field name="processed_by_id" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_gdpr_request_form" model="ir.ui.view">
+        <field name="name">platform.gdpr.request.form</field>
+        <field name="model">platform.gdpr.request</field>
+        <field name="arch" type="xml">
+            <form string="GDPR Request">
+                <header>
+                    <button name="action_start" string="Start Processing" type="object"
+                            class="btn-primary"
+                            invisible="state != 'pending'"/>
+                    <button name="action_export_data" string="Generate Export" type="object"
+                            class="btn-primary"
+                            invisible="request_type != 'export' or state not in ('pending','in_progress')"/>
+                    <button name="action_complete" string="Mark Completed" type="object"
+                            invisible="state not in ('pending','in_progress')"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            class="btn-secondary"
+                            invisible="state in ('completed','rejected')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="pending,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="email" readonly="1"/>
+                            <field name="request_type"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="requested_date"/>
+                            <field name="deadline"/>
+                            <field name="completed_date" readonly="1"/>
+                            <field name="processed_by_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                    <group string="Rejection Reason"
+                           invisible="state != 'rejected'">
+                        <field name="rejection_reason" nolabel="1"/>
+                    </group>
+                    <group string="Export File"
+                           invisible="not export_attachment_id">
+                        <field name="export_attachment_id" nolabel="1"/>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gdpr_request" model="ir.actions.act_window">
+        <field name="name">GDPR Requests</field>
+        <field name="res_model">platform.gdpr.request</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── GDPR Retention Policies ────────────────────────────────────────── -->
+
+    <record id="view_gdpr_retention_list" model="ir.ui.view">
+        <field name="name">platform.gdpr.retention.policy.list</field>
+        <field name="model">platform.gdpr.retention.policy</field>
+        <field name="arch" type="xml">
+            <list string="Retention Policies">
+                <field name="model_name"/>
+                <field name="retention_days"/>
+                <field name="date_field"/>
+                <field name="last_purge_date" optional="show"/>
+                <field name="purge_count_last" optional="show"/>
+                <field name="active" optional="show"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_gdpr_retention_form" model="ir.ui.view">
+        <field name="name">platform.gdpr.retention.policy.form</field>
+        <field name="model">platform.gdpr.retention.policy</field>
+        <field name="arch" type="xml">
+            <form string="Retention Policy">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="model_name"/>
+                            <field name="retention_days"/>
+                            <field name="date_field"/>
+                            <field name="active"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="last_purge_date"/>
+                            <field name="purge_count_last"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_gdpr_retention" model="ir.actions.act_window">
+        <field name="name">Retention Policies</field>
+        <field name="res_model">platform.gdpr.retention.policy</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

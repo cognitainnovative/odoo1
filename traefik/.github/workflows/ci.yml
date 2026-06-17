@@ -1,0 +1,159 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  syntax-check:
+    name: Syntax Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Python syntax check
+        run: |
+          find addons/ -name "*.py" | xargs python3 -m py_compile && echo "All Python files OK"
+      - name: XML syntax check
+        run: |
+          python3 -c "
+          import xml.etree.ElementTree as ET, glob, sys
+          errors = []
+          for f in glob.glob('addons/**/*.xml', recursive=True):
+              try: ET.parse(f)
+              except Exception as e: errors.append(f'{f}: {e}')
+          if errors:
+              print('XML errors:'); [print(e) for e in errors]; sys.exit(1)
+          print(f'All {len(glob.glob(\"addons/**/*.xml\", recursive=True))} XML files OK')
+          "
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install lint tools
+        run: pip install ruff black pylint-odoo
+
+      - name: Ruff check
+        run: ruff check addons/ tests/ --output-format=github
+
+      - name: Black check
+        run: black --check addons/ tests/
+
+  test:
+    name: Tests
+    runs-on: ubuntu-24.04
+    needs: [lint, syntax-check]
+
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: odoo
+          POSTGRES_PASSWORD: odoo
+          POSTGRES_DB: platform_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      PGUSER: odoo
+      PGPASSWORD: odoo
+      PGHOST: localhost
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Checkout Odoo 19
+        uses: actions/checkout@v4
+        with:
+          repository: odoo/odoo
+          ref: 19.0
+          path: odoo19
+          fetch-depth: 1
+          sparse-checkout: |
+            odoo
+            addons
+            odoo-bin
+            requirements.txt
+
+      - name: Install dependencies
+        run: |
+          pip install -r odoo19/requirements.txt
+          pip install \
+            "cryptography>=42.0.0" \
+            "celery[redis]>=5.4.0" \
+            "redis>=5.2.1" \
+            "minio>=7.2.0" \
+            pytest
+
+      - name: Enable pgvector extension
+        run: |
+          PGPASSWORD=odoo psql -h localhost -U odoo -d platform_test \
+            -c "CREATE EXTENSION IF NOT EXISTS vector;"
+
+      - name: Bootstrap connectivity test
+        run: |
+          python3 -c "
+          import psycopg2
+          conn = psycopg2.connect(dbname='platform_test', user='odoo', password='odoo', host='localhost')
+          cur = conn.cursor()
+          cur.execute(\"SELECT extname FROM pg_extension WHERE extname='vector'\")
+          result = cur.fetchone()
+          assert result, 'pgvector extension not enabled in test DB'
+          print('pgvector: enabled')
+          conn.close()
+          print('PostgreSQL: OK')
+          "
+
+      - name: Run Odoo addon tests
+        run: |
+          MODULES=$(find addons -mindepth 1 -maxdepth 1 -type d \
+            -exec test -d "{}/tests" \; -printf "%f," | sed 's/,$//')
+          if [ -z "$MODULES" ]; then
+            echo "ERROR: No addon test directories found — at least one addon must have a tests/ directory."
+            exit 1
+          fi
+          echo "Testing modules: $MODULES"
+          python3 odoo19/odoo-bin \
+            --addons-path=odoo19/addons,addons \
+            -d platform_test \
+            --db_user=odoo --db_password=odoo --db_host=localhost \
+            --test-enable \
+            --stop-after-init \
+            -i "$MODULES" \
+            --log-level=test
+
+      - name: Run gateway service tests
+        run: |
+          for svc in services/ai_gateway services/integration_gateway; do
+            if [ -d "$svc/tests" ]; then
+              echo "=== $svc ==="
+              pip install -r "$svc/requirements.txt" -q
+              python -m pytest "$svc/tests" -v --tb=short
+            else
+              echo "No tests/ in $svc — skipping."
+            fi
+          done

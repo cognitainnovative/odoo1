@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_email_ai_root"
+              name="Email AI"
+              sequence="46"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_email_ai_inbox"
+              name="Inbox"
+              parent="menu_email_ai_root"
+              action="action_email_ai_inbox"
+              sequence="10"/>
+
+    <menuitem id="menu_email_ai_outbox"
+              name="Pending Outbox"
+              parent="menu_email_ai_root"
+              action="action_email_ai_outbox"
+              sequence="20"/>
+
+    <menuitem id="menu_email_ai_finance_tasks"
+              name="Finance Tasks"
+              parent="menu_email_ai_root"
+              action="action_email_ai_finance_task"
+              sequence="30"/>
+
+    <menuitem id="menu_email_ai_config"
+              name="Configuration"
+              parent="menu_email_ai_root"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_email_ai_mailboxes"
+              name="Mailboxes"
+              parent="menu_email_ai_config"
+              action="action_email_ai_mailbox"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_email_ai_templates"
+              name="Reply Templates"
+              parent="menu_email_ai_config"
+              action="action_email_ai_template"
+              sequence="20"
+              groups="base.group_system"/>
+
+    <!-- Platform Overview shortcut: pending email approvals (M16 cross-module dashboard) -->
+    <record id="action_platform_pending_outbox" model="ir.actions.act_window">
+        <field name="name">Pending Email Approvals</field>
+        <field name="res_model">email.ai.outbox</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','=','pending')]</field>
+    </record>
+
+    <menuitem id="menu_platform_pending_outbox"
+              name="Pending Email Approvals"
+              parent="custom_platform_security.menu_platform_overview_root"
+              action="action_platform_pending_outbox"
+              sequence="50"/>
+
+</odoo>

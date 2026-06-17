@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ crm.lead form — add Platform CRM tab ═══ -->
+    <record id="view_crm_lead_form_platform" model="ir.ui.view">
+        <field name="name">crm.lead.form.platform</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <!-- AI Summary button in header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_generate_ai_summary" string="AI Summary"
+                        type="object" class="btn-secondary" icon="fa-magic"/>
+                <button name="action_ai_followup_suggestion" string="AI Follow-up"
+                        type="object" class="btn-secondary" icon="fa-lightbulb-o"/>
+            </xpath>
+            <!-- Score stat button -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" icon="fa-warning" type="object"
+                        name="action_view_duplicates"
+                        invisible="duplicate_count == 0">
+                    <field name="duplicate_count" widget="statinfo" string="Duplicates"/>
+                </button>
+            </xpath>
+            <!-- Platform CRM tab inside the notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Platform CRM" name="platform_crm">
+                    <group>
+                        <group string="Scoring &amp; Campaign">
+                            <field name="lead_score" readonly="1"/>
+                            <field name="platform_campaign_id"/>
+                            <field name="lead_source_detail" placeholder="e.g. Google Ads – Brand"/>
+                            <field name="next_follow_up_date"/>
+                        </group>
+                        <group string="GDPR Consent">
+                            <field name="gdpr_consent"/>
+                            <field name="gdpr_consent_date" readonly="1"/>
+                            <field name="gdpr_consent_ip" readonly="1"/>
+                            <field name="gdpr_anonymized" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="AI Summary" invisible="not ai_summary">
+                        <field name="ai_summary" nolabel="1" readonly="1" widget="text"/>
+                        <field name="ai_summary_date" nolabel="1" readonly="1" string="Generated"/>
+                    </group>
+                    <group string="Contact Tracking">
+                        <field name="last_contacted_date" readonly="1"/>
+                        <field name="contact_count" readonly="1"/>
+                    </group>
+                    <group string="Follow-up Notes">
+                        <field name="follow_up_notes" nolabel="1" widget="text"/>
+                    </group>
+                    <div invisible="not gdpr_anonymized" class="alert alert-warning" role="alert">
+                        This record has been anonymized for GDPR compliance.
+                    </div>
+                    <div invisible="duplicate_count == 0" class="alert alert-info" role="alert">
+                        <strong>Potential duplicates found.</strong>
+                        <button name="action_view_duplicates" type="object"
+                                class="btn-link ms-2">View duplicates</button>
+                    </div>
+                </page>
+                <page string="Custom Fields" name="custom_fields">
+                    <field name="custom_field_value_ids" nolabel="1">
+                        <list editable="bottom">
+                            <field name="field_id"/>
+                            <field name="field_type" readonly="1"/>
+                            <field name="value_char"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ Lead list — add score + campaign columns ═══ -->
+    <record id="view_crm_lead_tree_platform" model="ir.ui.view">
+        <field name="name">crm.lead.tree.platform</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='probability']" position="after">
+                <field name="lead_score" string="Score" optional="show"/>
+                <field name="platform_campaign_id" optional="hide"/>
+                <field name="gdpr_consent" optional="hide"/>
+                <field name="next_follow_up_date" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ Kanban — show score badge ═══ -->
+    <record id="view_crm_lead_kanban_platform" model="ir.ui.view">
+        <field name="name">crm.lead.kanban.platform</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_lead_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//footer//div[hasclass('d-flex')]" position="inside">
+                <span class="badge bg-primary ms-1" invisible="lead_score == 0">
+                    <field name="lead_score"/>
+                </span>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ GDPR consent action ═══ -->
+    <record id="action_crm_lead_gdpr_consent" model="ir.actions.server">
+        <field name="name">Record GDPR Consent</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">records.action_record_gdpr_consent()</field>
+    </record>
+
+    <!-- ═══ Anonymize action ═══ -->
+    <record id="action_crm_lead_anonymize" model="ir.actions.server">
+        <field name="name">Anonymize (GDPR)</field>
+        <field name="model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_model_id" ref="crm.model_crm_lead"/>
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">records.action_anonymize()</field>
+    </record>
+
+</odoo>

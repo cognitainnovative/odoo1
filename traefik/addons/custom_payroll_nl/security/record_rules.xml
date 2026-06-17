@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Payslips: employee sees only their own -->
+    <record id="rule_payslip_own" model="ir.rule">
+        <field name="name">Payslip: employee sees own</field>
+        <field name="model_id" ref="model_hr_payroll_payslip"/>
+        <field name="domain_force">[('employee_id.user_id','=',user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <!-- HR managers see all payslips in their company -->
+    <record id="rule_payslip_hr" model="ir.rule">
+        <field name="name">Payslip: HR manager sees all in company</field>
+        <field name="model_id" ref="model_hr_payroll_payslip"/>
+        <field name="domain_force">[('company_id','in',company_ids)]</field>
+        <field name="groups" eval="[(4, ref('hr.group_hr_manager'))]"/>
+    </record>
+
+    <!-- Access log: only system admins and HR managers can read -->
+    <record id="rule_access_log_admin" model="ir.rule">
+        <field name="name">Payroll Access Log: admins only</field>
+        <field name="model_id" ref="model_hr_payroll_access_log"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+    </record>
+</odoo>

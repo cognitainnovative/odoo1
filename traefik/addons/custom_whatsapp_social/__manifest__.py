@@ -1,0 +1,28 @@
+{
+    "name": "Platform WhatsApp & Social",
+    "version": "19.0.1.0.0",
+    "summary": "WhatsApp messaging, social inbox, content calendar, post planning.",
+    "author": "Cognita Innovative",
+    "license": "LGPL-3",
+    "category": "Marketing",
+    "depends": [
+        "mail",
+        "custom_ai_core",
+        "custom_crm_core",
+        "custom_helpdesk",
+        "custom_platform_security",
+    ],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/record_rules.xml",
+        "data/social_data.xml",
+        "views/whatsapp_views.xml",
+        "views/social_inbox_views.xml",
+        "views/post_calendar_views.xml",
+        "views/menus.xml",
+    ],
+    "demo": ["data/demo/demo_data.xml"],
+    "installable": True,
+    "application": True,
+    "auto_install": False,
+}

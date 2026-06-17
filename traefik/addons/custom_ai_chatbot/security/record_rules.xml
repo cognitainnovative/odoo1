@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_chat_session_company" model="ir.rule">
+        <field name="name">Chat Session: company scope</field>
+        <field name="model_id" ref="model_chat_session"/>
+        <field name="domain_force">[('company_id','in',company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- Portal customers see only their own chat sessions (matched by partner) -->
+    <record id="rule_chat_session_portal" model="ir.rule">
+        <field name="name">Chat Session: portal own sessions only</field>
+        <field name="model_id" ref="model_chat_session"/>
+        <field name="domain_force">[('visitor_id.partner_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
+</odoo>

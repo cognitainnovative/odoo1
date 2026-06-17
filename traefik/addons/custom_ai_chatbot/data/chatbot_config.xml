@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <record id="default_chat_config" model="chat.config">
+        <field name="is_enabled" eval="True"/>
+        <field name="primary_color">#1E40AF</field>
+        <field name="collect_email" eval="True"/>
+        <field name="collect_company" eval="False"/>
+    </record>
+
+</data>
+</odoo>

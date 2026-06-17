@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_platform_package_admin,platform.package admin,model_platform_package,custom_platform_security.group_company_admin,1,1,1,1
+access_platform_package_user,platform.package user,model_platform_package,base.group_user,1,0,0,0
+access_platform_subscription_admin,platform.subscription admin,model_platform_subscription,custom_platform_security.group_company_admin,1,1,1,1
+access_platform_subscription_user,platform.subscription user,model_platform_subscription,base.group_user,1,0,0,0
+access_platform_menu_gate_admin,platform.menu.gate admin,model_platform_menu_gate,custom_platform_security.group_company_admin,1,1,1,1
+access_platform_menu_gate_user,platform.menu.gate user,model_platform_menu_gate,base.group_user,1,0,0,0

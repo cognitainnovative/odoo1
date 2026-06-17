@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_social_root"
+              name="Social &amp; WhatsApp"
+              sequence="47"
+              groups="base.group_user"/>
+
+    <!-- WhatsApp -->
+    <menuitem id="menu_wa_messages"
+              name="WhatsApp Messages"
+              parent="menu_social_root"
+              action="action_wa_message"
+              sequence="10"/>
+
+    <menuitem id="menu_wa_pending"
+              name="Pending WA Approval"
+              parent="menu_social_root"
+              action="action_wa_pending_approval"
+              sequence="15"/>
+
+    <!-- Social Inbox -->
+    <menuitem id="menu_social_inbox"
+              name="Social Inbox"
+              parent="menu_social_root"
+              action="action_social_inbox"
+              sequence="20"/>
+
+    <menuitem id="menu_social_pending"
+              name="Pending Social Approval"
+              parent="menu_social_root"
+              action="action_social_pending"
+              sequence="25"/>
+
+    <!-- Post planning -->
+    <menuitem id="menu_social_posts"
+              name="Post Calendar"
+              parent="menu_social_root"
+              action="action_social_post"
+              sequence="30"/>
+
+    <menuitem id="menu_social_post_pending"
+              name="Posts — Pending Approval"
+              parent="menu_social_root"
+              action="action_social_post_pending"
+              sequence="35"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_social_config"
+              name="Configuration"
+              parent="menu_social_root"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_wa_provider"
+              name="WhatsApp Providers"
+              parent="menu_social_config"
+              action="action_wa_provider"
+              sequence="10"/>
+
+    <menuitem id="menu_wa_template"
+              name="WA Templates"
+              parent="menu_social_config"
+              action="action_wa_template"
+              sequence="15"/>
+
+    <menuitem id="menu_social_accounts"
+              name="Social Accounts"
+              parent="menu_social_config"
+              action="action_social_account"
+              sequence="20"/>
+
+    <menuitem id="menu_social_campaigns"
+              name="Campaigns"
+              parent="menu_social_config"
+              action="action_social_campaign"
+              sequence="30"/>
+
+    <menuitem id="menu_social_topics"
+              name="Post Topics"
+              parent="menu_social_config"
+              action="action_social_post_topic"
+              sequence="40"/>
+
+</odoo>

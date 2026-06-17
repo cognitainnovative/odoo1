@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ platform.planning.job — List ═══ -->
+    <record id="view_planning_job_list" model="ir.ui.view">
+        <field name="name">platform.planning.job.list</field>
+        <field name="model">platform.planning.job</field>
+        <field name="arch" type="xml">
+            <list string="Planning Jobs"
+                  decoration-success="state == 'completed'"
+                  decoration-primary="state == 'in_progress'"
+                  decoration-warning="state == 'scheduled'"
+                  decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="job_type"/>
+                <field name="partner_id"/>
+                <field name="employee_id"/>
+                <field name="start_datetime"/>
+                <field name="end_datetime"/>
+                <field name="duration_hours" string="h"/>
+                <field name="location" optional="show"/>
+                <field name="state" widget="badge"/>
+                <field name="priority" widget="priority"/>
+                <button name="action_confirm" string="Confirm" type="object"
+                        icon="fa-check" class="btn-sm btn-success"
+                        invisible="state not in ('draft','scheduled')"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══ Kanban ═══ -->
+    <record id="view_planning_job_kanban" model="ir.ui.view">
+        <field name="name">platform.planning.job.kanban</field>
+        <field name="model">platform.planning.job</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="job_type"/>
+                <field name="partner_id"/>
+                <field name="employee_id"/>
+                <field name="start_datetime"/>
+                <field name="state"/>
+                <field name="priority"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <strong><field name="name"/></strong>
+                            <field name="priority" widget="priority"/>
+                        </div>
+                        <div class="text-muted small mt-1">
+                            <field name="job_type"/> — <field name="start_datetime" widget="datetime"/>
+                        </div>
+                        <div class="mt-1" invisible="not partner_id">
+                            <field name="partner_id"/>
+                        </div>
+                        <div class="mt-1" invisible="not employee_id">
+                            <field name="employee_id"/>
+                        </div>
+                        <footer>
+                            <field name="state" widget="badge"
+                                   decoration-success="state == 'completed'"
+                                   decoration-warning="state in ('draft','scheduled')"/>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ═══ Calendar ═══ -->
+    <record id="view_planning_job_calendar" model="ir.ui.view">
+        <field name="name">platform.planning.job.calendar</field>
+        <field name="model">platform.planning.job</field>
+        <field name="arch" type="xml">
+            <calendar string="Planning Calendar"
+                      date_start="start_datetime"
+                      date_stop="end_datetime"
+                      color="employee_id"
+                      mode="week">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="employee_id"/>
+                <field name="job_type"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- ═══ Form ═══ -->
+    <record id="view_planning_job_form" model="ir.ui.view">
+        <field name="name">platform.planning.job.form</field>
+        <field name="model">platform.planning.job</field>
+        <field name="arch" type="xml">
+            <form string="Planning Job">
+                <header>
+                    <button name="action_schedule" string="Schedule" type="object"
+                            class="btn-secondary" invisible="state != 'draft'"/>
+                    <button name="action_confirm" string="Confirm" type="object"
+                            class="btn-primary"
+                            invisible="state not in ('draft','scheduled')"/>
+                    <button name="action_start" string="Start" type="object"
+                            class="btn-success" invisible="state != 'confirmed'"/>
+                    <button name="action_complete" string="Complete" type="object"
+                            class="btn-success" invisible="state != 'in_progress'"/>
+                    <button name="action_send_reminder" string="Send Reminder"
+                            type="object" class="btn-secondary"
+                            invisible="not partner_id or reminder_sent"/>
+                    <button name="action_customer_sign_off" string="Customer Sign-off"
+                            type="object" class="btn-warning"
+                            invisible="not customer_sign_off_required or customer_signed_off"/>
+                    <button name="action_print_completion_report" string="Print Report"
+                            type="object" class="btn-secondary" icon="fa-print"
+                            invisible="state != 'completed'"/>
+                    <button name="action_reschedule" string="Reschedule" type="object"
+                            class="btn-secondary" icon="fa-clock-o"
+                            invisible="state in ('completed', 'cancelled')"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            class="btn-danger"
+                            invisible="state in ('completed', 'cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,scheduled,confirmed,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="job_type"/>
+                            <field name="priority" widget="priority"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="employee_id"
+                                   domain="[('planning_available', '=', True)]"/>
+                            <field name="team_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group string="Schedule">
+                        <group>
+                            <field name="start_datetime"/>
+                            <field name="end_datetime"/>
+                            <field name="duration_hours" string="Duration (h)" readonly="1"/>
+                            <field name="all_day"/>
+                        </group>
+                        <group>
+                            <field name="location"/>
+                            <field name="resource_ids" widget="many2many_tags"/>
+                        </group>
+                    </group>
+                    <group string="Linked Records">
+                        <group>
+                            <field name="sale_order_id"/>
+                            <field name="crm_lead_id"/>
+                        </group>
+                        <group>
+                            <field name="invoice_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description" name="description">
+                            <field name="description" nolabel="1"/>
+                        </page>
+                        <page string="Location Notes" name="location_notes">
+                            <field name="location_notes" nolabel="1" widget="text"/>
+                        </page>
+                        <page string="Completion" name="completion">
+                            <group>
+                                <field name="customer_sign_off_required"/>
+                                <field name="customer_signed_off" readonly="1"/>
+                                <field name="customer_sign_off_date" readonly="1"/>
+                            </group>
+                            <group string="Completion Notes">
+                                <field name="completion_notes" nolabel="1" widget="text"/>
+                            </group>
+                        </page>
+                        <page string="Reminders" name="reminders">
+                            <group>
+                                <field name="send_customer_confirmation"/>
+                                <field name="customer_confirmation_sent" readonly="1"/>
+                                <field name="reminder_sent" readonly="1"/>
+                                <field name="reminder_sent_date" readonly="1"/>
+                            </group>
+                        </page>
+                        <page string="Internal Notes" name="internal_notes">
+                            <field name="internal_notes" nolabel="1" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══ Search ═══ -->
+    <record id="view_planning_job_search" model="ir.ui.view">
+        <field name="name">platform.planning.job.search</field>
+        <field name="model">platform.planning.job</field>
+        <field name="arch" type="xml">
+            <search string="Planning Jobs">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="employee_id"/>
+                <filter string="Upcoming" name="upcoming"
+                        domain="[('start_datetime','&gt;=',datetime.datetime.now()),('state','not in',('completed','cancelled'))]"/>
+                <filter string="Scheduled" name="scheduled" domain="[('state','=','scheduled')]"/>
+                <filter string="Confirmed" name="confirmed" domain="[('state','=','confirmed')]"/>
+                <filter string="Completed" name="completed" domain="[('state','=','completed')]"/>
+                <group>
+                    <filter string="Employee" name="by_employee" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Type" name="by_type" context="{'group_by': 'job_type'}"/>
+                    <filter string="State" name="by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Date" name="by_date" context="{'group_by': 'start_datetime:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- ═══ Actions ═══ -->
+    <record id="action_planning_job" model="ir.actions.act_window">
+        <field name="name">Planning Jobs</field>
+        <field name="res_model">platform.planning.job</field>
+        <field name="view_mode">kanban,list,calendar,form</field>
+        <field name="search_view_id" ref="view_planning_job_search"/>
+        <field name="context">{"search_default_upcoming": 1}</field>
+    </record>
+
+    <record id="action_planning_job_calendar" model="ir.actions.act_window">
+        <field name="name">Planning Calendar</field>
+        <field name="res_model">platform.planning.job</field>
+        <field name="view_mode">calendar,list,form</field>
+        <field name="context">{"search_default_upcoming": 1}</field>
+    </record>
+
+    <!-- ═══ sale.order planning stat button ═══ -->
+    <record id="view_sale_order_planning_btn" model="ir.ui.view">
+        <field name="name">sale.order.planning.button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" icon="fa-calendar"
+                        name="action_view_planning_jobs" type="object">
+                    <field name="planning_job_count" widget="statinfo" string="Jobs"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ Mobile / Employee "My Jobs" view ═══ -->
+    <!-- Simplified list with large action buttons — optimised for field workers on mobile -->
+    <record id="view_planning_job_employee_list" model="ir.ui.view">
+        <field name="name">platform.planning.job.employee.list</field>
+        <field name="model">platform.planning.job</field>
+        <field name="arch" type="xml">
+            <list string="My Jobs"
+                  create="false"
+                  decoration-primary="state == 'in_progress'"
+                  decoration-success="state == 'completed'"
+                  decoration-muted="state == 'cancelled'">
+                <field name="start_datetime" string="When"/>
+                <field name="name" string="Job"/>
+                <field name="job_type"/>
+                <field name="partner_id" string="Customer"/>
+                <field name="location" optional="show"/>
+                <field name="state" widget="badge"/>
+                <button name="action_start" string="Start" type="object"
+                        icon="fa-play" class="btn-sm btn-success"
+                        invisible="state != 'confirmed'"/>
+                <button name="action_complete" string="Done" type="object"
+                        icon="fa-check" class="btn-sm btn-primary"
+                        invisible="state != 'in_progress'"/>
+                <button name="action_customer_sign_off" string="Sign-off" type="object"
+                        icon="fa-pencil" class="btn-sm btn-warning"
+                        invisible="not customer_sign_off_required or customer_signed_off or state != 'in_progress'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_planning_job_employee_form" model="ir.ui.view">
+        <field name="name">platform.planning.job.employee.form</field>
+        <field name="model">platform.planning.job</field>
+        <field name="arch" type="xml">
+            <form string="My Job">
+                <header>
+                    <button name="action_start" string="Start Job" type="object"
+                            class="btn-success btn-lg" invisible="state != 'confirmed'"/>
+                    <button name="action_complete" string="Mark Complete" type="object"
+                            class="btn-primary btn-lg" invisible="state != 'in_progress'"/>
+                    <button name="action_customer_sign_off" string="Record Sign-off" type="object"
+                            class="btn-warning"
+                            invisible="not customer_sign_off_required or customer_signed_off"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="scheduled,confirmed,in_progress,completed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="job_type" readonly="1"/>
+                        <field name="partner_id" readonly="1"/>
+                        <field name="start_datetime" readonly="1"/>
+                        <field name="end_datetime" readonly="1"/>
+                        <field name="location" readonly="1"/>
+                    </group>
+                    <group string="Location Notes" invisible="not location_notes">
+                        <field name="location_notes" nolabel="1" readonly="1" widget="text"/>
+                    </group>
+                    <group string="Job Description" invisible="not description">
+                        <field name="description" nolabel="1" readonly="1"/>
+                    </group>
+                    <group string="Completion Notes">
+                        <field name="completion_notes" nolabel="1" widget="text"
+                               placeholder="Add notes on completion…"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_planning_my_jobs" model="ir.actions.act_window">
+        <field name="name">My Jobs</field>
+        <field name="res_model">platform.planning.job</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {'view_mode': 'list', 'view_id': ref('view_planning_job_employee_list')}),
+            (0, 0, {'view_mode': 'form', 'view_id': ref('view_planning_job_employee_form')}),
+        ]"/>
+        <field name="domain">[('employee_id.user_id','=',uid),('state','not in',('completed','cancelled'))]</field>
+        <field name="context">{"search_default_upcoming": 1}</field>
+    </record>
+
+    <!-- ═══ Job type list ═══ -->
+    <record id="view_planning_job_type_list" model="ir.ui.view">
+        <field name="name">platform.planning.job.type.list</field>
+        <field name="model">platform.planning.job.type</field>
+        <field name="arch" type="xml">
+            <list string="Job Types" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="default_duration_hours" string="Default h"/>
+                <field name="requires_customer_sign_off"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_planning_job_types" model="ir.actions.act_window">
+        <field name="name">Job Types</field>
+        <field name="res_model">platform.planning.job.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_product_verhuurartikel" model="product.product">
+        <field name="name">Demo Verhuurartikel</field>
+        <field name="type">product</field>
+        <field name="sale_ok">True</field>
+        <field name="purchase_ok">False</field>
+    </record>
+
+    <record id="demo_rental_product_steiger" model="rental.product">
+        <field name="name">Steiger Set 6m</field>
+        <field name="product_id" ref="demo_product_verhuurartikel"/>
+        <field name="price_per_day">75.0</field>
+        <field name="deposit_amount">300.0</field>
+        <field name="total_units">3</field>
+        <field name="minimum_days">1</field>
+        <field name="description">Aluminium steiger set 6 meter hoogte inclusief wielen en valbeveiliging.</field>
+    </record>
+</odoo>

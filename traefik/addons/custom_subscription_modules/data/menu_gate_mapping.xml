@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Maps platform module_code → top-level menu XML ID that should be hidden
+     when the subscription for that module is inactive.
+     menu_xmlid is stored as plain text and resolved at runtime via env.ref(),
+     so this file loads correctly even when the target modules are not installed. -->
+<odoo noupdate="1">
+
+    <record id="gate_crm" model="platform.menu.gate">
+        <field name="module_code">crm</field>
+        <field name="menu_xmlid">crm.crm_menu_root</field>
+        <field name="note">CRM Base — Leads, Deals, Pipeline</field>
+    </record>
+
+    <record id="gate_accounting_basic" model="platform.menu.gate">
+        <field name="module_code">accounting_basic</field>
+        <field name="menu_xmlid">account.menu_finance</field>
+        <field name="note">Finance Basic — Invoicing, Bank, Reconciliation</field>
+    </record>
+
+    <record id="gate_hrm" model="platform.menu.gate">
+        <field name="module_code">hrm</field>
+        <field name="menu_xmlid">hr.menu_hr_root</field>
+        <field name="note">HRM — Employees, Leave, Sick Leave</field>
+    </record>
+
+    <record id="gate_inventory" model="platform.menu.gate">
+        <field name="module_code">inventory</field>
+        <field name="menu_xmlid">stock.menu_stock_root</field>
+        <field name="note">Inventory — Products, Stock, Warehouse</field>
+    </record>
+
+    <record id="gate_rental" model="platform.menu.gate">
+        <field name="module_code">rental</field>
+        <field name="menu_xmlid">custom_rental.menu_rental_root</field>
+        <field name="note">Rental — Orders, Availability, Returns</field>
+    </record>
+
+    <record id="gate_helpdesk" model="platform.menu.gate">
+        <field name="module_code">helpdesk</field>
+        <field name="menu_xmlid">custom_helpdesk.menu_helpdesk_root</field>
+        <field name="note">Helpdesk — Tickets, SLA, Portal</field>
+    </record>
+
+    <record id="gate_planning" model="platform.menu.gate">
+        <field name="module_code">planning</field>
+        <field name="menu_xmlid">custom_planning.menu_planning_root</field>
+        <field name="note">Planning — Appointments, Jobs, Calendar</field>
+    </record>
+
+    <record id="gate_ai_chat" model="platform.menu.gate">
+        <field name="module_code">ai_chatbot</field>
+        <field name="menu_xmlid">custom_ai_chatbot.menu_chatbot_root</field>
+        <field name="note">AI Chat — Chat Widget, Escalation, Support App</field>
+    </record>
+
+    <record id="gate_ai_voice" model="platform.menu.gate">
+        <field name="module_code">ai_voice</field>
+        <field name="menu_xmlid">custom_ai_voice.menu_voice_root</field>
+        <field name="note">AI Voice — VoIP, STT/TTS, Call Flows</field>
+    </record>
+
+    <record id="gate_social_media" model="platform.menu.gate">
+        <field name="module_code">whatsapp_social</field>
+        <field name="menu_xmlid">custom_whatsapp_social.menu_social_root</field>
+        <field name="note">Social Media — WhatsApp, Social Inbox, Posts</field>
+    </record>
+
+    <record id="gate_payroll_nl" model="platform.menu.gate">
+        <field name="module_code">payroll_nl</field>
+        <field name="menu_xmlid">custom_payroll_nl.menu_payroll_root</field>
+        <field name="note">Payroll NL — Payslips, Runs, Exports</field>
+    </record>
+
+    <!-- Finance Advanced shares the account.menu_finance root with Finance Basic.
+         The gate_accounting_basic record above covers it: package_finance_advanced
+         includes "accounting_basic" in its module_codes, so an active Finance
+         Advanced subscription keeps the Finance menu visible. If Advanced ever
+         gets its own menu root, add a gate with module_code "accounting_advanced". -->
+
+</odoo>

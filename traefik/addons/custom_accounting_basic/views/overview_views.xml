@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Debtor Aging ═══ -->
+    <record id="view_debtor_aging_pivot" model="ir.ui.view">
+        <field name="name">account.move.debtor.aging.pivot</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <pivot string="Debtor Aging" sample="1">
+                <field name="partner_id" type="row"/>
+                <field name="invoice_date_due" type="col" interval="month"/>
+                <field name="amount_residual" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+ 
+    <record id="action_debtor_aging" model="ir.actions.act_window">
+        <field name="name">Debtor Aging</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">pivot,list,form</field>
+        <field name="domain">[('move_type','=','out_invoice'),('payment_state','not in',('paid','reversed','in_payment')),('state','=','posted')]</field>
+        <field name="context">{'search_default_partner_id': 1}</field>
+    </record>
+
+    <!-- ═══ Creditor Aging ═══ -->
+    <record id="view_creditor_aging_pivot" model="ir.ui.view">
+        <field name="name">account.move.creditor.aging.pivot</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <pivot string="Creditor Aging" sample="1">
+                <field name="partner_id" type="row"/>
+                <field name="invoice_date_due" type="col" interval="month"/>
+                <field name="amount_residual" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_creditor_aging" model="ir.actions.act_window">
+        <field name="name">Creditor Aging</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">pivot,list,form</field>
+        <field name="domain">[('move_type','=','in_invoice'),('payment_state','not in',('paid','reversed','in_payment')),('state','=','posted')]</field>
+        <field name="context">{'search_default_partner_id': 1}</field>
+    </record>
+
+    <!-- ═══ Revenue Overview ═══ -->
+    <record id="view_revenue_pivot" model="ir.ui.view">
+        <field name="name">account.move.revenue.pivot</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <pivot string="Revenue Overview" sample="1">
+                <field name="invoice_date" type="col" interval="month"/>
+                <field name="partner_id" type="row"/>
+                <field name="amount_untaxed" type="measure"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_revenue_graph" model="ir.ui.view">
+        <field name="name">account.move.revenue.graph</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <graph string="Revenue Overview" type="bar" stacked="True" sample="1">
+                <field name="invoice_date" type="row" interval="month"/>
+                <field name="amount_untaxed" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_revenue_overview" model="ir.actions.act_window">
+        <field name="name">Revenue Overview</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="domain">[('move_type','in',('out_invoice','out_receipt')),('state','=','posted')]</field>
+    </record>
+
+    <!-- ═══ Expense Overview ═══ -->
+    <record id="view_expense_pivot" model="ir.ui.view">
+        <field name="name">account.move.expense.pivot</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <pivot string="Expense Overview" sample="1">
+                <field name="invoice_date" type="col" interval="month"/>
+                <field name="partner_id" type="row"/>
+                <field name="amount_untaxed" type="measure"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_expense_graph" model="ir.ui.view">
+        <field name="name">account.move.expense.graph</field>
+        <field name="model">account.move</field>
+        <field name="arch" type="xml">
+            <graph string="Expense Overview" type="bar" sample="1">
+                <field name="invoice_date" type="row" interval="month"/>
+                <field name="amount_untaxed" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_expense_overview" model="ir.actions.act_window">
+        <field name="name">Expense Overview</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="domain">[('move_type','in',('in_invoice','in_receipt')),('state','=','posted')]</field>
+    </record>
+
+    <!-- ═══ VAT Overview ═══ -->
+    <record id="view_vat_pivot" model="ir.ui.view">
+        <field name="name">account.move.line.vat.pivot</field>
+        <field name="model">account.move.line</field>
+        <field name="arch" type="xml">
+            <pivot string="VAT Overview" sample="1">
+                <field name="move_id" type="row" invisible="1"/>
+                <field name="tax_line_id" type="row"/>
+                <field name="date" type="col" interval="month"/>
+                <field name="debit" type="measure"/>
+                <field name="credit" type="measure"/>
+                <field name="balance" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_vat_overview" model="ir.actions.act_window">
+        <field name="name">VAT Overview</field>
+        <field name="res_model">account.move.line</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="domain">[('tax_line_id','!=',False),('parent_state','=','posted')]</field>
+        <field name="context">{'search_default_group_by_tax': 1}</field>
+    </record>
+
+    <!-- ═══ Accounting Audit Log ═══ -->
+    <record id="view_accounting_audit_log_list" model="ir.ui.view">
+        <field name="name">accounting.audit.log.list</field>
+        <field name="model">accounting.audit.log</field>
+        <field name="arch" type="xml">
+            <list string="Accounting Audit Log" create="false" edit="false" delete="false">
+                <field name="timestamp"/>
+                <field name="event_type"/>
+                <field name="document_ref"/>
+                <field name="res_model"/>
+                <field name="user_id"/>
+                <field name="company_id"/>
+                <field name="details" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_accounting_audit_log_form" model="ir.ui.view">
+        <field name="name">accounting.audit.log.form</field>
+        <field name="model">accounting.audit.log</field>
+        <field name="arch" type="xml">
+            <form string="Audit Log Entry" create="false" edit="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="event_type" readonly="1"/>
+                            <field name="timestamp" readonly="1"/>
+                            <field name="user_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="res_model" readonly="1"/>
+                            <field name="res_id" readonly="1"/>
+                            <field name="document_ref" readonly="1"/>
+                            <field name="company_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Details">
+                        <field name="details" nolabel="1" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_accounting_audit_log" model="ir.actions.act_window">
+        <field name="name">Accounting Audit Log</field>
+        <field name="res_model">accounting.audit.log</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ═══ Recurring Invoices ═══ -->
+    <record id="view_recurring_invoice_template_list" model="ir.ui.view">
+        <field name="name">recurring.invoice.template.list</field>
+        <field name="model">recurring.invoice.template</field>
+        <field name="arch" type="xml">
+            <list string="Recurring Invoice Templates"
+                  decoration-warning="next_date &lt;= context_today()">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="interval_type"/>
+                <field name="next_date"/>
+                <field name="last_invoice_id" optional="show"/>
+                <field name="active" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_recurring_invoice_template_form" model="ir.ui.view">
+        <field name="name">recurring.invoice.template.form</field>
+        <field name="model">recurring.invoice.template</field>
+        <field name="arch" type="xml">
+            <form string="Recurring Invoice Template">
+                <header>
+                    <button name="action_create_now" string="Create Invoice Now"
+                            type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="partner_id"/>
+                            <field name="journal_id"/>
+                        </group>
+                        <group>
+                            <field name="interval_type"/>
+                            <field name="next_date"/>
+                            <field name="active"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Invoice Lines" name="lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id" optional="show"/>
+                                    <field name="name"/>
+                                    <field name="quantity"/>
+                                    <field name="price_unit"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="note" widget="text"/>
+                        </page>
+                        <page string="History" name="history">
+                            <field name="last_invoice_id" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_recurring_invoice_templates" model="ir.actions.act_window">
+        <field name="name">Recurring Invoices</field>
+        <field name="res_model">recurring.invoice.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

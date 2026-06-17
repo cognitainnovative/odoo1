@@ -1,0 +1,142 @@
+# Dutch translations for custom_ai_voice
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Voice Call"
+msgstr "Telefoongesprek"
+
+msgid "Call Transcript Line"
+msgstr "Gespreksverslag Regel"
+
+msgid "Inbound"
+msgstr "Inkomend"
+
+msgid "Outbound"
+msgstr "Uitgaand"
+
+msgid "Ringing"
+msgstr "Overgaan"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "On Hold"
+msgstr "In de Wacht"
+
+msgid "Completed"
+msgstr "Voltooid"
+
+msgid "Missed"
+msgstr "Gemist"
+
+msgid "Failed"
+msgstr "Mislukt"
+
+msgid "Transferred"
+msgstr "Doorverbonden"
+
+msgid "Caller Number"
+msgstr "Beller Nummer"
+
+msgid "Called Number"
+msgstr "Gebeld Nummer"
+
+msgid "Call Start"
+msgstr "Gespreksstart"
+
+msgid "Call End"
+msgstr "Gesprekseinde"
+
+msgid "Recording Consent Given"
+msgstr "Toestemming Opname Gegeven"
+
+msgid "Recording URL"
+msgstr "Opname-URL"
+
+msgid "Recording SID"
+msgstr "Opname-SID"
+
+msgid "Transcript"
+msgstr "Gespreksverslag"
+
+msgid "AI Summary"
+msgstr "AI-samenvatting"
+
+msgid "Resolved"
+msgstr "Opgelost"
+
+msgid "Transferred to Agent"
+msgstr "Doorverbonden naar Medewerker"
+
+msgid "Callback Scheduled"
+msgstr "Terugbelafspraak Ingepland"
+
+msgid "Voicemail Left"
+msgstr "Voicemail Ingesproken"
+
+msgid "No Answer"
+msgstr "Geen Antwoord"
+
+msgid "Caller Abandoned"
+msgstr "Beller Verbroken"
+
+msgid "Unknown"
+msgstr "Onbekend"
+
+msgid "Calm"
+msgstr "Kalm"
+
+msgid "Positive"
+msgstr "Positief"
+
+msgid "Neutral"
+msgstr "Neutraal"
+
+msgid "Confused"
+msgstr "Verward"
+
+msgid "Frustrated"
+msgstr "Gefrustreerd"
+
+msgid "Urgent"
+msgstr "Dringend"
+
+msgid "Angry"
+msgstr "Boos"
+
+msgid "Contact"
+msgstr "Contactpersoon"
+
+msgid "Lead / Deal"
+msgstr "Lead / Deal"
+
+msgid "Provider Call ID"
+msgstr "Provider-gesprek-ID"
+
+msgid "Caller"
+msgstr "Beller"
+
+msgid "AI Assistant"
+msgstr "AI-assistent"
+
+msgid "Human Agent"
+msgstr "Menselijke Medewerker"
+
+msgid "System"
+msgstr "Systeem"
+
+msgid "Timestamp (ms)"
+msgstr "Tijdstempel (ms)"

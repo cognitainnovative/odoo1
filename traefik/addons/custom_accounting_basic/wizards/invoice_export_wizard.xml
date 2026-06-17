@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_invoice_export_wizard_form" model="ir.ui.view">
+        <field name="name">invoice.export.wizard.form</field>
+        <field name="model">invoice.export.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Export Invoices to CSV">
+
+                <!-- Step 1: configure -->
+                <group invisible="export_done">
+                    <group string="Export Settings">
+                        <field name="invoice_type"/>
+                        <field name="state_filter"/>
+                    </group>
+                    <group string="Date Range">
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                </group>
+
+                <!-- Step 2: download -->
+                <group invisible="not export_done" string="Export Ready">
+                    <field name="export_count" readonly="1" string="Invoices Exported"/>
+                    <field name="export_file" filename="export_filename"
+                           widget="binary" readonly="1"
+                           string="Download CSV"/>
+                    <field name="export_filename" invisible="1"/>
+                </group>
+
+                <div class="alert alert-info" role="alert" invisible="export_done">
+                    Exports as UTF-8 CSV (BOM-encoded for Microsoft Excel compatibility).
+                    Columns: invoice number, type, state, dates, partner, VAT number,
+                    reference, currency, amounts, payment state.
+                </div>
+
+                <footer>
+                    <button name="action_export" string="Export to CSV" type="object"
+                            class="btn-primary" invisible="export_done"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_invoice_export_wizard" model="ir.actions.act_window">
+        <field name="name">Export Invoices to CSV</field>
+        <field name="res_model">invoice.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

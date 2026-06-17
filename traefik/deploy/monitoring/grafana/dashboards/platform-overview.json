@@ -1,0 +1,32 @@
+{
+  "annotations": { "list": [] },
+  "editable": true,
+  "title": "Platform Overview",
+  "uid": "platform-overview",
+  "schemaVersion": 39,
+  "version": 1,
+  "time": { "from": "now-6h", "to": "now" },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Gateway targets up",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 6, "w": 8, "x": 0, "y": 0 },
+      "targets": [ { "expr": "sum(up{job=~\"ai-gateway|integration-gateway\"})", "refId": "A" } ]
+    },
+    {
+      "type": "timeseries",
+      "title": "Container CPU (cAdvisor)",
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "gridPos": { "h": 8, "w": 16, "x": 8, "y": 0 },
+      "targets": [ { "expr": "rate(container_cpu_usage_seconds_total{name=~\".+\"}[5m])", "legendFormat": "{{name}}", "refId": "A" } ]
+    },
+    {
+      "type": "logs",
+      "title": "Odoo logs (Loki)",
+      "datasource": { "type": "loki", "uid": "loki" },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 8 },
+      "targets": [ { "expr": "{service=\"odoo\"}", "refId": "A" } ]
+    }
+  ]
+}

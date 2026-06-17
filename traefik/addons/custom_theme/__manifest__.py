@@ -1,0 +1,40 @@
+{
+    "name": "Platform Theme",
+    "version": "19.0.1.0.0",
+    "summary": "Branded backend, portal, and company branding settings.",
+    "author": "Cognita Innovative",
+    "license": "LGPL-3",
+    "category": "Themes",
+    "depends": [
+        "base",
+        "web",
+        "mail",
+        "custom_crm_core",
+        "custom_accounting_advanced",
+        "custom_hrm",
+        "custom_ai_core",
+        "custom_inventory",
+        "custom_rental",
+        "custom_helpdesk",
+        "custom_whatsapp_social",
+    ],
+    "post_init_hook": "post_init_hook",
+    "data": [
+        "security/ir.model.access.csv",
+        "views/res_company_views.xml",
+        "views/dashboard_views.xml",
+        "views/email_template_inherit.xml",
+        "views/webclient_templates.xml",
+    ],
+    "assets": {
+        "web.assets_backend": [
+            "custom_theme/static/src/scss/backend.scss",
+        ],
+        "web.assets_frontend": [
+            "custom_theme/static/src/scss/portal.scss",
+        ],
+    },
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

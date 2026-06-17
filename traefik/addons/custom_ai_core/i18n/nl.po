@@ -1,0 +1,175 @@
+# Dutch translations for custom_ai_core
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "AI Provider Configuration"
+msgstr "AI-providerconfiguratie"
+
+msgid "Mock (Testing / CI)"
+msgstr "Nep (Testen / CI)"
+
+msgid "Anthropic — Claude"
+msgstr "Anthropic — Claude"
+
+msgid "OpenAI / Azure OpenAI"
+msgstr "OpenAI / Azure OpenAI"
+
+msgid "Ollama (Local, no data egress)"
+msgstr "Ollama (Lokaal, geen data-uitstroom)"
+
+msgid "Base URL / Endpoint"
+msgstr "Basis-URL / Eindpunt"
+
+msgid "Encrypted API Key"
+msgstr "Versleutelde API-sleutel"
+
+msgid "API Key"
+msgstr "API-sleutel"
+
+msgid "Model"
+msgstr "Model"
+
+msgid "Embedding Model"
+msgstr "Embeddingmodel"
+
+msgid "Max Output Tokens"
+msgstr "Maximale Uitvoertokens"
+
+msgid "Allow External Calls"
+msgstr "Externe Aanroepen Toestaan"
+
+msgid "Privacy Mode (Redact PII)"
+msgstr "Privacymodus (PII Redigeren)"
+
+msgid "Notes"
+msgstr "Notities"
+
+msgid "AI Knowledge Base Document"
+msgstr "AI-kennisdocument"
+
+msgid "AI Document Chunk"
+msgstr "AI-documentfragment"
+
+msgid "Plain Text Content"
+msgstr "Platte Tekstinhoud"
+
+msgid "Uploaded File"
+msgstr "Geüpload Bestand"
+
+msgid "Draft"
+msgstr "Concept"
+
+msgid "Pending Indexing"
+msgstr "Wacht op Indexering"
+
+msgid "Indexed"
+msgstr "Geïndexeerd"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Source URL"
+msgstr "Bron-URL"
+
+msgid "Tags (comma-separated)"
+msgstr "Labels (kommagescheiden)"
+
+msgid "Chunks"
+msgstr "Fragmenten"
+
+msgid "Embedding (JSON)"
+msgstr "Inbedding (JSON)"
+
+msgid "AI Audit Log"
+msgstr "AI-auditlog"
+
+msgid "Latency (ms)"
+msgstr "Latentie (ms)"
+
+msgid "Success"
+msgstr "Geslaagd"
+
+msgid "Redacted (no call made)"
+msgstr "Geredacteerd (geen aanroep gedaan)"
+
+msgid "PII Was Redacted"
+msgstr "PII Was Geredacteerd"
+
+msgid "Input SHA-256 (first 512 chars)"
+msgstr "Invoer SHA-256 (eerste 512 tekens)"
+
+msgid "Output Preview (first 200 chars)"
+msgstr "Uitvoervoorbeeld (eerste 200 tekens)"
+
+msgid "Related Model"
+msgstr "Gekoppeld Model"
+
+msgid "Related Record ID"
+msgstr "ID Gekoppeld Record"
+
+msgid "AI audit log records are immutable and cannot be modified."
+msgstr "AI-auditlogrecords zijn onveranderlijk en kunnen niet worden gewijzigd."
+
+msgid "AI audit log records cannot be deleted."
+msgstr "AI-auditlogrecords kunnen niet worden verwijderd."
+
+msgid "AI Prompt Template"
+msgstr "AI-promptsjabloon"
+
+msgid "CRM"
+msgstr "CRM"
+
+msgid "Helpdesk"
+msgstr "Helpdesk"
+
+msgid "Accounting"
+msgstr "Boekhouding"
+
+msgid "HR / Payroll"
+msgstr "HR / Salarisadministratie"
+
+msgid "General"
+msgstr "Algemeen"
+
+msgid "Active Version"
+msgstr "Actieve Versie"
+
+msgid "System Prompt"
+msgstr "Systeemprompt"
+
+msgid "User Prompt Template"
+msgstr "Gebruikerspromptsjabloon"
+
+msgid "Plain Text"
+msgstr "Platte Tekst"
+
+msgid "JSON"
+msgstr "JSON"
+
+msgid "Markdown"
+msgstr "Markdown"
+
+msgid "Max Tokens Override"
+msgstr "Overschrijving Maximale Tokens"
+
+msgid "Temperature Override"
+msgstr "Overschrijving Temperatuur"
+
+msgid "Previous Version"
+msgstr "Vorige Versie"
+
+msgid "Connection OK"
+msgstr "Verbinding OK"

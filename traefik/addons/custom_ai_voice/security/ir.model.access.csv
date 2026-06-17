@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_voice_provider_admin,voice.provider admin,model_voice_provider,custom_platform_security.group_ai_admin,1,1,1,1
+access_voice_provider_user,voice.provider user,model_voice_provider,base.group_user,1,0,0,0
+access_voice_call_flow_admin,voice.call.flow admin,model_voice_call_flow,custom_platform_security.group_ai_admin,1,1,1,1
+access_voice_call_flow_user,voice.call.flow user,model_voice_call_flow,base.group_user,1,0,0,0
+access_voice_call_admin,voice.call admin,model_voice_call,custom_platform_security.group_ai_admin,1,1,1,1
+access_voice_call_user,voice.call user,model_voice_call,base.group_user,1,1,1,0
+access_voice_call_public,voice.call public,model_voice_call,base.group_public,0,0,1,0
+access_voice_transcript_admin,voice.transcript.line admin,model_voice_transcript_line,custom_platform_security.group_ai_admin,1,1,1,1
+access_voice_transcript_user,voice.transcript.line user,model_voice_transcript_line,base.group_user,1,0,0,0
+access_voice_transcript_public,voice.transcript.line public,model_voice_transcript_line,base.group_public,0,0,1,0

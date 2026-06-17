@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rental_order_list" model="ir.ui.view">
+        <field name="name">rental.order.list</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <list string="Rental Orders"
+                  decoration-success="state == 'closed'"
+                  decoration-primary="state in ('picked_up','active')"
+                  decoration-warning="state == 'return_pending'"
+                  decoration-danger="state == 'cancelled'"
+                  decoration-muted="state == 'draft'">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="rental_product_id"/>
+                <field name="pickup_date"/>
+                <field name="expected_return_date"/>
+                <field name="rental_days" string="Days"/>
+                <field name="final_amount" string="Total (€)"/>
+                <field name="state" widget="badge"/>
+                <field name="deposit_paid" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_rental_order_kanban" model="ir.ui.view">
+        <field name="name">rental.order.kanban</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="rental_product_id"/>
+                <field name="pickup_date"/>
+                <field name="expected_return_date"/>
+                <field name="state"/>
+                <field name="final_amount"/>
+                <templates>
+                    <t t-name="card">
+                        <strong><field name="name"/></strong>
+                        <div class="text-muted small mt-1"><field name="rental_product_id"/></div>
+                        <div class="mt-1"><field name="partner_id"/></div>
+                        <div class="text-muted small mt-1">
+                            <field name="pickup_date" widget="date"/> →
+                            <field name="expected_return_date" widget="date"/>
+                        </div>
+                        <footer>
+                            <span class="ms-auto fw-bold">€<field name="final_amount"/></span>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_rental_order_form" model="ir.ui.view">
+        <field name="name">rental.order.form</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <form string="Rental Order">
+                <header>
+                    <button name="action_reserve" string="Reserve" type="object"
+                            class="btn-secondary" invisible="state != 'draft'"/>
+                    <button name="action_sign" string="Sign Contract" type="object"
+                            class="btn-primary"
+                            invisible="state not in ('draft', 'reserved') or is_signed"/>
+                    <button name="action_confirm" string="Confirm" type="object"
+                            class="btn-primary"
+                            invisible="state not in ('draft','reserved')"/>
+                    <button name="action_pickup" string="Record Pickup" type="object"
+                            class="btn-success" invisible="state != 'confirmed'"/>
+                    <button name="action_return" string="Record Return" type="object"
+                            class="btn-warning"
+                            invisible="state not in ('picked_up','active')"/>
+                    <button name="action_complete_inspection" string="Complete Inspection"
+                            type="object" class="btn-primary"
+                            invisible="state != 'returned'"/>
+                    <button name="action_create_invoice" string="Create Invoice"
+                            type="object" class="btn-success"
+                            invisible="state not in ('returned','invoiced')"/>
+                    <button name="action_approve_discount" string="Approve Discount"
+                            type="object" class="btn-warning"
+                            invisible="not discount_requires_approval or discount_approved"/>
+                    <button name="action_close" string="Close" type="object"
+                            class="btn-secondary" invisible="state != 'invoiced'"/>
+                    <button name="action_send_return_reminder" string="Send Reminder"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('picked_up','active')"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            class="btn-danger"
+                            invisible="state in ('closed','cancelled','picked_up','active')"/>
+                    <field name="state" widget="badge"
+                           decoration-success="state in ('confirmed', 'closed')"
+                           decoration-primary="state in ('picked_up', 'active')"
+                           decoration-warning="state in ('reserved', 'returned')"
+                           decoration-danger="state == 'cancelled'"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-file-invoice"
+                                type="object" name="action_create_invoice"
+                                invisible="not invoice_id">
+                            <span class="o_stat_text">Invoice</span>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="partner_id"/>
+                            <field name="rental_product_id"/>
+                            <field name="user_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="pickup_date"/>
+                            <field name="expected_return_date"/>
+                            <field name="rental_days" readonly="1"/>
+                            <field name="actual_return_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Pricing">
+                        <group>
+                            <field name="price_per_day"/>
+                            <field name="rental_price" readonly="1"/>
+                            <field name="discount_pct"/>
+                            <field name="discount_type"
+                                   invisible="not discount_pct"/>
+                            <field name="discount_reason"
+                                   invisible="not discount_pct"/>
+                            <field name="discount_approved" readonly="1"
+                                   invisible="not discount_pct"/>
+                            <div class="alert alert-warning" role="alert"
+                                 invisible="not discount_requires_approval or discount_approved">
+                                This discount requires manager approval.
+                            </div>
+                        </group>
+                        <group>
+                            <field name="deposit_amount"/>
+                            <field name="deposit_paid"/>
+                            <field name="deposit_returned"/>
+                            <field name="deposit_deducted"/>
+                            <field name="insurance_total"/>
+                            <field name="cleaning_fee"/>
+                            <field name="damage_waiver_total"/>
+                            <field name="late_fee_total" readonly="1"/>
+                            <field name="damage_amount"/>
+                        </group>
+                    </group>
+                    <group string="Total">
+                        <field name="final_amount" readonly="1" string="Final Total (€)"/>
+                    </group>
+                    <group string="Verification &amp; Signing">
+                        <group>
+                            <field name="verification_id"
+                                   domain="[('partner_id', '=', partner_id)]"/>
+                            <field name="verification_status" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="is_signed" readonly="1"/>
+                            <field name="signed_by_id" readonly="1"
+                                   invisible="not is_signed"/>
+                            <field name="signed_date" readonly="1"
+                                   invisible="not is_signed"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Recurring Billing" name="recurring">
+                            <group>
+                                <field name="is_recurring"/>
+                                <field name="recurring_interval"
+                                       invisible="not is_recurring"/>
+                                <field name="last_invoice_date" readonly="1"
+                                       invisible="not is_recurring"/>
+                            </group>
+                        </page>
+                        <page string="Notes" name="notes">
+                            <field name="notes" nolabel="1" widget="text"/>
+                        </page>
+                        <page string="Damage" name="damage"
+                              invisible="not damage_description and not damage_amount">
+                            <field name="damage_description" nolabel="1" widget="text"/>
+                        </page>
+                        <page string="Return Notes" name="return_notes"
+                              invisible="state not in ('returned','invoiced','closed')">
+                            <field name="return_notes" nolabel="1" widget="text"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <!-- ═══ Rental Order Graph — by State ═══ -->
+    <record id="view_rental_order_graph" model="ir.ui.view">
+        <field name="name">rental.order.graph</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <graph string="Rental Orders by State" type="bar">
+                <field name="state" type="row"/>
+                <field name="rental_product_id" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- ═══ Rental Order Pivot ═══ -->
+    <record id="view_rental_order_pivot" model="ir.ui.view">
+        <field name="name">rental.order.pivot</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Rental Analysis">
+                <field name="rental_product_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="final_amount" type="measure"/>
+                <field name="rental_days" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_rental_order_search" model="ir.ui.view">
+        <field name="name">rental.order.search</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <search string="Rental Orders">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="rental_product_id"/>
+                <filter string="Active" name="active"
+                        domain="[('state','in',('confirmed','picked_up','active'))]"/>
+                <filter string="Overdue" name="overdue"
+                        domain="[('expected_return_date','&lt;',datetime.datetime.now()),('state','in',('picked_up','active'))]"/>
+                <filter string="Draft" name="draft" domain="[('state','=','draft')]"/>
+                <group>
+                    <filter string="Product" name="by_product" context="{'group_by': 'rental_product_id'}"/>
+                    <filter string="Customer" name="by_partner" context="{'group_by': 'partner_id'}"/>
+                    <filter string="State" name="by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_rental_order" model="ir.actions.act_window">
+        <field name="name">Rental Orders</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">kanban,list,graph,pivot,form</field>
+        <field name="search_view_id" ref="view_rental_order_search"/>
+        <field name="context">{"search_default_active": 1}</field>
+    </record>
+
+</odoo>

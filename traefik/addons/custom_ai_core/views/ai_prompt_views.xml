@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_ai_prompt_list" model="ir.ui.view">
+        <field name="name">ai.prompt.template.list</field>
+        <field name="model">ai.prompt.template</field>
+        <field name="arch" type="xml">
+            <list string="Prompt Templates" decoration-muted="not is_active">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="category"/>
+                <field name="version"/>
+                <field name="output_format"/>
+                <field name="is_active"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_prompt_form" model="ir.ui.view">
+        <field name="name">ai.prompt.template.form</field>
+        <field name="model">ai.prompt.template</field>
+        <field name="arch" type="xml">
+            <form string="Prompt Template">
+                <header>
+                    <button name="action_new_version" string="New Version"
+                            type="object" class="btn-secondary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code" placeholder="e.g. crm_lead_summary"/>
+                            <field name="category"/>
+                            <field name="version" readonly="1"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group>
+                            <field name="output_format"/>
+                            <field name="max_tokens" placeholder="0 = provider default"/>
+                            <field name="temperature_override" placeholder="-1 = provider default"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="previous_version_id" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="System Prompt">
+                        <field name="system_prompt" nolabel="1" widget="text"
+                               placeholder="Instructions for the AI (optional)"/>
+                    </group>
+                    <group string="User Prompt Template">
+                        <field name="user_template" nolabel="1" widget="text"
+                               placeholder="Use {variable} placeholders. E.g. Summarise: {text}"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_prompt_template" model="ir.actions.act_window">
+        <field name="name">Prompt Templates</field>
+        <field name="res_model">ai.prompt.template</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Prompt Evaluations ────────────────────────────────────────────── -->
+
+    <record id="view_ai_prompt_evaluation_list" model="ir.ui.view">
+        <field name="name">ai.prompt.evaluation.list</field>
+        <field name="model">ai.prompt.evaluation</field>
+        <field name="arch" type="xml">
+            <list string="Prompt Evaluations"
+                  decoration-success="passed == True"
+                  decoration-danger="passed == False and run_date != False">
+                <field name="template_id"/>
+                <field name="name"/>
+                <field name="expected_contains"/>
+                <field name="passed"/>
+                <field name="run_date"/>
+                <field name="run_by"/>
+                <field name="error"/>
+                <button name="action_run" string="Run" type="object" icon="fa-play"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_prompt_evaluation_form" model="ir.ui.view">
+        <field name="name">ai.prompt.evaluation.form</field>
+        <field name="model">ai.prompt.evaluation</field>
+        <field name="arch" type="xml">
+            <form string="Prompt Evaluation">
+                <header>
+                    <button name="action_run" string="Run Evaluation"
+                            type="object" class="btn-primary"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="template_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="passed" readonly="1"/>
+                            <field name="run_date" readonly="1"/>
+                            <field name="run_by" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Test Input">
+                        <field name="test_input_json" nolabel="1" widget="text"
+                               placeholder='{"variable": "value"}'/>
+                        <field name="test_user_prompt" nolabel="1" widget="text"
+                               placeholder="Optional: override the template user prompt"/>
+                    </group>
+                    <group string="Expected Output">
+                        <field name="expected_contains"
+                               placeholder="Substring that must appear in the response"/>
+                    </group>
+                    <group string="Result" invisible="not run_date">
+                        <field name="actual_output" nolabel="1" readonly="1"/>
+                        <field name="error" readonly="1"/>
+                        <field name="audit_log_id" readonly="1"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_prompt_evaluation" model="ir.actions.act_window">
+        <field name="name">Prompt Evaluations</field>
+        <field name="res_model">ai.prompt.evaluation</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_payroll_run_list" model="ir.ui.view">
+        <field name="name">hr.payroll.run.list</field>
+        <field name="model">hr.payroll.run</field>
+        <field name="arch" type="xml">
+            <list string="Payroll Runs"
+                  decoration-success="state == 'exported'"
+                  decoration-primary="state in ('approved','posted')"
+                  decoration-warning="state == 'calculated'">
+                <field name="name"/>
+                <field name="period_start"/>
+                <field name="period_end"/>
+                <field name="period_type"/>
+                <field name="payslip_count" string="Employees"/>
+                <field name="total_gross" string="Gross (€)"/>
+                <field name="total_net" string="Net (€)"/>
+                <field name="total_loonheffing" string="Loonheffing (€)"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_payroll_run_form" model="ir.ui.view">
+        <field name="name">hr.payroll.run.form</field>
+        <field name="model">hr.payroll.run</field>
+        <field name="arch" type="xml">
+            <form string="Payroll Run">
+                <header>
+                    <button name="action_calculate" string="Calculate" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_confirm" string="Confirm" type="object"
+                            class="btn-secondary" invisible="state != 'calculated'"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-success" invisible="state != 'confirmed'"
+                            groups="hr.group_hr_manager"/>
+                    <button name="action_post_journal" string="Post Journal" type="object"
+                            class="btn-secondary" invisible="state != 'approved'"/>
+                    <button name="action_publish_payslips" string="Publish to Portal"
+                            type="object" class="btn-success" invisible="state not in ('approved','posted')"/>
+                    <button name="action_export_accountant" string="Export CSV (Accountant)"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('approved','posted','exported')"/>
+                    <button name="action_export_payroll_provider"
+                            string="Export (Payroll Provider)"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('approved','posted','exported')"/>
+                    <button name="action_export_annual_statement"
+                            string="Annual Statement (Jaaropgaaf)"
+                            type="object" class="btn-secondary"
+                            invisible="state not in ('posted','exported')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,calculated,confirmed,approved,posted,exported"/>
+                </header>
+                <sheet>
+                    <div class="alert alert-warning" role="alert">
+                        <strong>⚠️ Legal Notice:</strong> This payroll run is for internal use and
+                        export only. Direct filing to the Belastingdienst requires a certified
+                        submission route. Use the export function to send to your payroll provider
+                        or accountant.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="period_type"/>
+                            <field name="period_start"/>
+                            <field name="period_end"/>
+                        </group>
+                        <group>
+                            <field name="rule_version_id"/>
+                            <field name="journal_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Totals" invisible="state == 'draft'">
+                        <group>
+                            <field name="total_gross"/>
+                            <field name="total_net"/>
+                        </group>
+                        <group>
+                            <field name="total_loonheffing"/>
+                            <field name="total_employer_cost"/>
+                        </group>
+                    </group>
+                    <field name="payslip_ids">
+                        <list>
+                            <field name="employee_id"/>
+                            <field name="gross_salary" string="Gross"/>
+                            <field name="loonheffing" string="Loonheffing"/>
+                            <field name="net_salary" string="Net"/>
+                            <field name="vakantiegeld_accrual" string="VG Accrual"/>
+                            <field name="total_employer_cost" string="Employer Cost"/>
+                            <field name="state" widget="badge"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_run" model="ir.actions.act_window">
+        <field name="name">Payroll Runs</field>
+        <field name="res_model">hr.payroll.run</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Rule version list -->
+    <record id="view_payroll_rule_list" model="ir.ui.view">
+        <field name="name">hr.payroll.rule.version.list</field>
+        <field name="model">hr.payroll.rule.version</field>
+        <field name="arch" type="xml">
+            <list string="Payroll Rule Versions"
+                  decoration-success="is_active"
+                  decoration-muted="not is_active">
+                <field name="display_name"/>
+                <field name="year"/>
+                <field name="version"/>
+                <field name="is_active"/>
+                <field name="bracket1_rate" string="Bracket 1 %"/>
+                <field name="bracket2_rate" string="Bracket 2 %"/>
+                <field name="lhk_max_amount" string="Max LHK (€)"/>
+                <button name="activate" string="Set Active" type="object"
+                        class="btn-sm btn-success" invisible="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_payroll_rule_form" model="ir.ui.view">
+        <field name="name">hr.payroll.rule.version.form</field>
+        <field name="model">hr.payroll.rule.version</field>
+        <field name="arch" type="xml">
+            <form string="Payroll Rule Version">
+                <header>
+                    <button name="activate" string="Set as Current Rules" type="object"
+                            class="btn-primary" invisible="is_active"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="year"/>
+                            <field name="version"/>
+                            <field name="is_active"/>
+                        </group>
+                    </group>
+                    <group string="Loonbelasting Brackets">
+                        <group>
+                            <field name="bracket1_max" string="Bracket 1 Max (€/yr)"/>
+                            <field name="bracket1_rate" string="Bracket 1 Rate (%)"/>
+                            <field name="bracket2_rate" string="Bracket 2 Rate (%)"/>
+                        </group>
+                    </group>
+                    <group string="Loonheffingskorting">
+                        <group>
+                            <field name="lhk_max_amount" string="Max LHK (€/yr)"/>
+                            <field name="lhk_afbouw_start" string="Phaseout Start (€)"/>
+                            <field name="lhk_afbouw_end" string="Phaseout End (€)"/>
+                            <field name="lhk_afbouw_rate" string="Phaseout Rate (%)"/>
+                        </group>
+                    </group>
+                    <group string="Employer Contributions">
+                        <group>
+                            <field name="awf_employer_pct" string="AWF/WW (%)"/>
+                            <field name="zvw_employer_pct" string="ZVW (%)"/>
+                        </group>
+                        <group>
+                            <field name="vakantiegeld_pct" string="Vakantiegeld (%)"/>
+                            <field name="max_km_vergoeding" string="Max km-vergoeding (€)"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payroll_rule" model="ir.actions.act_window">
+        <field name="name">Payroll Rule Versions</field>
+        <field name="res_model">hr.payroll.rule.version</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Wage-cost report: payroll runs grouped by period ── -->
+    <record id="action_wage_cost_report" model="ir.actions.act_window">
+        <field name="name">Wage Cost Report</field>
+        <field name="res_model">hr.payroll.run</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'not in', ('draft',))]</field>
+        <field name="context">{"group_by": "period_start:month"}</field>
+    </record>
+
+    <!-- ── Employer-cost report: payslips showing all employer contributions ── -->
+    <record id="action_employer_cost_report" model="ir.actions.act_window">
+        <field name="name">Employer Cost Report</field>
+        <field name="res_model">hr.payroll.payslip</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state', 'not in', ('draft',))]</field>
+        <field name="context">{"group_by": "payroll_run_id"}</field>
+    </record>
+
+    <!-- ── Access audit log ── -->
+    <record id="action_payroll_access_log" model="ir.actions.act_window">
+        <field name="name">Payroll Access Audit Log</field>
+        <field name="res_model">hr.payroll.access.log</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Users see only subscriptions belonging to one of their companies. -->
+    <record id="rule_subscription_company_user" model="ir.rule">
+        <field name="name">Platform Subscription: multi-company isolation (user)</field>
+        <field name="model_id" ref="model_platform_subscription"/>
+        <field name="domain_force">[('company_id', 'in', user.company_ids.ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Menu gate rules have no company field; system admins manage them globally. -->
+    <record id="rule_menu_gate_admin_only" model="ir.rule">
+        <field name="name">Platform Menu Gate: system admin write only</field>
+        <field name="model_id" ref="model_platform_menu_gate"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_system'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <!-- Packages are global; any user may read, only admins may write. -->
+    <record id="rule_package_global_read" model="ir.rule">
+        <field name="name">Platform Package: global read for all users</field>
+        <field name="model_id" ref="model_platform_package"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+</odoo>

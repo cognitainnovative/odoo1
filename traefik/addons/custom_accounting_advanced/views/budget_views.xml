@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_budget_list" model="ir.ui.view">
+        <field name="name">account.budget.platform.list</field>
+        <field name="model">account.budget.platform</field>
+        <field name="arch" type="xml">
+            <list string="Budgets"
+                  decoration-success="state == 'active'"
+                  decoration-muted="state == 'done'">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="total_budget" string="Budget (€)"/>
+                <field name="total_actual" string="Actual (€)"/>
+                <field name="variance" string="Variance (€)"/>
+                <field name="variance_pct" string="Var %"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_budget_form" model="ir.ui.view">
+        <field name="name">account.budget.platform.form</field>
+        <field name="model">account.budget.platform</field>
+        <field name="arch" type="xml">
+            <form string="Budget">
+                <header>
+                    <button name="action_activate" string="Activate" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_compute_actuals" string="Refresh Actuals"
+                            type="object" class="btn-secondary"
+                            invisible="state == 'draft'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group string="Totals">
+                            <field name="total_budget" readonly="1"/>
+                            <field name="total_actual" readonly="1"/>
+                            <field name="variance" readonly="1"/>
+                            <field name="variance_pct" readonly="1" string="Variance %"/>
+                        </group>
+                    </group>
+                    <field name="line_ids">
+                        <list editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="name"/>
+                            <field name="account_id"/>
+                            <field name="budgeted_amount"/>
+                            <field name="actual_amount" readonly="1"/>
+                            <field name="variance" readonly="1"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_budget" model="ir.actions.act_window">
+        <field name="name">Budgets</field>
+        <field name="res_model">account.budget.platform</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

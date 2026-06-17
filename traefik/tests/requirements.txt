@@ -1,0 +1,3 @@
+# Dependencies for the cross-service test suite (tests/api + tests/e2e).
+pytest>=8.0
+requests>=2.31

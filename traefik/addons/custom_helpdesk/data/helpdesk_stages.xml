@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <record id="stage_new" model="helpdesk.stage">
+        <field name="name">New</field>
+        <field name="sequence">10</field>
+        <field name="is_closed" eval="False"/>
+    </record>
+
+    <record id="stage_in_progress" model="helpdesk.stage">
+        <field name="name">In Progress</field>
+        <field name="sequence">20</field>
+        <field name="is_closed" eval="False"/>
+    </record>
+
+    <record id="stage_waiting" model="helpdesk.stage">
+        <field name="name">Waiting on Customer</field>
+        <field name="sequence">30</field>
+        <field name="is_closed" eval="False"/>
+    </record>
+
+    <record id="stage_resolved" model="helpdesk.stage">
+        <field name="name">Resolved</field>
+        <field name="sequence">40</field>
+        <field name="is_closed" eval="True"/>
+    </record>
+
+    <record id="stage_closed" model="helpdesk.stage">
+        <field name="name">Closed</field>
+        <field name="sequence">50</field>
+        <field name="is_closed" eval="True"/>
+        <field name="fold" eval="True"/>
+    </record>
+
+    <record id="cron_sla_check" model="ir.cron">
+        <field name="name">Helpdesk: SLA Breach Check</field>
+        <field name="model_id" ref="model_helpdesk_ticket"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_check_sla()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="True"/>
+    </record>
+
+</data>
+</odoo>

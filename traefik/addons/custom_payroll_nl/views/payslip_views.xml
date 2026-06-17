@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_payslip_list" model="ir.ui.view">
+        <field name="name">hr.payroll.payslip.list</field>
+        <field name="model">hr.payroll.payslip</field>
+        <field name="arch" type="xml">
+            <list string="Payslips"
+                  decoration-success="state == 'published'"
+                  decoration-warning="state == 'calculated'"
+                  decoration-muted="state == 'draft'">
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="period_start"/>
+                <field name="period_end"/>
+                <field name="gross_salary" string="Gross"/>
+                <field name="loonheffing"/>
+                <field name="net_salary" string="Net"/>
+                <field name="vakantiegeld_accrual" string="VG"/>
+                <field name="total_employer_cost" string="Emp. Cost"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_payslip_form" model="ir.ui.view">
+        <field name="name">hr.payroll.payslip.form</field>
+        <field name="model">hr.payroll.payslip</field>
+        <field name="arch" type="xml">
+            <form string="Payslip">
+                <header>
+                    <button name="action_calculate" string="Calculate" type="object"
+                            class="btn-primary" invisible="state != 'draft'"
+                            groups="hr.group_hr_manager"/>
+                    <button name="action_publish" string="Publish to Portal" type="object"
+                            class="btn-success" invisible="state != 'approved'"
+                            groups="hr.group_hr_manager"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,calculated,confirmed,approved,published"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="employee_id" readonly="1"/>
+                            <field name="period_start"/>
+                            <field name="period_end"/>
+                            <field name="period_type" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="rule_version_id" readonly="1"/>
+                            <field name="loonheffingskorting_applied" readonly="1"/>
+                            <field name="loonheffingskorting_amount" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Gross Components">
+                        <group>
+                            <field name="gross_salary"/>
+                            <field name="overtime_gross"/>
+                            <field name="bonus_gross"/>
+                            <field name="allowances"/>
+                            <field name="expense_reimbursement"/>
+                            <field name="vakantiegeld_accrual" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Deductions">
+                        <group>
+                            <field name="loonheffing" readonly="1"/>
+                            <field name="pension_employee" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="net_salary" readonly="1" string="Net Salary"/>
+                        </group>
+                    </group>
+                    <group string="Employer Contributions">
+                        <group>
+                            <field name="pension_employer" readonly="1"/>
+                            <field name="awf_employer" readonly="1"/>
+                            <field name="zvw_employer" readonly="1"/>
+                            <field name="total_employer_cost" readonly="1"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-warning mt-2" role="alert"
+                         invisible="not calculation_warning">
+                        <strong>Warning:</strong> <field name="calculation_warning" readonly="1"/>
+                    </div>
+                    <notebook>
+                        <page string="Calculation Detail" name="calc_detail">
+                            <field name="calculation_json" readonly="1" widget="text"/>
+                        </page>
+                        <page string="Manual Overrides" name="overrides">
+                            <field name="override_ids" readonly="1">
+                                <list>
+                                    <field name="field_name"/>
+                                    <field name="original_value"/>
+                                    <field name="override_value"/>
+                                    <field name="reason"/>
+                                    <field name="override_by_id"/>
+                                    <field name="override_date"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_payslip_all" model="ir.actions.act_window">
+        <field name="name">All Payslips</field>
+        <field name="res_model">hr.payroll.payslip</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

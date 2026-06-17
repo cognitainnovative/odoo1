@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- My Tickets list — /my/tickets -->
+    <template id="portal_my_tickets" name="My Support Tickets">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+            <div class="o_portal_docs container mt-4">
+                <h3>My Support Tickets</h3>
+                <t t-if="not tickets">
+                    <p class="text-muted">You have no support tickets yet.</p>
+                </t>
+                <table t-if="tickets" class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Priority</th>
+                            <th>Opened</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="tickets" t-as="ticket">
+                            <tr>
+                                <td>
+                                    <a t-attf-href="/helpdesk/ticket/#{ticket.id}">
+                                        <t t-esc="ticket.id"/>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a t-attf-href="/helpdesk/ticket/#{ticket.id}">
+                                        <t t-esc="ticket.name"/>
+                                    </a>
+                                </td>
+                                <td><span t-esc="ticket.stage_id.name"/></td>
+                                <td>
+                                    <span t-attf-class="badge #{ticket.priority == '2' and 'bg-danger' or ticket.priority == '1' and 'bg-warning' or 'bg-secondary'}">
+                                        <t t-esc="dict([('0','Normal'),('1','High'),('2','Urgent')]).get(ticket.priority,'Normal')"/>
+                                    </span>
+                                </td>
+                                <td><t t-field="ticket.create_date" t-options='{"format": "dd MMM yyyy"}'/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <!-- Ticket detail — /helpdesk/ticket/<id> -->
+    <template id="portal_ticket_detail" name="Ticket Detail">
+        <t t-call="portal.portal_layout">
+            <div class="o_portal_docs container mt-4">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/my/tickets">My Tickets</a></li>
+                        <li class="breadcrumb-item active"><t t-esc="ticket.name"/></li>
+                    </ol>
+                </nav>
+
+                <div class="card mt-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><t t-esc="ticket.name"/></h5>
+                        <span t-attf-class="badge #{ticket.stage_id.is_closed and 'bg-success' or 'bg-primary'}">
+                            <t t-esc="ticket.stage_id.name"/>
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <dl class="row mb-3">
+                            <dt class="col-sm-3">Reference</dt>
+                            <dd class="col-sm-9">#<t t-esc="ticket.id"/></dd>
+                            <dt class="col-sm-3">Category</dt>
+                            <dd class="col-sm-9"><t t-esc="ticket.category"/></dd>
+                            <dt class="col-sm-3">Priority</dt>
+                            <dd class="col-sm-9"><t t-esc="ticket.priority"/></dd>
+                        </dl>
+                        <div t-if="ticket.description" class="mb-3">
+                            <h6>Description</h6>
+                            <div t-out="ticket.description"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reply form (only for open tickets) -->
+                <div class="card mt-3" t-if="not ticket.stage_id.is_closed">
+                    <div class="card-header"><h6 class="mb-0">Add a Reply</h6></div>
+                    <div class="card-body">
+                        <form t-attf-action="/helpdesk/ticket/#{ticket.id}/reply" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="mb-3">
+                                <textarea name="message" class="form-control" rows="4"
+                                          placeholder="Describe your question or update…" required="1"/>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Send Reply</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Message thread -->
+                <div class="mt-4" t-if="ticket.message_ids">
+                    <h6>Conversation History</h6>
+                    <t t-foreach="ticket.message_ids.filtered(lambda m: m.subtype_id.name != 'Note')" t-as="msg">
+                        <div class="card mb-2">
+                            <div class="card-header small text-muted">
+                                <t t-esc="msg.author_id.name"/> —
+                                <t t-field="msg.date" t-options='{"format": "dd MMM yyyy HH:mm"}'/>
+                            </div>
+                            <div class="card-body">
+                                <div t-out="msg.body"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Portal my home: inject ticket count -->
+    <template id="portal_my_home_helpdesk" name="Portal My Home: Tickets"
+              inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="title">Support Tickets</t>
+                <t t-set="url" t-value="'/my/tickets'"/>
+                <t t-set="count" t-value="ticket_count"/>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_res_partner_form_platform" model="ir.ui.view">
+        <field name="name">res.partner.form.platform.crm</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Stat button for leads -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" icon="fa-handshake-o"
+                        name="action_view_crm_leads" type="object"
+                        invisible="crm_lead_count == 0">
+                    <field name="crm_lead_count" widget="statinfo" string="Leads"/>
+                </button>
+            </xpath>
+            <!-- GDPR tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="GDPR" name="gdpr_consent">
+                    <group>
+                        <group>
+                            <field name="gdpr_consent"/>
+                            <field name="gdpr_consent_date" readonly="1"/>
+                            <field name="gdpr_consent_version" placeholder="e.g. v2.1 — Jan 2025"/>
+                            <field name="gdpr_anonymized" readonly="1"/>
+                            <field name="anonymize_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <div invisible="not gdpr_anonymized" class="alert alert-warning" role="alert">
+                        This contact has been anonymized. Personal data has been removed.
+                    </div>
+                    <div class="mt-3">
+                        <button name="action_anonymize_partner" string="Anonymize Contact (GDPR)"
+                                type="object" class="btn-danger"
+                                invisible="gdpr_anonymized"
+                                confirm="This will permanently remove personal data. Are you sure?"/>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

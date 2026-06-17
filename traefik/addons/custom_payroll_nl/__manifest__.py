@@ -1,0 +1,23 @@
+{
+    "name": "Platform Payroll NL",
+    "version": "19.0.1.0.0",
+    "summary": "Dutch payroll engine, versioned tax rules, payslips, journal entries, export.",
+    "author": "Cognita Innovative",
+    "license": "LGPL-3",
+    "category": "Payroll",
+    "depends": ["hr", "account", "mail", "custom_hrm", "custom_platform_security"],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/record_rules.xml",
+        "data/payroll_rule_parameters.xml",
+        "views/payroll_run_views.xml",
+        "views/payslip_views.xml",
+        "views/payroll_settings_views.xml",
+        "report/payslip_report.xml",
+        "views/menus.xml",
+    ],
+    "demo": ["data/demo/demo_payroll.xml"],
+    "installable": True,
+    "application": True,
+    "auto_install": False,
+}

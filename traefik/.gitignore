@@ -1,0 +1,57 @@
+# ── Environment & secrets ─────────────────────────────────────────────────────
+.env
+*.env.local
+*.env.*.local
+secrets/
+*.key
+*.pem
+
+# ── Odoo runtime ──────────────────────────────────────────────────────────────
+.odoo_data/
+logs/*.log
+logs/odoo.pid
+*.pyc
+__pycache__/
+*.egg-info/
+.eggs/
+
+# ── Backups ───────────────────────────────────────────────────────────────────
+backups/
+*.dump
+*.tar.gz
+
+# ── Python ────────────────────────────────────────────────────────────────────
+.venv/
+venv/
+.python-version
+*.pyo
+dist/
+build/
+*.so
+
+# ── Node / React ──────────────────────────────────────────────────────────────
+services/support_app/node_modules/
+services/support_app/dist/
+services/support_app/.vite/
+
+# ── Editors / OS ──────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ── Test artefacts ────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.junit.xml
+
+# ── Ruff / Black cache ────────────────────────────────────────────────────────
+.ruff_cache/
+
+# ── Pre-commit ────────────────────────────────────────────────────────────────
+.pre-commit-cache/
+*.pdf

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Transcript view is embedded in session form — this file holds standalone action -->
+    <record id="action_chat_session_all" model="ir.actions.act_window">
+        <field name="name">All Chat Sessions</field>
+        <field name="res_model">chat.session</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

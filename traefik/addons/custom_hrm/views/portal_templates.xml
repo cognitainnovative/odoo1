@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Employee self-service portal — profile page -->
+    <template id="portal_employee_profile" name="Employee Profile">
+        <t t-call="portal.portal_layout">
+            <div class="container py-4">
+                <h2>My Profile</h2>
+                <div class="card p-3 mb-3">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <t t-if="employee.image_1920">
+                                <img t-attf-src="/web/image/hr.employee/#{employee.id}/image_128"
+                                     class="rounded-circle" style="width:100px;height:100px;"/>
+                            </t>
+                        </div>
+                        <div class="col-md-8">
+                            <h4 t-esc="employee.name"/>
+                            <p t-if="employee.job_title"><strong>Title:</strong> <t t-esc="employee.job_title"/></p>
+                            <p t-if="employee.department_id"><strong>Department:</strong> <t t-esc="employee.department_id.name"/></p>
+                            <p t-if="employee.work_email"><strong>Work Email:</strong> <t t-esc="employee.work_email"/></p>
+                            <p t-if="employee.work_phone"><strong>Work Phone:</strong> <t t-esc="employee.work_phone"/></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3 flex-wrap">
+                    <a href="/my/planning" class="btn btn-primary">My Planning</a>
+                    <a href="/my/leaves" class="btn btn-outline-primary">My Leaves</a>
+                    <a href="/my/payslips" class="btn btn-secondary">My Payslips</a>
+                    <a href="/my/documents" class="btn btn-secondary">HR Documents</a>
+                    <a href="/my/sick-leave/report" class="btn btn-warning">Report Sick Leave</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Employee leaves portal page -->
+    <template id="portal_employee_leaves" name="My Leaves">
+        <t t-call="portal.portal_layout">
+            <div class="container py-4">
+                <h2>My Leave Requests</h2>
+                <t t-if="not leaves">
+                    <p class="text-muted">No leave requests found.</p>
+                </t>
+                <table t-if="leaves" class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Type</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Days</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="leaves" t-as="leave">
+                            <td t-esc="leave.holiday_status_id.name"/>
+                            <td t-esc="leave.date_from and str(leave.date_from)[:10]"/>
+                            <td t-esc="leave.date_to and str(leave.date_to)[:10]"/>
+                            <td t-esc="leave.number_of_days"/>
+                            <td><span t-esc="leave.state"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="mt-3 d-flex gap-2">
+                    <a href="/my/planning" class="btn btn-primary">View Planning Calendar</a>
+                    <a href="/my/profile" class="btn btn-secondary">Back to Profile</a>
+                </div>
+
+                <h2 class="mt-4">My Sick Leave</h2>
+                <t t-if="not sick_leaves">
+                    <p class="text-muted">No sick leave records found.</p>
+                </t>
+                <table t-if="sick_leaves" class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>From</th>
+                            <th>Expected End</th>
+                            <th>Actual Return</th>
+                            <th>Days</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="sick_leaves" t-as="sl">
+                            <td t-esc="sl.start_date and str(sl.start_date)[:10]"/>
+                            <td t-esc="sl.expected_end_date and str(sl.expected_end_date)[:10]"/>
+                            <td t-esc="sl.actual_end_date and str(sl.actual_end_date)[:10]"/>
+                            <td t-esc="sl.duration_days"/>
+                            <td><span t-esc="sl.state"/></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+    </template>
+
+    <!-- Employee payslips portal page -->
+    <template id="portal_employee_payslips" name="My Payslips">
+        <t t-call="portal.portal_layout">
+            <div class="container py-4">
+                <h2>My Payslips</h2>
+                <p class="text-muted small">Only your own payslips are shown here.</p>
+                <t t-if="not payslips">
+                    <p class="text-muted">No payslips available yet.</p>
+                </t>
+                <table t-if="payslips" class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Reference</th>
+                            <th>Period Start</th>
+                            <th>Period End</th>
+                            <th>Gross (€)</th>
+                            <th>Net (€)</th>
+                            <th>Document</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="payslips" t-as="slip">
+                            <td t-esc="slip.name"/>
+                            <td t-esc="slip.period_start"/>
+                            <td t-esc="slip.period_end"/>
+                            <td t-esc="'%.2f' % slip.gross_amount"/>
+                            <td t-esc="'%.2f' % slip.net_amount"/>
+                            <td>
+                                <a t-if="slip.attachment_id"
+                                   t-attf-href="/web/content/#{slip.attachment_id.id}"
+                                   class="btn btn-sm btn-outline-secondary">Download</a>
+                                <span t-else="" class="text-muted">—</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="/my/profile" class="btn btn-secondary mt-3">Back to Profile</a>
+            </div>
+        </t>
+    </template>
+
+    <!-- HR documents portal page (viewer + upload) -->
+    <template id="portal_employee_documents" name="HR Documents">
+        <t t-call="portal.portal_layout">
+            <div class="container py-4">
+                <h2>HR Documents</h2>
+
+                <!-- Announcements block -->
+                <t t-if="announcements">
+                    <h5 class="mt-3">Announcements</h5>
+                    <t t-foreach="announcements" t-as="ann">
+                        <div class="alert alert-info mb-2">
+                            <strong t-esc="ann.name"/>
+                            <div t-raw="ann.body"/>
+                        </div>
+                    </t>
+                </t>
+
+                <!-- Upload form -->
+                <div class="card p-3 mb-4">
+                    <h6>Upload a Document</h6>
+                    <form method="POST" enctype="multipart/form-data"
+                          t-attf-action="/my/documents">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="input-group">
+                            <input type="file" name="document" class="form-control" required="required"/>
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Document list -->
+                <t t-if="not docs">
+                    <p class="text-muted">No documents on file.</p>
+                </t>
+                <table t-if="docs" class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Uploaded</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="docs" t-as="doc">
+                            <td t-esc="doc.name"/>
+                            <td t-esc="doc.create_date and str(doc.create_date)[:10]"/>
+                            <td>
+                                <a t-attf-href="/web/content/#{doc.id}" class="btn btn-sm btn-outline-secondary">
+                                    Download
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="/my/profile" class="btn btn-secondary mt-3">Back to Profile</a>
+            </div>
+        </t>
+    </template>
+
+    <!-- ── Planning calendar ────────────────────────────────────────────── -->
+    <template id="portal_employee_planning" name="My Planning Calendar">
+        <t t-call="portal.portal_layout">
+            <div class="container py-4">
+                <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+                    <h2 class="mb-0">My Planning</h2>
+                    <div class="d-flex gap-2">
+                        <a t-attf-href="/my/planning?year=#{prev_year}&amp;month=#{prev_month}"
+                           class="btn btn-outline-secondary btn-sm">&#8592; Prev</a>
+                        <span class="btn btn-light btn-sm disabled fw-semibold"
+                              t-esc="'%s %d' % (month_name, year)"/>
+                        <a t-attf-href="/my/planning?year=#{next_year}&amp;month=#{next_month}"
+                           class="btn btn-outline-secondary btn-sm">Next &#8594;</a>
+                    </div>
+                </div>
+
+                <!-- Calendar grid -->
+                <div class="table-responsive">
+                    <table class="table table-bordered mb-0"
+                           style="table-layout:fixed;min-width:560px;">
+                        <thead class="table-light text-center small fw-semibold">
+                            <tr>
+                                <th>Mon</th><th>Tue</th><th>Wed</th>
+                                <th>Thu</th><th>Fri</th>
+                                <th class="text-muted">Sat</th>
+                                <th class="text-muted">Sun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="weeks" t-as="week">
+                                <td t-foreach="week" t-as="day"
+                                    t-attf-style="vertical-align:top;min-height:80px;padding:4px 6px;#{not day['current_month'] and 'background:#f8f9fa;' or ''}"
+                                    t-attf-class="#{day.get('today') and 'table-primary' or (day.get('weekend') and 'text-muted' or '')}">
+                                    <t t-if="day['current_month']">
+                                        <div class="fw-bold small mb-1"
+                                             t-attf-style="#{day.get('today') and 'color:#0d6efd;' or ''}">
+                                            <t t-esc="day['day_num']"/>
+                                        </div>
+                                        <t t-foreach="day['events']" t-as="ev">
+                                            <span t-attf-class="badge bg-#{ev['css']} d-block text-truncate mb-1"
+                                                  style="font-size:0.68rem;max-width:100%;"
+                                                  t-esc="ev['label']"/>
+                                        </t>
+                                    </t>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Legend -->
+                <div class="mt-3 d-flex flex-wrap gap-3 small">
+                    <span><span class="badge bg-warning text-dark">&#9632;</span> Pending approval</span>
+                    <span><span class="badge bg-success">&#9632;</span> Approved leave</span>
+                    <span><span class="badge bg-info text-dark">&#9632;</span> Approved (1st level)</span>
+                    <span><span class="badge bg-danger">&#9632;</span> Sick leave</span>
+                    <span><span class="badge bg-secondary">&#9632;</span> Draft</span>
+                    <span class="ms-2 text-primary fw-semibold">&#9632; Today</span>
+                </div>
+
+                <div class="mt-4 d-flex gap-2">
+                    <a href="/my/leaves" class="btn btn-outline-primary btn-sm">Leave Requests</a>
+                    <a href="/my/sick-leave/report" class="btn btn-outline-warning btn-sm">Report Sick Leave</a>
+                    <a href="/my/profile" class="btn btn-secondary btn-sm">Back to Profile</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Sick leave report form -->
+    <template id="portal_sick_leave_form" name="Report Sick Leave">
+        <t t-call="portal.portal_layout">
+            <div class="container py-4" style="max-width:600px;">
+                <h2>Report Sick Leave</h2>
+                <p class="text-muted">
+                    Your manager and HR will be notified automatically.
+                    No medical details are required.
+                </p>
+                <form method="POST" t-attf-action="/my/sick-leave/report">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Start Date *</label>
+                        <input type="date" name="start_date" class="form-control" required="required"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Expected Return Date</label>
+                        <input type="date" name="expected_end_date" class="form-control"/>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Submit Sick Leave</button>
+                    <a href="/my/profile" class="btn btn-secondary ms-2">Cancel</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <!-- Sick leave submitted confirmation -->
+    <template id="portal_sick_leave_submitted" name="Sick Leave Submitted">
+        <t t-call="portal.portal_layout">
+            <div class="container py-4 text-center">
+                <div style="color:#059669;font-size:3rem;">✓</div>
+                <h2>Sick Leave Reported</h2>
+                <p>Your sick leave has been recorded. Your manager and HR have been notified.</p>
+                <a href="/my/profile" class="btn btn-primary mt-3">Back to Profile</a>
+            </div>
+        </t>
+    </template>
+
+</odoo>

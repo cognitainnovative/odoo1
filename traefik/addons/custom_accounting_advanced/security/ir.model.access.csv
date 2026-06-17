@@ -1,0 +1,27 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fiscal_year_manager,account.fiscal.year.custom manager,model_account_fiscal_year_custom,account.group_account_manager,1,1,1,1
+access_fiscal_year_user,account.fiscal.year.custom user,model_account_fiscal_year_custom,account.group_account_invoice,1,0,0,0
+access_fixed_asset_manager,account.fixed.asset manager,model_account_fixed_asset,account.group_account_manager,1,1,1,1
+access_fixed_asset_user,account.fixed.asset user,model_account_fixed_asset,account.group_account_invoice,1,0,0,0
+access_fixed_asset_line_manager,account.fixed.asset.line manager,model_account_fixed_asset_line,account.group_account_manager,1,1,1,1
+access_fixed_asset_line_user,account.fixed.asset.line user,model_account_fixed_asset_line,account.group_account_invoice,1,0,0,0
+access_budget_manager,account.budget.platform manager,model_account_budget_platform,account.group_account_manager,1,1,1,1
+access_budget_user,account.budget.platform user,model_account_budget_platform,account.group_account_invoice,1,0,0,0
+access_budget_line_manager,account.budget.line.platform manager,model_account_budget_line_platform,account.group_account_manager,1,1,1,1
+access_budget_line_user,account.budget.line.platform user,model_account_budget_line_platform,account.group_account_invoice,1,0,0,0
+access_bv_annual_admin,bv.annual.accounts admin,model_bv_annual_accounts,account.group_account_manager,1,1,1,1
+access_bv_annual_accountant,bv.annual.accounts accountant,model_bv_annual_accounts,account.group_account_readonly,1,1,0,0
+access_accrual_manager,account.accrual.provision manager,model_account_accrual_provision,account.group_account_manager,1,1,1,1
+access_accrual_user,account.accrual.provision user,model_account_accrual_provision,account.group_account_invoice,1,0,0,0
+access_audit_export_wizard,account.audit.export.wizard,model_account_audit_export_wizard,account.group_account_manager,1,1,1,1
+access_cost_centre_manager,account.cost.centre manager,model_account_cost_centre,account.group_account_manager,1,1,1,1
+access_cost_centre_user,account.cost.centre user,model_account_cost_centre,account.group_account_invoice,1,0,0,0
+access_trial_balance_wizard,account.trial.balance.wizard,model_account_trial_balance_wizard,account.group_account_manager,1,1,1,1
+access_trial_balance_line,account.trial.balance.line,model_account_trial_balance_line,account.group_account_manager,1,1,1,1
+access_general_ledger_wizard,account.general.ledger.wizard,model_account_general_ledger_wizard,account.group_account_manager,1,1,1,1
+access_general_ledger_line,account.general.ledger.line,model_account_general_ledger_line,account.group_account_manager,1,1,1,1
+access_aged_balance_wizard,account.aged.balance.wizard,model_account_aged_balance_wizard,account.group_account_manager,1,1,1,1
+access_aged_balance_line,account.aged.balance.line,model_account_aged_balance_line,account.group_account_manager,1,1,1,1
+access_vat_summary_wizard,account.vat.summary.wizard,model_account_vat_summary_wizard,account.group_account_manager,1,1,1,1
+access_vat_summary_line,account.vat.summary.line,model_account_vat_summary_line,account.group_account_manager,1,1,1,1
+access_cash_flow_wizard,account.cash.flow.wizard,model_account_cash_flow_wizard,account.group_account_manager,1,1,1,1

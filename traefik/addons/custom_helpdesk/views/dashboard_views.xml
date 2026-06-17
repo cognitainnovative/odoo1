@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Ticket Analysis — graph + pivot KPI action ═══ -->
+    <record id="action_helpdesk_ticket_analysis" model="ir.actions.act_window">
+        <field name="name">Ticket Analysis</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="domain">[]</field>
+        <field name="context">{"search_default_by_stage": 1}</field>
+    </record>
+
+    <record id="action_helpdesk_overdue" model="ir.actions.act_window">
+        <field name="name">Overdue / SLA Breached</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('sla_deadline','&lt;',datetime.datetime.now()),('stage_id.is_closed','=',False)]</field>
+    </record>
+
+    <record id="action_helpdesk_unassigned" model="ir.actions.act_window">
+        <field name="name">Unassigned Tickets</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('user_id','=',False),('stage_id.is_closed','=',False)]</field>
+    </record>
+
+    <record id="action_helpdesk_complaints" model="ir.actions.act_window">
+        <field name="name">Complaints</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('is_complaint','=',True),('stage_id.is_closed','=',False)]</field>
+    </record>
+
+</odoo>

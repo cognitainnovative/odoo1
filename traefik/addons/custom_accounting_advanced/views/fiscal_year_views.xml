@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Fiscal Year ═══ -->
+    <record id="view_fiscal_year_list" model="ir.ui.view">
+        <field name="name">account.fiscal.year.custom.list</field>
+        <field name="model">account.fiscal.year.custom</field>
+        <field name="arch" type="xml">
+            <list string="Fiscal Years"
+                  decoration-success="state == 'open'"
+                  decoration-warning="state == 'locked'"
+                  decoration-muted="state == 'closed'">
+                <field name="name"/>
+                <field name="date_from"/>
+                <field name="date_to"/>
+                <field name="state" widget="badge"/>
+                <field name="opening_balance_done"/>
+                <field name="closing_entries_done"/>
+                <button name="action_lock" string="Lock" type="object"
+                        class="btn-sm btn-warning" invisible="state != 'open'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_fiscal_year_form" model="ir.ui.view">
+        <field name="name">account.fiscal.year.custom.form</field>
+        <field name="model">account.fiscal.year.custom</field>
+        <field name="arch" type="xml">
+            <form string="Fiscal Year">
+                <header>
+                    <button name="action_lock" string="Lock Period" type="object"
+                            class="btn-warning" invisible="state != 'open'"/>
+                    <button name="action_close" string="Close Year" type="object"
+                            class="btn-danger" invisible="state != 'locked'"/>
+                    <button name="action_reopen" string="Re-open" type="object"
+                            class="btn-secondary" invisible="state == 'open'"
+                            groups="base.group_system"/>
+                    <field name="state" widget="statusbar" statusbar_visible="open,locked,closed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="opening_balance_done"/>
+                            <field name="closing_entries_done"/>
+                        </group>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_fiscal_year" model="ir.actions.act_window">
+        <field name="name">Fiscal Years</field>
+        <field name="res_model">account.fiscal.year.custom</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ═══ Period lock admin view on res.company ═══ -->
+    <record id="view_company_period_lock" model="ir.ui.view">
+        <field name="name">res.company.period.lock</field>
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Period Locks" name="period_locks" groups="account.group_account_manager">
+                    <group string="Odoo Period Lock Dates">
+                        <field name="fiscalyear_lock_date" string="Fiscal Year Lock"/>
+                        <field name="tax_lock_date" string="Tax Lock"/>
+                    </group>
+                    <group string="Last Lock Override" groups="base.group_system">
+                        <field name="platform_lock_override_reason" readonly="1"/>
+                        <field name="platform_lock_override_date" readonly="1"/>
+                        <field name="platform_lock_override_by" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- ═══ Audit Export Wizard ═══ -->
+    <record id="action_audit_export_wizard" model="ir.actions.act_window">
+        <field name="name">Audit File Export</field>
+        <field name="res_model">account.audit.export.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

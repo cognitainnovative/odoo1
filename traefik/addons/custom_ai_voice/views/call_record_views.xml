@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_voice_call_list" model="ir.ui.view">
+        <field name="name">voice.call.list</field>
+        <field name="model">voice.call</field>
+        <field name="arch" type="xml">
+            <list string="Voice Calls"
+                  decoration-danger="current_sentiment == 'angry'"
+                  decoration-warning="current_sentiment in ('frustrated','urgent')"
+                  decoration-muted="state in ('missed','failed')">
+                <field name="start_time"/>
+                <field name="direction"/>
+                <field name="from_number"/>
+                <field name="flow_id"/>
+                <field name="duration_seconds" string="Duration (s)"/>
+                <field name="current_sentiment"/>
+                <field name="call_outcome"/>
+                <field name="state" widget="badge"/>
+                <field name="partner_id" optional="show"/>
+                <field name="sentiment_escalation_triggered" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_voice_call_form" model="ir.ui.view">
+        <field name="name">voice.call.form</field>
+        <field name="model">voice.call</field>
+        <field name="arch" type="xml">
+            <form string="Voice Call">
+                <sheet>
+                    <div class="alert alert-danger" role="alert"
+                         invisible="current_sentiment != 'angry'">
+                        ⚠️ <strong>Caller sentiment: ANGRY</strong> — Escalation may be needed.
+                    </div>
+                    <div class="alert alert-warning" role="alert"
+                         invisible="not recording_consent_given">
+                        🔴 <strong>This call was recorded.</strong>
+                        Consent was given by the caller.
+                    </div>
+                    <group>
+                        <group>
+                            <field name="direction"/>
+                            <field name="from_number"/>
+                            <field name="to_number"/>
+                            <field name="provider_id"/>
+                            <field name="flow_id"/>
+                        </group>
+                        <group>
+                            <field name="state"/>
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+                            <field name="duration_seconds" string="Duration (s)" readonly="1"/>
+                            <field name="ai_turn_count" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Sentiment &amp; Outcome">
+                        <group>
+                            <field name="current_sentiment"/>
+                            <field name="peak_sentiment" readonly="1"/>
+                            <field name="sentiment_escalation_triggered" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="call_outcome"/>
+                            <field name="recording_consent_given"/>
+                        </group>
+                    </group>
+                    <group string="Recording" invisible="not recording_url">
+                        <field name="recording_url" readonly="1" widget="url"/>
+                        <field name="recording_sid" readonly="1"/>
+                        <field name="recording_duration" readonly="1" string="Duration (s)"/>
+                    </group>
+                    <group string="Linked Records">
+                        <field name="partner_id"/>
+                        <field name="lead_id"/>
+                        <field name="ticket_id"/>
+                    </group>
+                    <group string="AI Summary" invisible="not ai_summary">
+                        <field name="ai_summary" nolabel="1" readonly="1" widget="text"/>
+                    </group>
+                    <field name="transcript_ids" readonly="1">
+                        <list>
+                            <field name="create_date" string="Time"/>
+                            <field name="speaker"/>
+                            <field name="text"/>
+                            <field name="sentiment" optional="show"/>
+                        </list>
+                    </field>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_voice_call" model="ir.actions.act_window">
+        <field name="name">Voice Calls</field>
+        <field name="res_model">voice.call</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_voice_call_angry" model="ir.actions.act_window">
+        <field name="name">Angry / Escalated Calls</field>
+        <field name="res_model">voice.call</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('sentiment_escalation_triggered','=',True)]</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Reorder the platform's top-level menus into logical zones.
+     Lower sequence = further left in the top bar.
+     forcecreate="False" ensures records are only updated when the module is installed.
+
+     Zone layout:
+       10 – CRM / Sales
+       20 – Finance
+       30 – HR / Payroll
+       40 – Operations  (Inventory, Rental, Planning)
+       50 – Customer-facing  (Helpdesk, Live Chat, Social, Voice)
+-->
+<odoo>
+
+    <!-- ── Zone 10: CRM / Sales ── -->
+    <record id="crm.crm_menu_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">10</field>
+    </record>
+
+    <record id="sale.sale_menu_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">11</field>
+    </record>
+
+    <!-- ── Zone 20: Finance / Accounting ── -->
+    <record id="account.menu_finance" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- ── Zone 30: HR / Payroll ── -->
+    <record id="hr.menu_hr_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">30</field>
+    </record>
+
+    <record id="custom_payroll_nl.menu_payroll_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">31</field>
+    </record>
+
+    <!-- ── Zone 40: Operations ── -->
+    <record id="stock.menu_stock_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">40</field>
+    </record>
+
+    <record id="custom_rental.menu_rental_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">41</field>
+    </record>
+
+    <record id="custom_planning.menu_planning_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">42</field>
+    </record>
+
+    <record id="purchase.menu_purchase_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">43</field>
+    </record>
+
+    <!-- ── Zone 50: Customer-facing channels ── -->
+    <record id="custom_helpdesk.menu_helpdesk_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">50</field>
+    </record>
+
+    <record id="custom_ai_chatbot.menu_chatbot_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">51</field>
+    </record>
+
+    <record id="custom_whatsapp_social.menu_social_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">52</field>
+    </record>
+
+    <record id="custom_ai_voice.menu_voice_root" forcecreate="False" model="ir.ui.menu">
+        <field name="sequence">53</field>
+    </record>
+
+</odoo>

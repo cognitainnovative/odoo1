@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_social_message_list" model="ir.ui.view">
+        <field name="name">social.message.list</field>
+        <field name="model">social.message</field>
+        <field name="arch" type="xml">
+            <list string="Social Inbox"
+                  decoration-primary="state == 'new'"
+                  decoration-warning="state == 'pending'"
+                  decoration-muted="state in ('sent','archived')">
+                <field name="create_date" string="Time"/>
+                <field name="platform"/>
+                <field name="message_type"/>
+                <field name="author_name"/>
+                <field name="body"/>
+                <field name="sentiment" optional="show"/>
+                <field name="state" widget="badge"/>
+                <button name="action_ai_draft_reply" string="AI Reply" type="object"
+                        icon="fa-magic" class="btn-sm"
+                        invisible="state not in ('new',)"/>
+                <button name="action_approve" string="Approve" type="object"
+                        icon="fa-check" class="btn-sm btn-success"
+                        invisible="state != 'pending'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_social_message_form" model="ir.ui.view">
+        <field name="name">social.message.form</field>
+        <field name="model">social.message</field>
+        <field name="arch" type="xml">
+            <form string="Social Message">
+                <header>
+                    <button name="action_ai_draft_reply" string="AI Draft Reply" type="object"
+                            class="btn-secondary" invisible="state not in ('new',)"/>
+                    <button name="action_approve" string="Approve Reply" type="object"
+                            class="btn-success" invisible="state != 'pending'"/>
+                    <button name="action_approve_and_send" string="Send Reply" type="object"
+                            class="btn-primary" invisible="state != 'approved'"/>
+                    <button name="action_escalate" string="Escalate" type="object"
+                            class="btn-warning" invisible="state in ('sent','archived','escalated')"/>
+                    <button name="action_create_lead" string="Create Lead" type="object"
+                            class="btn-secondary" invisible="lead_id"/>
+                    <button name="action_create_ticket" string="Create Ticket" type="object"
+                            class="btn-secondary" invisible="ticket_id"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="new,pending,approved,sent"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="platform"/>
+                            <field name="message_type"/>
+                            <field name="author_name"/>
+                            <field name="account_id"/>
+                            <field name="partner_id"/>
+                        </group>
+                        <group>
+                            <field name="sentiment"/>
+                            <field name="lead_id"/>
+                            <field name="ticket_id"/>
+                            <field name="post_url"/>
+                        </group>
+                    </group>
+                    <group string="Message">
+                        <field name="body" nolabel="1" widget="text" readonly="1"/>
+                    </group>
+                    <group string="Draft Reply" invisible="state not in ('pending','approved','sent')">
+                        <field name="ai_draft_reply" nolabel="1" readonly="1" widget="text"/>
+                        <field name="ai_final_reply" nolabel="1" widget="text"
+                               string="Final Reply (editable)"/>
+                        <div class="alert alert-warning mt-1" role="alert">
+                            AI replies require human approval before sending.
+                        </div>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_social_inbox" model="ir.actions.act_window">
+        <field name="name">Social Inbox</field>
+        <field name="res_model">social.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','not in',('archived',))]</field>
+    </record>
+
+    <record id="action_social_pending" model="ir.actions.act_window">
+        <field name="name">Pending Social Approval</field>
+        <field name="res_model">social.message</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','=','pending')]</field>
+    </record>
+
+    <!-- Social Accounts -->
+    <record id="view_social_account_list" model="ir.ui.view">
+        <field name="name">social.account.list</field>
+        <field name="model">social.account</field>
+        <field name="arch" type="xml">
+            <list string="Social Accounts" editable="bottom" decoration-muted="not is_active">
+                <field name="name"/>
+                <field name="platform"/>
+                <field name="username"/>
+                <field name="app_review_status"/>
+                <field name="is_active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_social_account" model="ir.actions.act_window">
+        <field name="name">Social Accounts</field>
+        <field name="res_model">social.account</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

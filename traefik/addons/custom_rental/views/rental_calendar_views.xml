@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_rental_order_calendar" model="ir.ui.view">
+        <field name="name">rental.order.calendar</field>
+        <field name="model">rental.order</field>
+        <field name="arch" type="xml">
+            <calendar string="Rental Calendar"
+                      date_start="pickup_date"
+                      date_stop="expected_return_date"
+                      color="rental_product_id"
+                      mode="month">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="rental_product_id"/>
+                <field name="state"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="action_rental_calendar" model="ir.actions.act_window">
+        <field name="name">Rental Calendar</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">calendar,kanban,list,form</field>
+    </record>
+
+</odoo>

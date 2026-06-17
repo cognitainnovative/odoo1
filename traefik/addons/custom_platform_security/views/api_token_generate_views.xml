@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_api_token_generate_form" model="ir.ui.view">
+        <field name="name">platform.api.token.generate.form</field>
+        <field name="model">platform.api.token.generate</field>
+        <field name="arch" type="xml">
+            <form string="Generate API Token">
+                <!-- Phase 2: token generated — show it once -->
+                <div invisible="not raw_token" class="alert alert-warning" role="alert">
+                    <strong>Copy this token now.</strong> It is shown only once and
+                    cannot be retrieved later — only its hash is stored.
+                </div>
+                <group invisible="not raw_token">
+                    <field name="raw_token" readonly="1"/>
+                    <field name="token_id" readonly="1"/>
+                </group>
+                <!-- Phase 1: input form -->
+                <group invisible="raw_token">
+                    <group>
+                        <field name="name"/>
+                        <field name="service"/>
+                        <field name="scope"/>
+                    </group>
+                    <group>
+                        <field name="user_id"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="expires_at"/>
+                    </group>
+                </group>
+                <group invisible="raw_token">
+                    <field name="notes" nolabel="1" placeholder="Internal notes…"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate Token" type="object"
+                            class="btn-primary" invisible="raw_token"/>
+                    <button string="Close" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_api_token_generate" model="ir.actions.act_window">
+        <field name="name">Generate API Token</field>
+        <field name="res_model">platform.api.token.generate</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

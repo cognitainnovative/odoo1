@@ -1,0 +1,58 @@
+# Dutch translations for custom_theme
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Primary Color"
+msgstr "Primaire Kleur"
+
+msgid "Secondary Color"
+msgstr "Secundaire Kleur"
+
+msgid "Accent Color"
+msgstr "Accentkleur"
+
+msgid "Background Color"
+msgstr "Achtergrondkleur"
+
+msgid "Font Family"
+msgstr "Lettertype"
+
+msgid "Inter"
+msgstr "Inter"
+
+msgid "System Default"
+msgstr "Systeemstandaard"
+
+msgid "Roboto"
+msgstr "Roboto"
+
+msgid "Open Sans"
+msgstr "Open Sans"
+
+msgid "Portal Footer Text"
+msgstr "Portaalvoettekst"
+
+msgid "Custom CSS (Advanced)"
+msgstr "Aangepaste CSS (Geavanceerd)"
+
+msgid "Platform Theme"
+msgstr "Platformthema"
+
+msgid "Company"
+msgstr "Bedrijf"
+
+msgid "Branding"
+msgstr "Huisstijl"

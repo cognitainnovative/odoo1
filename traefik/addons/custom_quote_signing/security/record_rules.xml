@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Signing records are visible only to their own company's users -->
+    <record id="rule_quote_signing_company" model="ir.rule">
+        <field name="name">Quote Signing: company scope</field>
+        <field name="model_id" ref="model_quote_signing"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- Portal customers see only signings where they are the signer partner -->
+    <record id="rule_quote_signing_portal" model="ir.rule">
+        <field name="name">Quote Signing: portal own signings only</field>
+        <field name="model_id" ref="model_quote_signing"/>
+        <field name="domain_force">[('sale_order_id.partner_id', '=', user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+    </record>
+</odoo>

@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Quote view + signing page ═══ -->
+    <template id="portal_quote_view" name="View and Sign Quote">
+        <t t-call="portal.portal_layout">
+            <t t-set="no_breadcrumbs" t-value="True"/>
+
+            <div class="o_portal_wrap">
+                <div class="container mt-4">
+
+                    <!-- Page header -->
+                    <div class="row mb-3">
+                        <div class="col d-flex align-items-center gap-3">
+                            <h2 class="mb-0">
+                                Quotation <span class="text-muted"><t t-esc="order.name"/></span>
+                            </h2>
+                            <span t-if="order.signing_state == 'draft'"
+                                  class="badge rounded-pill text-bg-warning">To Sign</span>
+                            <span t-if="order.signing_state == 'sent'"
+                                  class="badge rounded-pill text-bg-primary">Sent</span>
+                            <span t-if="order.signing_state == 'signed'"
+                                  class="badge rounded-pill text-bg-success">Signed</span>
+                            <span t-if="order.signing_state == 'expired'"
+                                  class="badge rounded-pill text-bg-danger">Expired</span>
+                        </div>
+                        <div t-if="order.company_id.logo" class="col-auto">
+                            <img t-attf-src="/web/image/res.company/{{ order.company_id.id }}/logo"
+                                 style="max-height:48px; max-width:140px;"/>
+                        </div>
+                    </div>
+
+                    <!-- Error -->
+                    <div t-if="error" class="alert alert-danger" role="alert">
+                        <t t-esc="error"/>
+                    </div>
+
+                    <!-- eIDAS / QTSP blocker — shown when qualified signature is required -->
+                    <div t-if="order.require_qualified_signature"
+                         class="alert alert-warning border border-warning" role="alert">
+                        <h5 class="alert-heading">
+                            &#9888; Qualified Electronic Signature Required
+                        </h5>
+                        <p>
+                            This document requires a <strong>qualified electronic signature (QES)</strong>
+                            under the eIDAS regulation. Standard electronic signing is not available for this quotation.
+                        </p>
+                        <p class="mb-1">
+                            A QES requires integration with a <strong>Qualified Trust Service Provider (QTSP)</strong>,
+                            which is not included in this platform.
+                            Please contact your account manager to arrange a certified signing process.
+                        </p>
+                        <hr/>
+                        <p class="mb-0 text-muted small">
+                            <em>Legal note: this platform provides simple/advanced electronic signatures only.
+                            Qualified signatures (eIDAS Art. 26/27) require a QTSP — this is an external approval
+                            and legal blocker. No action can be taken on this portal until a QTSP connection is
+                            established.</em>
+                        </p>
+                    </div>
+
+                    <!-- Quote info card -->
+                    <div class="card mb-3">
+                        <div class="card-header bg-white py-3">
+                            <div class="row">
+                                <div class="col-6">
+                                    <small class="text-muted d-block">Date</small>
+                                    <strong><t t-esc="order.date_order and str(order.date_order)[:10]"/></strong>
+                                </div>
+                                <div t-if="order.quote_expiry_date" class="col-6">
+                                    <small class="text-muted d-block">Expires</small>
+                                    <strong class="text-danger"><t t-esc="str(order.quote_expiry_date)"/></strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <table class="table table-borderless mb-0">
+                                <thead class="border-bottom bg-light">
+                                    <tr>
+                                        <th class="ps-3">Description</th>
+                                        <th class="text-end">Qty</th>
+                                        <th class="text-end">Unit Price</th>
+                                        <th class="text-end pe-3">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="order.order_line" t-as="line">
+                                        <td class="ps-3"><t t-esc="line.name"/></td>
+                                        <td class="text-end">
+                                            <t t-esc="line.product_uom_qty"/>
+                                            <small class="text-muted ms-1"><t t-esc="line.product_uom_id.name"/></small>
+                                        </td>
+                                        <td class="text-end">
+                                            <t t-esc="'%.2f' % line.price_unit"/>
+                                            <small class="text-muted ms-1"><t t-esc="order.currency_id.name"/></small>
+                                        </td>
+                                        <td class="text-end pe-3">
+                                            <strong><t t-esc="'%.2f' % line.price_subtotal"/></strong>
+                                            <small class="text-muted ms-1"><t t-esc="order.currency_id.name"/></small>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot class="border-top">
+                                    <tr t-if="order.amount_tax">
+                                        <td colspan="3" class="text-end ps-3">Tax</td>
+                                        <td class="text-end pe-3">
+                                            <t t-esc="'%.2f' % order.amount_tax"/>
+                                            <small class="text-muted ms-1"><t t-esc="order.currency_id.name"/></small>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3" class="text-end fw-bold ps-3">Total</td>
+                                        <td class="text-end pe-3 fw-bold fs-5">
+                                            <t t-esc="'%.2f' % order.amount_total"/>
+                                            <small class="text-muted ms-1"><t t-esc="order.currency_id.name"/></small>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div t-if="order.note" class="card-footer bg-light">
+                            <small class="text-muted"><t t-raw="order.note"/></small>
+                        </div>
+                    </div>
+
+                    <!-- Already signed notice -->
+                    <div t-if="order.signing_state in ('signed', 'confirmed')"
+                         class="alert alert-success d-flex align-items-center gap-2" role="alert">
+                        <i class="fa fa-check-circle fa-lg"/>
+                        <div>
+                            <strong>This quotation has already been signed.</strong>
+                            Signed by <strong><t t-esc="order.signer_name"/></strong>
+                            on <t t-esc="str(order.signed_at)[:16]"/>.
+                        </div>
+                    </div>
+
+                    <!-- Signing form -->
+                    <div t-if="order.signing_state not in ('signed', 'confirmed', 'invoiced', 'cancelled', 'expired') and not order.require_qualified_signature"
+                         class="card mb-4">
+                        <div class="card-header bg-white py-3">
+                            <h5 class="mb-0"><i class="fa fa-pen me-2"/>Sign this Quotation</h5>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" t-attf-action="/quote/{{ token }}/sign" id="signing-form">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" name="signature_data" id="signature_data_input"/>
+                                <input type="hidden" name="signature_type" id="signature_type_input" value="drawn"/>
+
+                                <div class="row g-3 mb-4">
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                                        <input type="text" name="signer_name" class="form-control"
+                                               required="required"
+                                               t-att-value="order.partner_id.name or ''"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                                        <input type="email" name="signer_email" class="form-control"
+                                               required="required"
+                                               t-att-value="order.partner_id.email or ''"/>
+                                    </div>
+                                </div>
+
+                                <!-- Signature -->
+                                <div class="mb-4">
+                                    <label class="form-label fw-semibold">Signature <span class="text-danger">*</span></label>
+                                    <div class="border rounded bg-white" style="display:inline-block;">
+                                        <canvas id="signature-canvas" width="580" height="140"
+                                                style="display:block; cursor:crosshair; touch-action:none;"/>
+                                    </div>
+                                    <div class="mt-2 d-flex align-items-center gap-3">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                onclick="clearCanvas()">
+                                            <i class="fa fa-eraser me-1"/>Clear
+                                        </button>
+                                        <span class="text-muted small">Draw your signature above, or type it below:</span>
+                                    </div>
+                                    <input type="text" id="typed-signature" class="form-control mt-2"
+                                           style="max-width:340px;"
+                                           placeholder="Or type your full name as signature"/>
+                                </div>
+
+                                <!-- Terms & Conditions -->
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" id="terms_accepted" name="terms_accepted"
+                                               value="1" class="form-check-input" required="required"/>
+                                        <label class="form-check-label" for="terms_accepted">
+                                            I have read and accept the
+                                            <a href="#" onclick="document.getElementById('modal-terms').style.display='flex'; return false;">
+                                                Terms &amp; Conditions
+                                            </a>
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Payment Obligation -->
+                                <div class="alert alert-light border mb-4">
+                                    <p class="fw-semibold mb-1">Payment Obligation</p>
+                                    <p class="mb-2 text-muted small"><t t-esc="payment_obligation_text"/></p>
+                                    <div class="form-check">
+                                        <input type="checkbox" id="payment_accepted" name="payment_accepted"
+                                               value="1" class="form-check-input" required="required"/>
+                                        <label class="form-check-label" for="payment_accepted">
+                                            I understand and accept the payment obligation above
+                                            <span class="text-danger">*</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex align-items-center gap-3">
+                                    <button type="submit" class="btn btn-primary px-4"
+                                            onclick="return prepareSignature()">
+                                        <i class="fa fa-check me-2"/>Sign and Submit
+                                    </button>
+                                    <small class="text-muted">
+                                        * Required. Simple electronic signature — not eIDAS qualified.
+                                    </small>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div><!-- /.container -->
+            </div><!-- /.o_portal_wrap -->
+
+            <!-- Terms modal -->
+            <div id="modal-terms"
+                 style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:1050; align-items:center; justify-content:center;">
+                <div class="bg-white rounded shadow-lg p-4" style="max-width:680px; width:94%; max-height:80vh; overflow-y:auto;">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="mb-0">Terms &amp; Conditions</h5>
+                        <button type="button" class="btn-close"
+                                onclick="document.getElementById('modal-terms').style.display='none'"/>
+                    </div>
+                    <div t-if="terms">
+                        <t t-raw="terms.content"/>
+                    </div>
+                    <div t-else="">
+                        <p class="text-muted">No terms and conditions are attached to this quotation.</p>
+                    </div>
+                    <div class="mt-3 text-end">
+                        <button type="button" class="btn btn-primary"
+                                onclick="document.getElementById('modal-terms').style.display='none'">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+            (function(){
+                var TOKEN = '<t t-esc="token"/>';
+
+                var canvas = document.getElementById('signature-canvas');
+                if (!canvas) return;
+                var ctx = canvas.getContext('2d');
+                var drawing = false;
+                ctx.strokeStyle = '#1E293B';
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+
+                function getPos(e) {
+                    var r = canvas.getBoundingClientRect();
+                    var touch = e.touches ? e.touches[0] : e;
+                    return { x: touch.clientX - r.left, y: touch.clientY - r.top };
+                }
+                canvas.addEventListener('mousedown', function(e){ drawing=true; var p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
+                canvas.addEventListener('mousemove', function(e){ if(!drawing) return; var p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); });
+                canvas.addEventListener('mouseup', function(){ drawing=false; });
+                canvas.addEventListener('touchstart', function(e){ e.preventDefault(); drawing=true; var p=getPos(e); ctx.beginPath(); ctx.moveTo(p.x,p.y); });
+                canvas.addEventListener('touchmove', function(e){ e.preventDefault(); if(!drawing) return; var p=getPos(e); ctx.lineTo(p.x,p.y); ctx.stroke(); });
+                canvas.addEventListener('touchend', function(){ drawing=false; });
+
+                window.clearCanvas = function(){ ctx.clearRect(0,0,canvas.width,canvas.height); };
+
+                window.prepareSignature = function(){
+                    var typed = document.getElementById('typed-signature').value.trim();
+                    var input = document.getElementById('signature_data_input');
+                    var typeInput = document.getElementById('signature_type_input');
+                    if (typed) {
+                        ctx.clearRect(0,0,canvas.width,canvas.height);
+                        ctx.font = 'italic 36px Georgia, serif';
+                        ctx.fillStyle = '#1E293B';
+                        ctx.fillText(typed, 20, 80);
+                        typeInput.value = 'typed';
+                    } else {
+                        // Guard: reject a blank canvas (no ink at all)
+                        var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                        var hasInk = false;
+                        for (var i = 3; i &lt; imgData.length; i += 4) {
+                            if (imgData[i] > 0) { hasInk = true; break; }
+                        }
+                        if (!hasInk) {
+                            alert('Please draw or type your signature before submitting.');
+                            return false;
+                        }
+                        typeInput.value = 'drawn';
+                    }
+                    input.value = canvas.toDataURL('image/png');
+                    return true;
+                };
+
+                // AJAX: set state to accepted_pending when customer ticks both acceptance boxes
+                function onAcceptanceChange() {
+                    var tChk = document.getElementById('terms_accepted');
+                    var pChk = document.getElementById('payment_accepted');
+                    if (tChk &amp;&amp; tChk.checked &amp;&amp; pChk &amp;&amp; pChk.checked) {
+                        fetch('/quote/' + TOKEN + '/accept', {
+                            method: 'POST',
+                            credentials: 'same-origin',
+                        }).catch(function() {});
+                    }
+                }
+                var tEl = document.getElementById('terms_accepted');
+                var pEl = document.getElementById('payment_accepted');
+                if (tEl) tEl.addEventListener('change', onAcceptanceChange);
+                if (pEl) pEl.addEventListener('change', onAcceptanceChange);
+            })();
+            </script>
+        </t>
+    </template>
+
+    <!-- ═══ Signing confirmation page ═══ -->
+    <template id="portal_quote_signed" name="Quote Signed Confirmation">
+        <t t-call="portal.portal_layout">
+            <t t-set="no_breadcrumbs" t-value="True"/>
+            <div class="o_portal_wrap">
+                <div class="container mt-5">
+                    <div class="card text-center mx-auto" style="max-width:560px;">
+                        <div class="card-body py-5">
+                            <div class="text-success mb-3" style="font-size:3.5rem;">
+                                <i class="fa fa-check-circle"/>
+                            </div>
+                            <h3 class="text-success">Quotation Signed!</h3>
+                            <p class="mb-1">Thank you, <strong><t t-esc="signer_name"/></strong>.</p>
+                            <p>Your signature for <strong><t t-esc="order.name"/></strong> has been recorded.</p>
+                            <hr/>
+                            <p class="text-muted small mb-0">
+                                A confirmation email has been sent to you.<br/>
+                                Reference: <code><t t-esc="signing.id"/></code>
+                                &amp;nbsp;·&amp;nbsp;
+                                Date: <t t-esc="str(signing.signed_at)[:16]"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>

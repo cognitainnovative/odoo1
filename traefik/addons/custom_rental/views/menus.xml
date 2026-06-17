@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_rental_root"
+              name="Rental"
+              sequence="45"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_rental_calendar"
+              name="Calendar"
+              parent="menu_rental_root"
+              action="action_rental_calendar"
+              sequence="5"/>
+
+    <menuitem id="menu_rental_orders"
+              name="Rental Orders"
+              parent="menu_rental_root"
+              action="action_rental_order"
+              sequence="10"/>
+
+    <menuitem id="menu_rental_active"
+              name="Active Rentals"
+              parent="menu_rental_root"
+              action="action_rental_active"
+              sequence="15"/>
+
+    <menuitem id="menu_rental_overdue"
+              name="Overdue Returns"
+              parent="menu_rental_root"
+              action="action_rental_overdue"
+              sequence="20"/>
+
+    <menuitem id="menu_rental_revenue"
+              name="Revenue"
+              parent="menu_rental_root"
+              action="action_rental_revenue"
+              sequence="25"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_rental_utilization"
+              name="Utilization"
+              parent="menu_rental_root"
+              action="action_rental_utilization"
+              sequence="26"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_rental_damaged"
+              name="Damaged Items"
+              parent="menu_rental_root"
+              action="action_rental_damaged"
+              sequence="27"/>
+
+    <menuitem id="menu_rental_best_products"
+              name="Best Products"
+              parent="menu_rental_root"
+              action="action_rental_best_products"
+              sequence="28"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_rental_customer_value"
+              name="Customer Rental Value"
+              parent="menu_rental_root"
+              action="action_rental_customer_value"
+              sequence="29"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_rental_reporting"
+              name="Reporting"
+              parent="menu_rental_root"
+              sequence="35"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_rental_analysis"
+              name="Rental Analysis"
+              parent="menu_rental_reporting"
+              action="action_rental_analysis"
+              sequence="10"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_rental_revenue_report"
+              name="Revenue"
+              parent="menu_rental_reporting"
+              action="action_rental_revenue"
+              sequence="20"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_rental_config"
+              name="Configuration"
+              parent="menu_rental_root"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_rental_products"
+              name="Rental Products"
+              parent="menu_rental_config"
+              action="action_rental_product"
+              sequence="10"/>
+
+    <menuitem id="menu_rental_tiers"
+              name="Discount Tiers"
+              parent="menu_rental_config"
+              action="action_rental_discount_tier"
+              sequence="20"/>
+
+    <menuitem id="menu_rental_verifications"
+              name="Customer Verifications"
+              parent="menu_rental_config"
+              action="action_rental_verification"
+              sequence="30"/>
+
+    <!-- Platform Overview shortcut: active rentals (M16 cross-module dashboard) -->
+    <record id="action_platform_active_rentals" model="ir.actions.act_window">
+        <field name="name">Active Rentals</field>
+        <field name="res_model">rental.order</field>
+        <field name="view_mode">list,kanban,form</field>
+        <field name="domain">[('state','=','active')]</field>
+    </record>
+
+    <menuitem id="menu_platform_active_rentals"
+              name="Active Rentals"
+              parent="custom_platform_security.menu_platform_overview_root"
+              action="action_platform_active_rentals"
+              sequence="40"/>
+
+</odoo>

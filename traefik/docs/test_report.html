@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Test Report — traefik_test1 — 2026-06-10</title>
+<style>
+  :root {
+    --pass: #16a34a;
+    --pass-bg: #dcfce7;
+    --warn: #b45309;
+    --warn-bg: #fef3c7;
+    --fail: #dc2626;
+    --fail-bg: #fee2e2;
+    --border: #e2e8f0;
+    --muted: #64748b;
+    --header-bg: #1e293b;
+    --header-fg: #f8fafc;
+    --card-bg: #ffffff;
+    --page-bg: #f1f5f9;
+    --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--page-bg); color: #1e293b; font-size: 14px; line-height: 1.5; }
+  header { background: var(--header-bg); color: var(--header-fg); padding: 28px 40px; }
+  header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  header p { color: #94a3b8; margin-top: 4px; font-size: 13px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; }
+  .stat-card .label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 6px; }
+  .stat-card .value { font-size: 36px; font-weight: 800; line-height: 1; }
+  .stat-card.pass .value { color: var(--pass); }
+  .stat-card.fail .value { color: var(--fail); }
+  .stat-card.warn .value { color: var(--warn); }
+  .stat-card.total .value { color: var(--accent); }
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 11px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; }
+  .badge-pass { background: var(--pass-bg); color: var(--pass); }
+  .badge-warn { background: var(--warn-bg); color: var(--warn); }
+  .badge-fail { background: var(--fail-bg); color: var(--fail); }
+  .section-title { font-size: 16px; font-weight: 700; margin-bottom: 16px; color: #1e293b; }
+  .addon-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 16px; overflow: hidden; }
+  .addon-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; cursor: pointer; user-select: none; }
+  .addon-header:hover { background: #f8fafc; }
+  .addon-title { display: flex; align-items: center; gap: 10px; }
+  .addon-name { font-weight: 700; font-size: 14px; font-family: 'SFMono-Regular', Consolas, monospace; }
+  .addon-meta { color: var(--muted); font-size: 12px; }
+  .addon-right { display: flex; align-items: center; gap: 12px; }
+  .test-count { font-size: 13px; color: var(--muted); }
+  .addon-body { border-top: 1px solid var(--border); }
+  .class-group { padding: 0 20px; }
+  .class-name { font-size: 12px; font-weight: 700; color: var(--muted); padding: 12px 0 6px; text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid #f1f5f9; margin-bottom: 2px; }
+  .test-row { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid #f8fafc; }
+  .test-row:last-child { border-bottom: none; }
+  .test-name { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 12px; color: #334155; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pass); flex-shrink: 0; }
+  .dot.warn { background: var(--warn); }
+  .dot.fail { background: var(--fail); }
+  .addon-overview-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .addon-overview-table th { background: #f8fafc; padding: 10px 16px; text-align: left; font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; border-bottom: 1px solid var(--border); }
+  .addon-overview-table td { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .addon-overview-table tr:last-child td { border-bottom: none; }
+  .addon-overview-table td:first-child { font-family: monospace; font-weight: 600; }
+  .bar { height: 6px; border-radius: 3px; background: var(--pass); display: inline-block; }
+  footer { text-align: center; padding: 24px; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Platform Test Report</h1>
+  <p>Database: <strong style="color:#e2e8f0">traefik_test1</strong> &nbsp;&middot;&nbsp; Run date: <strong style="color:#e2e8f0">2026-06-10</strong> &nbsp;&middot;&nbsp; Odoo 19 Community &nbsp;&middot;&nbsp; Custom addons only</p>
+</header>
+
+<div class="container">
+
+  <div class="summary-grid">
+    <div class="stat-card total">
+      <div class="label">Total Tests</div>
+      <div class="value">656</div>
+    </div>
+    <div class="stat-card pass">
+      <div class="label">Passed</div>
+      <div class="value">656</div>
+    </div>
+    <div class="stat-card fail">
+      <div class="label">Failed</div>
+      <div class="value">0</div>
+    </div>
+    <div class="stat-card warn">
+      <div class="label">Warnings</div>
+      <div class="value">0</div>
+    </div>
+  </div>
+
+  <p class="section-title">Addon Summary</p>
+  <table class="addon-overview-table">
+    <thead>
+      <tr>
+        <th>Addon</th>
+        <th>Tests</th>
+        <th>Status</th>
+        <th>Coverage bar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>custom_accounting_advanced</td><td>102</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:132px"></div></td></tr>
+      <tr><td>custom_accounting_basic</td><td>86</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:111px"></div></td></tr>
+      <tr><td>custom_ai_chatbot</td><td>59</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:76px"></div></td></tr>
+      <tr><td>custom_ai_core</td><td>50</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:65px"></div></td></tr>
+      <tr><td>custom_inventory</td><td>66</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:85px"></div></td></tr>
+      <tr><td>custom_rental</td><td>80</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:104px"></div></td></tr>
+      <tr><td>custom_payroll_nl</td><td>57</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:74px"></div></td></tr>
+      <tr><td>custom_planning</td><td>49</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:63px"></div></td></tr>
+      <tr><td>custom_quote_signing</td><td>52</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:67px"></div></td></tr>
+      <tr><td>custom_email_ai</td><td>52</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:67px"></div></td></tr>
+      <tr><td>custom_crm_core</td><td>41</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:53px"></div></td></tr>
+      <tr><td>custom_hrm</td><td>42</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:54px"></div></td></tr>
+      <tr><td>custom_e2e_tests</td><td>42</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:54px"></div></td></tr>
+      <tr><td>custom_helpdesk</td><td>35</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:45px"></div></td></tr>
+      <tr><td>custom_whatsapp_social</td><td>34</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:44px"></div></td></tr>
+      <tr><td>custom_subscription_modules</td><td>29</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:37px"></div></td></tr>
+      <tr><td>custom_ai_voice</td><td>25</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:32px"></div></td></tr>
+      <tr><td>custom_theme</td><td>5</td><td><span class="badge badge-pass">PASS</span></td><td><div class="bar" style="width:6px"></div></td></tr>
+    </tbody>
+  </table>
+
+  <p class="section-title">Test Details</p>
+
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_accounting_advanced</span>
+        <span class="addon-meta">M10 — Fixed assets, budgets, fiscal years, BV accounts</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">102 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestFiscalYear</div>
+        <div class="test-row"><span class="test-name">test_close_after_closing_entries</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_close_requires_closing_entries</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_fiscal_year</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_lock_fiscal_year</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reopen</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_year_company_unique</span><span class="dot"></span></div>
+        <div class="class-name">TestFiscalYearEntries</div>
+        <div class="test-row"><span class="test-name">test_closing_entries_created_with_pl_data</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_closing_entries_raises_if_already_done</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_closing_entries_raises_without_pl_data</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_opening_balance_move_created</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_opening_entries_raises_if_already_done</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_opening_entries_raises_without_prior_balances</span><span class="dot"></span></div>
+        <div class="class-name">TestFixedAsset</div>
+        <div class="test-row"><span class="test-name">test_annual_depreciation_straight_line</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_asset</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_depreciation_schedule_generated</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_depreciation_schedule_totals</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_dispose_asset</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_net_book_value_initial</span><span class="dot"></span></div>
+        <div class="class-name">TestBvAnnualAccounts</div>
+        <div class="test-row"><span class="test-name">test_create_annual_accounts</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_workflow</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_net_result_computed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_retained_earnings_computed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_submit_requires_accountant</span><span class="dot"></span></div>
+        <div class="class-name">TestAccountBudget</div>
+        <div class="test-row"><span class="test-name">test_budget_with_lines</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_budget</span><span class="dot"></span></div>
+        <div class="class-name">TestAuditExport</div>
+        <div class="test-row"><span class="test-name">test_create_wizard</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_debit_credit_invariant</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_export_csv_generates_attachment</span><span class="dot"></span></div>
+        <div class="class-name">TestAccrualProvision</div>
+        <div class="test-row"><span class="test-name">test_create_accrual</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_prepayment</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_provision</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_post_accrual</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_post_raises_if_already_posted</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reverse_accrual</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reverse_raises_if_draft</span><span class="dot"></span></div>
+        <div class="class-name">TestAccrualReversalGL</div>
+        <div class="test-row"><span class="test-name">test_cron_auto_reverse</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_does_not_reverse_future_date</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reverse_creates_gl_entry</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reverse_gl_entry_references_accrual</span><span class="dot"></span></div>
+        <div class="class-name">TestPeriodLock</div>
+        <div class="test-row"><span class="test-name">test_move_after_lock_date_not_blocked</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_period_lock_override_records_audit_trail</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_period_lock_override_requires_reason</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_period_lock_prevents_cancel</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reversal_reason_field_stored</span><span class="dot"></span></div>
+        <div class="class-name">TestDebitCreditConstraint</div>
+        <div class="test-row"><span class="test-name">test_action_post_allows_balanced_entry</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_action_post_rejects_unbalanced_entry</span><span class="dot"></span></div>
+        <div class="class-name">TestTrialBalance</div>
+        <div class="test-row"><span class="test-name">test_create_wizard</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_generate_returns_action</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_generate_with_posted_data</span><span class="dot"></span></div>
+        <div class="class-name">TestGeneralLedger</div>
+        <div class="test-row"><span class="test-name">test_account_filter</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_wizard</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_generate_returns_action</span><span class="dot"></span></div>
+        <div class="class-name">TestAgedBalance</div>
+        <div class="test-row"><span class="test-name">test_create_wizard_payable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_wizard_receivable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_generate_returns_action</span><span class="dot"></span></div>
+        <div class="class-name">TestVatSummary</div>
+        <div class="test-row"><span class="test-name">test_create_wizard</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_generate_no_error_without_tax_lines</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_generate_returns_action</span><span class="dot"></span></div>
+        <div class="class-name">TestCashFlow</div>
+        <div class="test-row"><span class="test-name">test_create_wizard</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_generate_returns_action</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_generate_sets_totals</span><span class="dot"></span></div>
+        <div class="class-name">TestCostCentre</div>
+        <div class="test-row"><span class="test-name">test_cost_centre_code_unique</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cost_centre_on_move_line</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_cost_centre</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_parent_child_hierarchy</span><span class="dot"></span></div>
+        <div class="class-name">TestCoaExtension</div>
+        <div class="test-row"><span class="test-name">test_coa_fields_exist</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_coa_fields_writable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cost_centre_default_on_account</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_accounting_basic</span>
+        <span class="addon-meta">M9 — Bank imports, reconciliation, move extensions</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">86 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestBankParsers</div>
+        <div class="test-row"><span class="test-name">test_camt053_basic</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_camt053_debit</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_camt053_invalid_xml_returns_empty</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_csv_basic</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_csv_dedup_id_stable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_csv_european_amount</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_csv_semicolon</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_csv_skips_zero_amount</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mt940_basic</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mt940_debit_is_negative</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mt940_empty_returns_empty</span><span class="dot"></span></div>
+        <div class="class-name">TestReconciliationScoring</div>
+        <div class="test-row"><span class="test-name">test_detect_payment_type_full</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_detect_payment_type_underpayment</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_exact_amount_match_scores_high</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_exact_amount_payment_type_full</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_invoice_number_in_ref_boosts_score</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_no_match_returns_empty</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_overpayment_detection</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_overpayment_still_matches</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_partial_amount_payment_type</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_partial_amount_scores_lower_than_full</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_partner_name_similarity</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_results_sorted_by_confidence</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_split_payment_detection</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_split_payment_no_match_when_sum_differs</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_split_payment_three_lines</span><span class="dot"></span></div>
+        <div class="class-name">TestAccountMoveExtensions</div>
+        <div class="test-row"><span class="test-name">test_ai_extracted_can_be_set</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_ai_extracted_field_default_false</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_days_overdue_computed_for_posted</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_days_overdue_zero_for_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_duplicate_detection</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reminder_sent_defaults_false</span><span class="dot"></span></div>
+        <div class="class-name">TestInvoiceImportWizardExtraction</div>
+        <div class="test-row"><span class="test-name">test_approve_action_changes_state</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_invoice_blocked_without_approval</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_invoice_from_extraction</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_extraction_ai_failure_sets_zero_confidence</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_extraction_populates_fields</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_extraction_with_line_items</span><span class="dot"></span></div>
+        <div class="class-name">TestBankImportWizard</div>
+        <div class="test-row"><span class="test-name">test_create_wizard</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_import_csv_creates_statement</span><span class="dot"></span></div>
+        <div class="class-name">TestAccountingConsistency</div>
+        <div class="test-row"><span class="test-name">test_credit_note_balanced</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_customer_invoice_balanced</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_vendor_bill_balanced</span><span class="dot"></span></div>
+        <div class="class-name">TestProFormaInvoice</div>
+        <div class="test-row"><span class="test-name">test_action_remove_proforma_clears_flag</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_is_proforma_can_be_set</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_is_proforma_default_false</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_proforma_not_copied_on_duplicate</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_send_proforma_raises_for_posted</span><span class="dot"></span></div>
+        <div class="class-name">TestInvoiceExportWizard</div>
+        <div class="test-row"><span class="test-name">test_create_wizard</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_export_count_matches_invoices</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_export_csv_has_header_row</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_export_date_validation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_export_produces_csv</span><span class="dot"></span></div>
+        <div class="class-name">TestRecurringInvoice</div>
+        <div class="test-row"><span class="test-name">test_action_create_now_creates_invoice</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_template</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_creates_due_invoices</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_skips_future_templates</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_quarterly_interval_advances_3_months</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_template_with_lines</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_yearly_interval_advances_12_months</span><span class="dot"></span></div>
+        <div class="class-name">TestAccountingAuditLog</div>
+        <div class="test-row"><span class="test-name">test_all_event_types_creatable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_audit_log_has_user_and_timestamp</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_audit_log_immutable_unlink</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_audit_log_immutable_write</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_convenience_log_method</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_log_entry</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_ai_chatbot</span>
+        <span class="addon-meta">M12 — Chat widget, RAG answers, escalation</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">59 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestChatVisitor</div>
+        <div class="test-row"><span class="test-name">test_consent_recording</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_visitor</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_get_existing_visitor_by_token</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_page_view_only_with_consent</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_token_is_unique_per_call</span><span class="dot"></span></div>
+        <div class="class-name">TestChatSession</div>
+        <div class="test-row"><span class="test-name">test_assign_to_me</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_lead_from_session</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_lead_returns_existing</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_session</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_resolve_session</span><span class="dot"></span></div>
+        <div class="class-name">TestChatMessageProcessing</div>
+        <div class="test-row"><span class="test-name">test_message_creates_transcript</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_message_links_visitor_info</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_transcript_preserved_in_order</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_trigger_word_causes_escalation</span><span class="dot"></span></div>
+        <div class="class-name">TestChatConfig</div>
+        <div class="test-row"><span class="test-name">test_config_company_unique</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_default_config_created</span><span class="dot"></span></div>
+        <div class="class-name">TestChatEscalation</div>
+        <div class="test-row"><span class="test-name">test_escalation_sets_state</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_frustration_escalation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_human_requested_escalation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_low_confidence_escalation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_response_always_has_citations_key</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_transfer_to_agent</span><span class="dot"></span></div>
+        <div class="class-name">TestCannedReply</div>
+        <div class="test-row"><span class="test-name">test_archive_canned_reply</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_canned_reply_with_category</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_canned_reply</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_shortcut_company_unique</span><span class="dot"></span></div>
+        <div class="class-name">TestChatConsentGating</div>
+        <div class="test-row"><span class="test-name">test_company_name_only_from_form</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_consent_date_recorded</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_page_view_allowed_after_consent</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_page_view_requires_consent</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_transcript_linked_to_lead</span><span class="dot"></span></div>
+        <div class="class-name">TestConsentRevocation</div>
+        <div class="test-row"><span class="test-name">test_page_view_blocked_after_revocation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_re_consent_clears_revoked_date</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_revoke_consent_stops_tracking</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_revoke_without_prior_consent_is_safe</span><span class="dot"></span></div>
+        <div class="class-name">TestAgentAvailability</div>
+        <div class="test-row"><span class="test-name">test_create_skill</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_escalation_falls_back_when_no_available_agents</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_escalation_notifies_available_agents</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_skill_name_unique_per_company</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_user_available_for_chat_flag</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_user_chat_skills_linkable</span><span class="dot"></span></div>
+        <div class="class-name">TestAiChatE2E</div>
+        <div class="test-row"><span class="test-name">test_escalated_session_links_to_employee</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_chat_flow</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_low_confidence_triggers_escalation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_rag_answer_stored_with_sources</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_session_created_for_visitor</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_transcript_linked_to_lead</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_ai_core</span>
+        <span class="addon-meta">M3 — AI provider abstraction, RAG, redaction</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">50 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestAiProvider</div>
+        <div class="test-row"><span class="test-name">test_api_key_encryption_roundtrip</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_company_isolation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_empty_key_stores_empty</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_external_blocked_raises</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_get_default_provider_returns_mock</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mock_provider_returns_instance</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_seed_providers_exist</span><span class="dot"></span></div>
+        <div class="class-name">TestAiService</div>
+        <div class="test-row"><span class="test-name">test_audit_log_immutable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_call_creates_audit_log</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_call_with_mock_returns_ok</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_call_with_system_prompt</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_redaction_applied</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_template_code_resolves</span><span class="dot"></span></div>
+        <div class="class-name">TestMockProvider</div>
+        <div class="test-row"><span class="test-name">test_mock_call_returns_response</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mock_embed_returns_vector</span><span class="dot"></span></div>
+        <div class="class-name">TestRag</div>
+        <div class="test-row"><span class="test-name">test_company_isolation_in_search</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_document</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_delete_index_removes_chunks</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_index_document_creates_chunks</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_keyword_search_returns_results</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_rag_augmented_call</span><span class="dot"></span></div>
+        <div class="class-name">TestRedaction</div>
+        <div class="test-row"><span class="test-name">test_bsn_redacted</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_dutch_phone_redacted</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_email_redacted</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_empty_string</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_iban_redacted</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_international_phone_redacted</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_multiple_pii_types</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_no_pii_unchanged</span><span class="dot"></span></div>
+        <div class="class-name">TestPromptEvaluation</div>
+        <div class="test-row"><span class="test-name">test_evaluation_created</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_evaluation_run_fails_on_wrong_expected</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_evaluation_run_invalid_json</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_evaluation_run_passes</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_run_all_for_template</span><span class="dot"></span></div>
+        <div class="class-name">TestAzureProviderPlaceholder</div>
+        <div class="test-row"><span class="test-name">test_azure_provider_instance_created</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_azure_provider_no_endpoint_returns_error</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_inventory</span>
+        <span class="addon-meta">M8 — Product bundles, stock config, reorder AI</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">66 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestProductBundle</div>
+        <div class="test-row"><span class="test-name">test_availability_check_no_stock</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_availability_summary</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_bundle_line_uom_related</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_bundle_with_lines</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_bundle</span><span class="dot"></span></div>
+        <div class="class-name">TestStockConfig</div>
+        <div class="test-row"><span class="test-name">test_can_set_stock_deduct_on</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_default_stock_deduct_on</span><span class="dot"></span></div>
+        <div class="class-name">TestProductTemplate</div>
+        <div class="test-row"><span class="test-name">test_fast_mover_can_be_set</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_fast_mover_default_false</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_platform_sku_field</span><span class="dot"></span></div>
+        <div class="class-name">TestStockReorderRules</div>
+        <div class="test-row"><span class="test-name">test_ai_suggest_fields_default</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_ai_suggest_with_mock_provider</span><span class="dot"></span></div>
+        <div class="class-name">TestStockDeductOnConfirm</div>
+        <div class="test-row"><span class="test-name">test_auto_deducted_flag_set_on_moves</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_default_config_does_not_deduct_on_confirm</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sale_confirm_config_deducts_stock</span><span class="dot"></span></div>
+        <div class="class-name">TestStockReservation</div>
+        <div class="test-row"><span class="test-name">test_physical_stock_unchanged_until_delivery</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reservation_reduces_virtual_availability</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_so_confirm_creates_picking</span><span class="dot"></span></div>
+        <div class="class-name">TestStockValuation</div>
+        <div class="test-row"><span class="test-name">test_qty_available_increases_after_stock_added</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_qty_decreases_after_auto_deduction</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_stock_value_reflects_standard_price</span><span class="dot"></span></div>
+        <div class="class-name">TestStockAuditLog</div>
+        <div class="test-row"><span class="test-name">test_all_event_types_valid</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_auto_deduction_logs_to_audit</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_audit_log_entry</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_log_classmethod</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_unlink_raises_user_error</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_write_raises_user_error</span><span class="dot"></span></div>
+        <div class="class-name">TestStockCount</div>
+        <div class="test-row"><span class="test-name">test_cancel_count</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cancel_done_count_raises</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_count_no_difference</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_count_with_difference_adjusts_stock</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_count_writes_audit_log</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_count_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_start_count_loads_lines</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_start_count_raises_if_not_draft</span><span class="dot"></span></div>
+        <div class="class-name">TestStockLot</div>
+        <div class="test-row"><span class="test-name">test_action_send_expiry_alert</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_action_view_stock_moves_returns_action</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_expiry_alert_sent_default_false</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_platform_notes_field</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_supplier_lot_ref_field</span><span class="dot"></span></div>
+        <div class="class-name">TestCreatePOFromSuggestion</div>
+        <div class="test-row"><span class="test-name">test_create_po_creates_purchase_order</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_po_raises_without_suggestion</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_po_raises_without_supplier</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_po_uses_supplier_price</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_rental</span>
+        <span class="addon-meta">M7 — Rental lifecycle, availability, tiers</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">80 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestRentalProduct</div>
+        <div class="test-row"><span class="test-name">test_availability_initially_true</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_compute_price_daily</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_compute_price_minimum_days</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_compute_price_monthly</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_compute_price_weekly</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_compute_price_with_deposit</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_rental_product</span><span class="dot"></span></div>
+        <div class="class-name">TestRentalOrder</div>
+        <div class="test-row"><span class="test-name">test_availability_check_blocks_overbooking</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cancel_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cannot_cancel_active</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_requires_deposit</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_requires_signature</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_deposit_deduction</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_discount_reduces_price</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_final_amount_includes_damage</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_lifecycle</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_initial_state_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_late_fee_computed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_order_sequence_assigned</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_rental_days_computed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_rental_price_computed</span><span class="dot"></span></div>
+        <div class="class-name">TestSigningStep</div>
+        <div class="test-row"><span class="test-name">test_action_sign_posts_chatter</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_action_sign_sets_is_signed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_blocked_without_signature</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_succeeds_after_signature</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_double_sign_raises</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_unsigned_by_default</span><span class="dot"></span></div>
+        <div class="class-name">TestVerificationGate</div>
+        <div class="test-row"><span class="test-name">test_pickup_allowed_after_verification_verified</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_pickup_allowed_without_verification_record</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_pickup_blocked_when_verification_expired</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_pickup_blocked_when_verification_pending</span><span class="dot"></span></div>
+        <div class="class-name">TestDiscountTiers</div>
+        <div class="test-row"><span class="test-name">test_gold_discount_higher_than_silver</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_silver_discount</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_tiers_seeded</span><span class="dot"></span></div>
+        <div class="class-name">TestDiscountApprovalAudit</div>
+        <div class="test-row"><span class="test-name">test_approve_discount_includes_approver_name</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_approve_discount_posts_chatter</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_approve_discount_sets_approved_flag</span><span class="dot"></span></div>
+        <div class="class-name">TestRentalVerification</div>
+        <div class="test-row"><span class="test-name">test_create_verification</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_expire_cron</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reject_action</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_verify_action</span><span class="dot"></span></div>
+        <div class="class-name">TestRentalFullCycle</div>
+        <div class="test-row"><span class="test-name">test_blocked_stock_during_rental</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cancel_after_reservation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cannot_cancel_active_rental</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_requires_deposit_paid</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_deposit_full_release_on_clean_return</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_deposit_partial_deduction_on_damage</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_rental_cycle_no_damage</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_invoice_includes_damage_and_late_fee</span><span class="dot"></span></div>
+        <div class="class-name">TestRecurringRental</div>
+        <div class="test-row"><span class="test-name">test_last_invoice_date_advances_after_billing</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_no_last_invoice_date_triggers_first_billing</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_non_recurring_order_not_billed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_recurring_invoice_created_when_due_weekly</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_recurring_skips_when_not_due</span><span class="dot"></span></div>
+        <div class="class-name">TestTierAutoUpdate</div>
+        <div class="test-row"><span class="test-name">test_partner_promoted_to_gold_when_spend_exceeds_threshold</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_partner_promoted_to_platinum</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_partner_promoted_to_silver_when_spend_exceeds_threshold</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_partner_with_low_spend_gets_low_tier</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_partner_with_override_not_updated</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_tier_applies_correct_discount</span><span class="dot"></span></div>
+        <div class="class-name">TestRentalE2E</div>
+        <div class="test-row"><span class="test-name">test_confirm_reserves_product</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_damage_charge_creates_damage_line</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_rental_flow</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_invoice_created_on_rental_close</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_pickup_transitions_to_active</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_rental_order_created_in_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_return_transitions_state</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_signing_state_updated_on_sign</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_payroll_nl</span>
+        <span class="addon-meta">M11 — Dutch payroll engine, NL tax brackets</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">57 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestNlPayrollCalculator</div>
+        <div class="test-row"><span class="test-name">test_custom_vakantiegeld_pct</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_employer_costs_computed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_expense_reimbursement_not_taxed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_explanation_lines_present</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_gross_to_net_calculation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_high_income_no_lhk</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_loonheffingskorting_reduces_tax</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_overtime_included_in_taxable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_vakantiegeld_accrual</span><span class="dot"></span></div>
+        <div class="class-name">TestPayrollRuleVersion</div>
+        <div class="test-row"><span class="test-name">test_2025_rules_seeded</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_activate_sets_other_inactive</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_get_active_rules_returns_2025</span><span class="dot"></span></div>
+        <div class="class-name">TestPayrollPayslip</div>
+        <div class="test-row"><span class="test-name">test_calculate_payslip</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_holiday_allowance_accrual</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_override_record_immutable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_override_requires_reason</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_override_with_reason_creates_audit_record</span><span class="dot"></span></div>
+        <div class="class-name">TestPayrollRBAC</div>
+        <div class="test-row"><span class="test-name">test_employee_b_sees_only_own_payslip</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_employee_cannot_create_payslip</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_employee_cannot_write_payslip</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_employee_sees_only_own_payslip</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_hr_manager_sees_all_company_payslips</span><span class="dot"></span></div>
+        <div class="class-name">TestPayrollRunFullCycle</div>
+        <div class="test-row"><span class="test-name">test_accountant_export_returns_url_action</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_annual_statement_excludes_zero_ytd_employees</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_export_creates_access_log_entries</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_payroll_provider_export_returns_url_action</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_publish_payslips_to_portal</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_run_calculated_to_confirmed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_run_confirmed_to_approved</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_run_draft_to_calculated</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_run_totals_aggregated_correctly</span><span class="dot"></span></div>
+        <div class="class-name">TestBijtelling</div>
+        <div class="test-row"><span class="test-name">test_bijtelling_in_explanation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_employee_catalogue_value_field_exists</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_ev_car_uses_lower_rate</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_no_company_car_no_bijtelling</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_payslip_bijtelling_passed_through_model</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_standard_car_adds_bijtelling_to_taxable_gross</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_zero_catalogue_value_no_bijtelling</span><span class="dot"></span></div>
+        <div class="class-name">TestFourWeekPayroll</div>
+        <div class="test-row"><span class="test-name">test_4week_employer_costs</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_4week_loonheffing_annualised_same_as_monthly</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_4week_lower_period_salary_than_monthly</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_4week_vakantiegeld_accrual</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_year_mismatch_warning</span><span class="dot"></span></div>
+        <div class="class-name">TestPayrollE2E</div>
+        <div class="test-row"><span class="test-name">test_compute_payslip_lines</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_contract_open_state</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_employee_created</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_payroll_flow</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_payroll_audit_log_written</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_payslip_created_in_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_payslip_validate_posts_journal_entry</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_portal_publish_flag</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_planning</span>
+        <span class="addon-meta">M5 — Field service planning, job scheduling</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">49 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestPlanningJob</div>
+        <div class="test-row"><span class="test-name">test_cancel</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_complete_requires_sign_off</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_sends_customer_confirmation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_job_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_duration_computed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reschedule_opens_wizard</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sale_order_linkage</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_send_reminder_sets_flag</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_state_machine_full_flow</span><span class="dot"></span></div>
+        <div class="class-name">TestPlanningResource</div>
+        <div class="test-row"><span class="test-name">test_create_resource</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_resource_linked_to_job</span><span class="dot"></span></div>
+        <div class="class-name">TestPlanningJobTypes</div>
+        <div class="test-row"><span class="test-name">test_appointment_no_sign_off</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_installation_requires_sign_off</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_job_types_seeded</span><span class="dot"></span></div>
+        <div class="class-name">TestRescheduleWizard</div>
+        <div class="test-row"><span class="test-name">test_reschedule_changes_datetimes</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reschedule_includes_reason_in_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reschedule_logs_chatter_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reschedule_notifies_customer_when_enabled</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reschedule_raises_for_completed_job</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reschedule_raises_for_invalid_dates</span><span class="dot"></span></div>
+        <div class="class-name">TestAutoCreateFromQuote</div>
+        <div class="test-row"><span class="test-name">test_auto_job_linked_to_so_partner</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_physical_so_no_auto_job</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_service_so_auto_creates_job</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_so_with_existing_jobs_no_duplicate</span><span class="dot"></span></div>
+        <div class="class-name">TestReminderCron</div>
+        <div class="test-row"><span class="test-name">test_cron_sends_reminder_for_due_job</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_skips_already_reminded_job</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_skips_cancelled_job</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_skips_far_future_job</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_skips_job_without_partner</span><span class="dot"></span></div>
+        <div class="class-name">TestQuoteToJobE2E</div>
+        <div class="test-row"><span class="test-name">test_cancelled_job_does_not_affect_so</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_e2e_quote_to_completed_job</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_multiple_jobs_per_quote</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_quote_confirm_auto_creates_job</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_quote_confirm_then_manual_job_linked</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_view_planning_jobs_action_scoped_to_so</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_quote_signing</span>
+        <span class="addon-meta">M4 — Digital quote signing, audit trail</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">52 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestQuoteSigningLifecycle</div>
+        <div class="test-row"><span class="test-name">test_accepted_pending_does_not_override_signed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_accepted_pending_from_viewed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_accepted_pending_state_transition</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_action_mark_invoiced</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_action_mark_invoiced_requires_confirmed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cancel_signing</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_signed_transitions_state</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_confirm_unsigned_order_raises</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_document_hash_different_content</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_document_hash_is_stable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_initial_state_is_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mark_viewed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_planning_task_created_on_signing</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_portal_url_generated</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_process_signing_creates_audit_record</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_process_signing_posts_internal_notification</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_send_for_signing_sets_state_and_token</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_send_for_signing_sets_terms</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_signing_record_is_immutable</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_signing_rejects_empty_signature_data</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_signing_requires_terms_and_payment_acceptance</span><span class="dot"></span></div>
+        <div class="class-name">TestAuditEvidenceComplete</div>
+        <div class="test-row"><span class="test-name">test_both_acceptance_flags_stored</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_document_hash_is_sha256</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_document_version_stored</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_event_log_stored</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_ip_address_stored</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_signature_type_stored</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_terms_version_stored</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_user_agent_stored</span><span class="dot"></span></div>
+        <div class="class-name">TestAutoExpiry</div>
+        <div class="test-row"><span class="test-name">test_cron_does_not_expire_future_quotes</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_does_not_expire_signed_quotes</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_expires_overdue_sent_quotes</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_expires_viewed_quotes</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_no_expiry_date_not_expired</span><span class="dot"></span></div>
+        <div class="class-name">TestQtspBlocker</div>
+        <div class="test-row"><span class="test-name">test_flag_can_be_set</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_flag_default_false</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_qualified_order_can_still_be_sent</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_signing_still_possible_via_model</span><span class="dot"></span></div>
+        <div class="class-name">TestQuoteTerms</div>
+        <div class="test-row"><span class="test-name">test_get_active_terms_en</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_get_active_terms_fallback</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_payment_obligation_text_present</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_seed_terms_loaded</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_email_ai</span>
+        <span class="addon-meta">M13 — AI email triage, pending outbox, draft approval</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">52 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestEmailAiMessage</div>
+        <div class="test-row"><span class="test-name">test_ai_draft_reply_creates_outbox</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_archive_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_classify_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_message</span><span class="dot"></span></div>
+        <div class="class-name">TestEmailAiOutbox</div>
+        <div class="test-row"><span class="test-name">test_approve_outbox</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cannot_send_pending</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cannot_send_rejected</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_outbox</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_state_machine</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_needs_info_outbox</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_no_auto_send_by_default</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reject_outbox</span><span class="dot"></span></div>
+        <div class="class-name">TestEmailAiMailbox</div>
+        <div class="test-row"><span class="test-name">test_create_mailbox_graph</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_mailbox_imap</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sync_updates_last_sync_and_state</span><span class="dot"></span></div>
+        <div class="class-name">TestEmailAiEndToEnd</div>
+        <div class="test-row"><span class="test-name">test_full_email_to_ticket_to_send_flow</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_internal_note_not_in_sender_view</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_pending_outbox_state_machine_complete</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_thread_grouping_fields_present</span><span class="dot"></span></div>
+        <div class="class-name">TestEmailAiFinanceTask</div>
+        <div class="test-row"><span class="test-name">test_auto_create_finance_task_from_invoice_email</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_finance_task</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_finance_task_state_transitions</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_no_duplicate_finance_task</span><span class="dot"></span></div>
+        <div class="class-name">TestEmailAiMailboxCredentials</div>
+        <div class="test-row"><span class="test-name">test_graph_secret_stored_in_config_parameter</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_imap_password_stored_in_config_parameter</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_smtp_password_stored_in_config_parameter</span><span class="dot"></span></div>
+        <div class="class-name">TestEmailAiAutoSend</div>
+        <div class="test-row"><span class="test-name">test_auto_send_categories_parsed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_auto_send_disabled_by_default</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_auto_send_returns_empty_when_disabled</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_outbox_has_mailbox_field</span><span class="dot"></span></div>
+        <div class="class-name">TestEmailAiTemplate</div>
+        <div class="test-row"><span class="test-name">test_create_template</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_template_with_subject</span><span class="dot"></span></div>
+        <div class="class-name">TestEmailAiTemplateApplication</div>
+        <div class="test-row"><span class="test-name">test_template_linked_to_outbox_on_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_template_subject_applied_to_outbox</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_crm_core</span>
+        <span class="addon-meta">M2 — CRM leads, campaigns, GDPR</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">41 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestCrmLead</div>
+        <div class="test-row"><span class="test-name">test_ai_summary_with_mock</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_campaign_assignment</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_duplicate_detection_by_email</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_lead_score_computed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_lead_score_email_only</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_lead_score_full_data_higher</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mark_contacted</span><span class="dot"></span></div>
+        <div class="class-name">TestCrmCampaign</div>
+        <div class="test-row"><span class="test-name">test_activate_campaign</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_campaign_lead_count</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_campaign</span><span class="dot"></span></div>
+        <div class="class-name">TestGdpr</div>
+        <div class="test-row"><span class="test-name">test_anonymize_is_idempotent</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_anonymize_lead</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_gdpr_consent_default_false</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_gdpr_export_data</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_partner_anonymize</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_partner_gdpr_consent</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_record_gdpr_consent</span><span class="dot"></span></div>
+        <div class="class-name">TestCrmCampaignRBAC</div>
+        <div class="test-row"><span class="test-name">test_regular_user_can_read_campaign</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_regular_user_cannot_create_campaign</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_regular_user_cannot_write_campaign</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sales_manager_has_full_access</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_salesman_cannot_delete_campaign</span><span class="dot"></span></div>
+        <div class="class-name">TestLeadDealQuoteFlow</div>
+        <div class="test-row"><span class="test-name">test_full_lead_deal_quote_flow</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_lead_to_opportunity</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_opportunity_to_sale_order</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sale_order_confirmation</span><span class="dot"></span></div>
+        <div class="class-name">TestMergeDuplicates</div>
+        <div class="test-row"><span class="test-name">test_merge_archives_duplicates</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_merge_requires_two_leads</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_merge_transfers_empty_fields</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_hrm</span>
+        <span class="addon-meta">M6 — HR employee extensions, onboarding, sick leave</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">42 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestHrEmployeeExtensions</div>
+        <div class="test-row"><span class="test-name">test_certification_creation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_checklist_item_mark_done</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_contract_fields</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_emergency_contact_fields</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_equipment_assignment</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_offboarding_creates_checklist</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_onboarding_checklist_creation</span><span class="dot"></span></div>
+        <div class="class-name">TestSickLeave</div>
+        <div class="test-row"><span class="test-name">test_create_sick_leave</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_duration_computed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_no_medical_data_stored</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_privacy_notes_field_exists</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sick_leave_state_machine</span><span class="dot"></span></div>
+        <div class="class-name">TestLeaveTypes</div>
+        <div class="test-row"><span class="test-name">test_leave_types_seeded</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sick_no_allocation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_vacation_requires_allocation</span><span class="dot"></span></div>
+        <div class="class-name">TestLeaveApprovalFlow</div>
+        <div class="test-row"><span class="test-name">test_leave_approval_reduces_balance</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_leave_approve_sets_state_validate</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_refused_leave_does_not_reduce_balance</span><span class="dot"></span></div>
+        <div class="class-name">TestPortalPayslipVisibility</div>
+        <div class="test-row"><span class="test-name">test_employee_b_cannot_read_employee_a_payslip</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_employee_sees_own_payslip_only</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_payslip_model_has_scoping_fields</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_record_rule_domain_matches_own_employee</span><span class="dot"></span></div>
+        <div class="class-name">TestPortalPlanningCalendar</div>
+        <div class="test-row"><span class="test-name">test_calendar_grid_structure</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_other_employee_leave_not_visible</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_planning_route_exists_in_controller</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_planning_template_exists</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_refused_leave_excluded_from_calendar</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sick_leave_appears_in_calendar_month</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sick_leave_outside_month_not_returned</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sick_leave_without_end_date_still_appears</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_e2e_tests</span>
+        <span class="addon-meta">M16 — Section 8 E2E flows (lead→invoice, helpdesk)</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">42 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestHelpdeskE2E</div>
+        <div class="test-row"><span class="test-name">test_ai_classify_sets_category</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_ai_draft_reply_stored_not_auto_sent</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_edit_reason_persisted_before_send</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_helpdesk_flow</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_ticket_closes_after_reply</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_ticket_created_with_email_source</span><span class="dot"></span></div>
+        <div class="class-name">TestLeadToInvoiceE2E</div>
+        <div class="test-row"><span class="test-name">test_expired_quote_cannot_be_signed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_pipeline_lead_to_invoice</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_signed_quote_cannot_be_processed_again</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_signing_record_is_immutable</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_helpdesk</span>
+        <span class="addon-meta">M13 — AI tickets, SLA rules, skill routing</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">35 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestHelpdeskStages</div>
+        <div class="test-row"><span class="test-name">test_closed_stages_flagged</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_stages_seeded</span><span class="dot"></span></div>
+        <div class="class-name">TestHelpdeskTicket</div>
+        <div class="test-row"><span class="test-name">test_ai_classify_with_mock</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_ai_draft_reply_workflow</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_close_ticket</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_ticket</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_risk_flags_default_false</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_send_without_approval_raises</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sla_deadline_set_from_rule</span><span class="dot"></span></div>
+        <div class="class-name">TestHelpdeskSla</div>
+        <div class="test-row"><span class="test-name">test_sla_cron_posts_note_on_breached_ticket</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sla_cron_warns_on_approaching_deadline</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sla_deadline_calculation</span><span class="dot"></span></div>
+        <div class="class-name">TestHelpdeskEndToEnd</div>
+        <div class="test-row"><span class="test-name">test_edit_reason_stored_when_reply_differs</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_follow_up_action_creates_activity</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_ticket_workflow</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_send_before_approval_blocked</span><span class="dot"></span></div>
+        <div class="class-name">TestHelpdeskSkillRouting</div>
+        <div class="test-row"><span class="test-name">test_action_accept_ai_assignee</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_auto_route_assigns_when_team_auto_assign_enabled</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_get_next_assignee_skill_filter</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_get_next_assignee_workload_balance</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_missing_info_followup_not_duplicated</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_missing_info_followup_scheduled</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_skill_model_exists</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_team_has_skill_ids</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_ticket_has_skill_and_product_fields</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_whatsapp_social</span>
+        <span class="addon-meta">M14 — WhatsApp, social inbox, content calendar</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">34 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestWhatsappProvider</div>
+        <div class="test-row"><span class="test-name">test_mock_provider_seeded</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mock_provider_send_succeeds</span><span class="dot"></span></div>
+        <div class="class-name">TestWhatsappMessage</div>
+        <div class="test-row"><span class="test-name">test_ai_draft_reply_sets_pending</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_approve_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_approved_mock_send_succeeds</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_inbound_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_lead_from_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_ticket_from_wa_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_inbound_webhook_creates_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_opt_in_recording</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_send_requires_approved</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_webhook_dedup</span><span class="dot"></span></div>
+        <div class="class-name">TestSocialPost</div>
+        <div class="test-row"><span class="test-name">test_ai_generate_post</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cancel_post</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_post_draft</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cron_publishes_due_posts</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_state_machine</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_publish_approved_mock</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_publish_requires_approval</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reject_returns_to_draft</span><span class="dot"></span></div>
+        <div class="class-name">TestSocialInbox</div>
+        <div class="test-row"><span class="test-name">test_ai_draft_reply</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_approve_and_send</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_social_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_ticket_from_social_message</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_escalate</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sentiment_written_on_valid_json_reply</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_subscription_modules</span>
+        <span class="addon-meta">M1 — Platform packages, subscription lifecycle</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">29 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestPlatformPackage</div>
+        <div class="test-row"><span class="test-name">test_package_code_unique</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_packages_seeded</span><span class="dot"></span></div>
+        <div class="class-name">TestPlatformSubscription</div>
+        <div class="test-row"><span class="test-name">test_activate_transition</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cancel_transition</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_company_package_unique_constraint</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_data_retention_on_deactivation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_expire_transition</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_suite_grants_any_module</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_is_module_active_expired_denies_access</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_is_module_active_no_subscriptions</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_is_module_active_with_active_sub</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_license_key_generated_on_activation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_license_key_stable_on_reactivation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_reactivate_from_cancelled</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_trial_is_active</span><span class="dot"></span></div>
+        <div class="class-name">TestMenuGating</div>
+        <div class="test-row"><span class="test-name">test_active_subscription_menu_visible</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_cancelled_subscription_menu_hidden</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_expired_subscription_menu_hidden</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_no_subscriptions_all_menus_visible</span><span class="dot"></span></div>
+        <div class="class-name">TestRouteGating</div>
+        <div class="test-row"><span class="test-name">test_require_module_blocks_when_expired</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_require_module_passes_when_active</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_ai_voice</span>
+        <span class="addon-meta">M15 — VoIP call flow, STT/TTS, sentiment, escalation</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">25 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestVoiceProviders</div>
+        <div class="test-row"><span class="test-name">test_default_flows_seeded</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mock_provider_seeded</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mock_stt_returns_string</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_mock_tts_returns_bytes</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sentiment_classifier</span><span class="dot"></span></div>
+        <div class="class-name">TestVoiceCall</div>
+        <div class="test-row"><span class="test-name">test_angry_sentiment_triggers_escalation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_call_complete_sets_outcome</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_callback_outcome_creates_activity</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_create_call</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_escalation_at_frustrated_threshold</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_frustrated_below_angry_threshold</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_full_transcript_computed</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_invoice_flow_seeded_with_system_prompt</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_max_turns_triggers_escalation</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_process_speech_creates_transcript</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_recording_consent_default_false</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_recording_consent_set_when_recording_enabled</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_rental_flow_uses_rag</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sentiment_labels_stored_structured</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_sentiment_update_tracks_peak</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_transcript_preserved_in_order</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+  <div class="addon-card">
+    <div class="addon-header">
+      <div class="addon-title">
+        <span class="addon-name">custom_theme</span>
+        <span class="addon-meta">M0 — Brand colours, company theme settings</span>
+      </div>
+      <div class="addon-right">
+        <span class="test-count">5 tests</span>
+        <span class="badge badge-pass">PASS</span>
+      </div>
+    </div>
+    <div class="addon-body">
+      <div class="class-group">
+        <div class="class-name">TestCustomTheme</div>
+        <div class="test-row"><span class="test-name">test_brand_fields_exist</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_default_colors</span><span class="dot"></span></div>
+        <div class="test-row"><span class="test-name">test_write_brand_color</span><span class="dot"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Generated 2026-06-10 &nbsp;&middot;&nbsp; Database: traefik_test1 &nbsp;&middot;&nbsp; 18 addons &nbsp;&middot;&nbsp; 656 tests &nbsp;&middot;&nbsp; 0 failures &nbsp;&middot;&nbsp; Odoo 19 compatibility fixes applied
+</footer>
+
+</body>
+</html>
+

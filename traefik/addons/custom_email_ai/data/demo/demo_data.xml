@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_mailbox_1" model="email.ai.mailbox">
+        <field name="name">Demo Support Inbox</field>
+        <field name="email_address">support@demo.example.com</field>
+        <field name="connection_type">imap</field>
+        <field name="imap_host">imap.demo.example.com</field>
+        <field name="state">draft</field>
+    </record>
+    <record id="demo_email_msg_1" model="email.ai.message">
+        <field name="name">Question about subscription pricing</field>
+        <field name="date" eval="fields.Datetime.now()"/>
+        <field name="from_name">Alice Demo</field>
+        <field name="from_email">alice@demo.example.com</field>
+        <field name="body_text">Hi, I would like to know more about your enterprise subscription pricing. Can you send me a quote?</field>
+        <field name="state">new</field>
+    </record>
+    <record id="demo_email_msg_2" model="email.ai.message">
+        <field name="name">Delivery issue — order #4521</field>
+        <field name="date" eval="fields.Datetime.now()"/>
+        <field name="from_name">Bob Demo</field>
+        <field name="from_email">bob@demo.example.com</field>
+        <field name="body_text">Hello, my order #4521 was supposed to arrive last week but I have not received it yet. Could you please check the status?</field>
+        <field name="state">new</field>
+    </record>
+</odoo>

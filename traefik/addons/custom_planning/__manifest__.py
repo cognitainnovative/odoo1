@@ -1,0 +1,23 @@
+{
+    "name": "Platform Planning",
+    "version": "19.0.1.0.0",
+    "summary": "Appointments, jobs, resources, calendar, kanban, reminders, reschedule, mobile employee view.",
+    "author": "Cognita Innovative",
+    "license": "LGPL-3",
+    "category": "Project",
+    "depends": ["base", "mail", "hr", "custom_crm_core", "custom_platform_security"],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/record_rules.xml",
+        "data/ir_cron.xml",
+        "data/planning_job_types.xml",
+        "report/job_completion_report.xml",
+        "wizards/reschedule_wizard.xml",
+        "views/planning_job_views.xml",
+        "views/resource_views.xml",
+        "views/menus.xml",
+    ],
+    "installable": True,
+    "application": True,
+    "auto_install": False,
+}

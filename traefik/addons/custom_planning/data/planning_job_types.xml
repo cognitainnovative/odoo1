@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <record id="job_type_appointment" model="platform.planning.job.type">
+        <field name="name">Appointment</field>
+        <field name="code">appointment</field>
+        <field name="sequence">10</field>
+        <field name="default_duration_hours">1.0</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="job_type_installation" model="platform.planning.job.type">
+        <field name="name">Installation / Service</field>
+        <field name="code">installation</field>
+        <field name="sequence">20</field>
+        <field name="default_duration_hours">4.0</field>
+        <field name="requires_customer_sign_off" eval="True"/>
+        <field name="color">2</field>
+    </record>
+
+    <record id="job_type_rental_pickup" model="platform.planning.job.type">
+        <field name="name">Rental Pickup</field>
+        <field name="code">rental_pickup</field>
+        <field name="sequence">30</field>
+        <field name="default_duration_hours">0.5</field>
+        <field name="requires_customer_sign_off" eval="True"/>
+        <field name="color">3</field>
+    </record>
+
+    <record id="job_type_rental_return" model="platform.planning.job.type">
+        <field name="name">Rental Return</field>
+        <field name="code">rental_return</field>
+        <field name="sequence">35</field>
+        <field name="default_duration_hours">0.5</field>
+        <field name="requires_customer_sign_off" eval="True"/>
+        <field name="color">4</field>
+    </record>
+
+    <record id="job_type_sales_call" model="platform.planning.job.type">
+        <field name="name">Sales / Follow-up Call</field>
+        <field name="code">sales_call</field>
+        <field name="sequence">40</field>
+        <field name="default_duration_hours">0.5</field>
+        <field name="color">5</field>
+    </record>
+
+    <record id="job_type_support_callback" model="platform.planning.job.type">
+        <field name="name">Support Callback</field>
+        <field name="code">support_callback</field>
+        <field name="sequence">50</field>
+        <field name="default_duration_hours">0.5</field>
+        <field name="color">6</field>
+    </record>
+
+    <record id="job_type_internal_task" model="platform.planning.job.type">
+        <field name="name">Internal Task</field>
+        <field name="code">internal_task</field>
+        <field name="sequence">60</field>
+        <field name="default_duration_hours">2.0</field>
+        <field name="color">7</field>
+    </record>
+
+    <record id="job_type_hr_meeting" model="platform.planning.job.type">
+        <field name="name">HR Meeting</field>
+        <field name="code">hr_meeting</field>
+        <field name="sequence">70</field>
+        <field name="default_duration_hours">1.0</field>
+        <field name="color">8</field>
+    </record>
+
+</data>
+</odoo>

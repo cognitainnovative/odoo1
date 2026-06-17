@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Cost Centre ─────────────────────────────────────────────────────── -->
+
+    <record id="view_cost_centre_form" model="ir.ui.view">
+        <field name="name">account.cost.centre.form</field>
+        <field name="model">account.cost.centre</field>
+        <field name="arch" type="xml">
+            <form string="Cost Centre">
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="company_id" groups="base.group_multi_company"/>
+                        <field name="parent_id"/>
+                        <field name="active"/>
+                    </group>
+                    <field name="description"/>
+                    <field name="child_ids" string="Sub-Centres">
+                        <list>
+                            <field name="code"/>
+                            <field name="name"/>
+                            <field name="active"/>
+                        </list>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_cost_centre_list" model="ir.ui.view">
+        <field name="name">account.cost.centre.list</field>
+        <field name="model">account.cost.centre</field>
+        <field name="arch" type="xml">
+            <list string="Cost Centres">
+                <field name="code"/>
+                <field name="name"/>
+                <field name="parent_id"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_cost_centre" model="ir.actions.act_window">
+        <field name="name">Cost Centres</field>
+        <field name="res_model">account.cost.centre</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Trial Balance ───────────────────────────────────────────────────── -->
+
+    <record id="view_trial_balance_wizard_form" model="ir.ui.view">
+        <field name="name">account.trial.balance.wizard.form</field>
+        <field name="model">account.trial.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Trial Balance">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate" type="object"
+                            class="btn-primary"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+                <group string="Results" invisible="not line_ids">
+                    <field name="line_ids" nolabel="1">
+                        <list string="Trial Balance">
+                            <field name="account_code"/>
+                            <field name="account_name"/>
+                            <field name="account_type"/>
+                            <field name="debit_total" sum="Total Debit"/>
+                            <field name="credit_total" sum="Total Credit"/>
+                            <field name="balance" sum="Net Balance"/>
+                        </list>
+                    </field>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_trial_balance_wizard" model="ir.actions.act_window">
+        <field name="name">Trial Balance</field>
+        <field name="res_model">account.trial.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ── General Ledger ──────────────────────────────────────────────────── -->
+
+    <record id="view_general_ledger_wizard_form" model="ir.ui.view">
+        <field name="name">account.general.ledger.wizard.form</field>
+        <field name="model">account.general.ledger.wizard</field>
+        <field name="arch" type="xml">
+            <form string="General Ledger">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="account_id"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate" type="object"
+                            class="btn-primary"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+                <group string="Results" invisible="not line_ids">
+                    <field name="line_ids" nolabel="1">
+                        <list string="General Ledger">
+                            <field name="entry_date"/>
+                            <field name="entry_ref"/>
+                            <field name="account_code"/>
+                            <field name="account_name"/>
+                            <field name="partner_name"/>
+                            <field name="description"/>
+                            <field name="debit" sum="Total Debit"/>
+                            <field name="credit" sum="Total Credit"/>
+                        </list>
+                    </field>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_general_ledger_wizard" model="ir.actions.act_window">
+        <field name="name">General Ledger</field>
+        <field name="res_model">account.general.ledger.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ── Aged Balance ────────────────────────────────────────────────────── -->
+
+    <record id="view_aged_balance_wizard_form" model="ir.ui.view">
+        <field name="name">account.aged.balance.wizard.form</field>
+        <field name="model">account.aged.balance.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Aged Balance">
+                <group>
+                    <field name="aged_type"/>
+                    <field name="date_at"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate" type="object"
+                            class="btn-primary"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+                <group string="Results" invisible="not line_ids">
+                    <field name="line_ids" nolabel="1">
+                        <list string="Aged Balance">
+                            <field name="partner_name"/>
+                            <field name="current" sum="Current"/>
+                            <field name="days_30" sum="1-30 days"/>
+                            <field name="days_60" sum="31-60 days"/>
+                            <field name="days_90" sum="61-90 days"/>
+                            <field name="overdue_90plus" sum="90+ days"/>
+                            <field name="total" sum="Total"/>
+                        </list>
+                    </field>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_aged_balance_wizard" model="ir.actions.act_window">
+        <field name="name">Aged Balance</field>
+        <field name="res_model">account.aged.balance.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ── VAT Summary ─────────────────────────────────────────────────────── -->
+
+    <record id="view_vat_summary_wizard_form" model="ir.ui.view">
+        <field name="name">account.vat.summary.wizard.form</field>
+        <field name="model">account.vat.summary.wizard</field>
+        <field name="arch" type="xml">
+            <form string="VAT Summary">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate" type="object"
+                            class="btn-primary"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+                <group string="Results" invisible="not line_ids">
+                    <field name="line_ids" nolabel="1">
+                        <list string="VAT Summary">
+                            <field name="tax_name"/>
+                            <field name="base_amount" sum="Total Base"/>
+                            <field name="tax_amount" sum="Total Tax"/>
+                        </list>
+                    </field>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_vat_summary_wizard" model="ir.actions.act_window">
+        <field name="name">VAT Summary</field>
+        <field name="res_model">account.vat.summary.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ── Cash Flow ───────────────────────────────────────────────────────── -->
+
+    <record id="view_cash_flow_wizard_form" model="ir.ui.view">
+        <field name="name">account.cash.flow.wizard.form</field>
+        <field name="model">account.cash.flow.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Cash Flow Statement">
+                <group>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
+                </group>
+                <footer>
+                    <button name="action_generate" string="Generate" type="object"
+                            class="btn-primary"/>
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+                <group string="Results">
+                    <field name="operating_total"/>
+                    <field name="investing_total"/>
+                    <field name="financing_total"/>
+                    <field name="net_cash_flow"/>
+                </group>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_cash_flow_wizard" model="ir.actions.act_window">
+        <field name="name">Cash Flow Statement</field>
+        <field name="res_model">account.cash.flow.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- ── Menus ───────────────────────────────────────────────────────────── -->
+
+    <menuitem id="menu_cost_centres"
+              name="Cost Centres"
+              parent="account.menu_finance_configuration"
+              action="action_cost_centre"
+              sequence="65"
+              groups="account.group_account_manager"/>
+
+    <menuitem id="menu_trial_balance"
+              name="Trial Balance"
+              parent="menu_mgmt_reports"
+              action="action_trial_balance_wizard"
+              sequence="50"
+              groups="account.group_account_manager"/>
+
+    <menuitem id="menu_general_ledger"
+              name="General Ledger"
+              parent="menu_mgmt_reports"
+              action="action_general_ledger_wizard"
+              sequence="55"
+              groups="account.group_account_manager"/>
+
+    <menuitem id="menu_aged_balance"
+              name="Aged Balance"
+              parent="menu_mgmt_reports"
+              action="action_aged_balance_wizard"
+              sequence="60"
+              groups="account.group_account_manager"/>
+
+    <menuitem id="menu_vat_summary"
+              name="VAT Summary"
+              parent="menu_mgmt_reports"
+              action="action_vat_summary_wizard"
+              sequence="65"
+              groups="account.group_account_manager"/>
+
+    <menuitem id="menu_cash_flow"
+              name="Cash Flow Statement"
+              parent="menu_mgmt_reports"
+              action="action_cash_flow_wizard"
+              sequence="70"
+              groups="account.group_account_manager"/>
+
+</odoo>

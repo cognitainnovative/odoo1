@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ platform.stock.count — list ═══ -->
+    <record id="view_stock_count_list" model="ir.ui.view">
+        <field name="name">platform.stock.count.list</field>
+        <field name="model">platform.stock.count</field>
+        <field name="arch" type="xml">
+            <list string="Physical Stock Counts" decoration-success="state == 'done'"
+                  decoration-muted="state == 'cancelled'"
+                  decoration-info="state == 'in_progress'">
+                <field name="name"/>
+                <field name="warehouse_id"/>
+                <field name="location_id"/>
+                <field name="scheduled_date"/>
+                <field name="line_count" string="Lines"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- ═══ platform.stock.count — form ═══ -->
+    <record id="view_stock_count_form" model="ir.ui.view">
+        <field name="name">platform.stock.count.form</field>
+        <field name="model">platform.stock.count</field>
+        <field name="arch" type="xml">
+            <form string="Physical Stock Count">
+                <header>
+                    <button name="action_start_count" string="Start Count"
+                            type="object" class="btn-primary"
+                            invisible="state != 'draft'"/>
+                    <button name="action_confirm_count" string="Confirm Count"
+                            type="object" class="btn-primary"
+                            invisible="state != 'in_progress'"
+                            confirm="Apply all counted quantities as stock adjustments?"/>
+                    <button name="action_cancel" string="Cancel"
+                            type="object"
+                            invisible="state in ('done', 'cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,in_progress,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="warehouse_id"
+                                   readonly="state != 'draft'"/>
+                            <field name="location_id"
+                                   readonly="state != 'draft'"
+                                   domain="[('usage','=','internal')]"/>
+                        </group>
+                        <group>
+                            <field name="scheduled_date"
+                                   readonly="state != 'draft'"/>
+                            <field name="company_id"
+                                   groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <field name="count_line_ids">
+                        <list editable="bottom"
+                              decoration-danger="difference &lt; 0"
+                              decoration-success="difference &gt; 0">
+                            <field name="product_id" readonly="1"/>
+                            <field name="lot_id" readonly="1"/>
+                            <field name="uom_id" readonly="1"/>
+                            <field name="expected_qty" readonly="1"/>
+                            <field name="counted_qty"/>
+                            <field name="difference" readonly="1"/>
+                        </list>
+                    </field>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_count" model="ir.actions.act_window">
+        <field name="name">Physical Stock Counts</field>
+        <field name="res_model">platform.stock.count</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,145 @@
+# Dutch translations for custom_planning
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Planning Job / Appointment"
+msgstr "Planningstaak / Afspraak"
+
+msgid "Planning Job Type"
+msgstr "Type Planningstaak"
+
+msgid "Appointment"
+msgstr "Afspraak"
+
+msgid "Installation / Service"
+msgstr "Installatie / Service"
+
+msgid "Rental Pickup"
+msgstr "Ophalen Verhuur"
+
+msgid "Rental Return"
+msgstr "Retour Verhuur"
+
+msgid "Sales / Follow-up Call"
+msgstr "Verkoop / Opvolgingsgesprek"
+
+msgid "Support Callback"
+msgstr "Ondersteuning Terugbellen"
+
+msgid "Internal Task"
+msgstr "Interne Taak"
+
+msgid "HR Meeting"
+msgstr "HR-vergadering"
+
+msgid "Other"
+msgstr "Overig"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Draft"
+msgstr "Concept"
+
+msgid "Scheduled"
+msgstr "Ingepland"
+
+msgid "Confirmed"
+msgstr "Bevestigd"
+
+msgid "In Progress"
+msgstr "In Uitvoering"
+
+msgid "Completed"
+msgstr "Voltooid"
+
+msgid "Cancelled"
+msgstr "Geannuleerd"
+
+msgid "Normal"
+msgstr "Normaal"
+
+msgid "Urgent"
+msgstr "Dringend"
+
+msgid "Start"
+msgstr "Begin"
+
+msgid "End"
+msgstr "Einde"
+
+msgid "Duration (h)"
+msgstr "Duur (u)"
+
+msgid "All Day"
+msgstr "Hele Dag"
+
+msgid "Customer / Contact"
+msgstr "Klant / Contactpersoon"
+
+msgid "Assigned Employee"
+msgstr "Toegewezen Medewerker"
+
+msgid "Team Members"
+msgstr "Teamleden"
+
+msgid "Location / Address"
+msgstr "Locatie / Adres"
+
+msgid "Travel / Location Notes"
+msgstr "Reis- / Locatienotities"
+
+msgid "Linked Sale Order"
+msgstr "Gekoppelde Verkooporder"
+
+msgid "Linked Deal / Lead"
+msgstr "Gekoppelde Deal / Lead"
+
+msgid "Linked Invoice"
+msgstr "Gekoppelde Factuur"
+
+msgid "Description / Instructions"
+msgstr "Omschrijving / Instructies"
+
+msgid "Internal Notes"
+msgstr "Interne Notities"
+
+msgid "Completion Notes"
+msgstr "Voltooiingsnotities"
+
+msgid "Requires Customer Sign-off"
+msgstr "Vereist Aftekening Klant"
+
+msgid "Customer Signed Off"
+msgstr "Klant Heeft Afgetekend"
+
+msgid "Reminder Sent"
+msgstr "Herinnering Verzonden"
+
+msgid "Send Confirmation Email"
+msgstr "Bevestigingsmail Verzenden"
+
+msgid "Resources"
+msgstr "Middelen"
+
+msgid "Default Duration (h)"
+msgstr "Standaardduur (u)"
+
+msgid "Kanban Color"
+msgstr "Kanban Kleur"
+
+msgid "This job requires customer sign-off before it can be completed."
+msgstr "Deze taak vereist aftekening van de klant voordat deze voltooid kan worden."

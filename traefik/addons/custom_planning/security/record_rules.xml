@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_planning_job_company" model="ir.rule">
+        <field name="name">Planning Job: company scope</field>
+        <field name="model_id" ref="model_platform_planning_job"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="rule_planning_resource_company" model="ir.rule">
+        <field name="name">Planning Resource: company scope</field>
+        <field name="model_id" ref="model_platform_planning_resource"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

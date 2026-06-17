@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Run daily at 02:00 UTC — purge records past their retention policy -->
+    <record id="cron_gdpr_purge_expired" model="ir.cron">
+        <field name="name">GDPR: Purge expired records</field>
+        <field name="model_id" ref="model_platform_gdpr_retention_policy"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_purge_expired_records()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+
+    <!-- Run weekly — clean up expired / revoked API tokens older than 90 days -->
+    <record id="cron_api_token_cleanup" model="ir.cron">
+        <field name="name">Security: Clean up expired API tokens</field>
+        <field name="model_id" ref="model_platform_api_token"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_cleanup_expired_tokens()</field>
+        <field name="interval_number">7</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+        <field name="user_id" ref="base.user_root"/>
+    </record>
+</odoo>

@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "platform.fullname" . }}-ai-gateway
+  labels: {{- include "platform.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.aiGateway.replicas }}
+  selector:
+    matchLabels: {{- include "platform.selectorLabels" (dict "component" "ai-gateway" "context" .) | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "platform.selectorLabels" (dict "component" "ai-gateway" "context" .) | nindent 8 }}
+    spec:
+      containers:
+        - name: ai-gateway
+          image: {{ .Values.aiGateway.image.repository }}:{{ .Values.aiGateway.image.tag }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@{{ include "platform.fullname" . }}-postgres:5432/$(POSTGRES_DB)"
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "platform.fullname" . }}-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "platform.fullname" . }}-config
+                  key: POSTGRES_DB
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: POSTGRES_PASSWORD
+            - name: REDIS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "platform.fullname" . }}-config
+                  key: REDIS_URL
+            - name: DEFAULT_PROVIDER
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "platform.fullname" . }}-config
+                  key: AI_DEFAULT_PROVIDER
+            - name: REDACT_PII_EXTERNAL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "platform.fullname" . }}-config
+                  key: REDACT_PII_EXTERNAL
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: ANTHROPIC_API_KEY
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: OPENAI_API_KEY
+            - name: API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: AI_GATEWAY_SECRET
+          resources: {{- toYaml .Values.aiGateway.resources | nindent 12 }}

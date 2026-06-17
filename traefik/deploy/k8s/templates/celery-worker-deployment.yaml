@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "platform.fullname" . }}-celery-worker
+  labels: {{- include "platform.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.celery.worker.replicas }}
+  selector:
+    matchLabels: {{- include "platform.selectorLabels" (dict "component" "celery-worker" "context" .) | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "platform.selectorLabels" (dict "component" "celery-worker" "context" .) | nindent 8 }}
+    spec:
+      containers:
+        - name: celery-worker
+          image: {{ .Values.celery.image.repository }}:{{ .Values.celery.image.tag }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          command:
+            - celery
+            - -A
+            - celery_app
+            - worker
+            - --loglevel=info
+            - --queues={{ .Values.celery.worker.queues }}
+            - --concurrency={{ .Values.celery.worker.concurrency }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "platform.fullname" . }}-config
+          env:
+            - name: ODOO_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "platform.fullname" . }}-secrets
+                  key: ODOO_ADMIN_PASSWORD
+          resources: {{- toYaml .Values.celery.worker.resources | nindent 12 }}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Under Employees > Leaves -->
+    <menuitem id="menu_hrm_sick_leave"
+              name="Sick Leave Reports"
+              parent="hr_holidays.menu_hr_holidays_root"
+              action="action_hr_sick_leave"
+              sequence="30"
+              groups="hr.group_hr_user"/>
+
+    <menuitem id="menu_hrm_leave_pending"
+              name="Pending Approval"
+              parent="hr_holidays.menu_hr_holidays_root"
+              action="action_leave_pending_approval"
+              sequence="35"
+              groups="hr.group_hr_user"/>
+
+    <!-- Under Employees > Configuration -->
+    <menuitem id="menu_hrm_onboarding"
+              name="Onboarding Checklist"
+              parent="hr.hr_menu_configuration"
+              action="action_hr_onboarding_checklist"
+              sequence="50"
+              groups="hr.group_hr_manager"/>
+
+    <menuitem id="menu_hrm_announcements"
+              name="HR Announcements"
+              parent="hr.hr_menu_configuration"
+              action="action_hr_announcement"
+              sequence="60"
+              groups="hr.group_hr_manager"/>
+
+</odoo>

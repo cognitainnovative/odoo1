@@ -1,0 +1,250 @@
+# Dutch translations for custom_rental
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Rental Order"
+msgstr "Verhuurorder"
+
+msgid "Rental Product"
+msgstr "Verhuurartikel"
+
+msgid "Rental Customer Verification"
+msgstr "Klantverificatie Verhuur"
+
+msgid "Reference"
+msgstr "Referentie"
+
+msgid "Customer"
+msgstr "Klant"
+
+msgid "Sales Person"
+msgstr "Verkoopmedewerker"
+
+msgid "Linked Sale Order"
+msgstr "Gekoppelde Verkooporder"
+
+msgid "Final Invoice"
+msgstr "Eindfactuur"
+
+msgid "Draft / Quote"
+msgstr "Concept / Offerte"
+
+msgid "Reserved"
+msgstr "Gereserveerd"
+
+msgid "Confirmed — Awaiting Pickup"
+msgstr "Bevestigd — Wacht op Ophalen"
+
+msgid "Picked Up"
+msgstr "Opgehaald"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Return Pending"
+msgstr "Retour In Behandeling"
+
+msgid "Returned — Inspection"
+msgstr "Geretourneerd — Inspectie"
+
+msgid "Invoiced"
+msgstr "Gefactureerd"
+
+msgid "Closed"
+msgstr "Gesloten"
+
+msgid "Cancelled"
+msgstr "Geannuleerd"
+
+msgid "Pickup Date"
+msgstr "Ophaaldatum"
+
+msgid "Expected Return Date"
+msgstr "Verwachte Retourdatum"
+
+msgid "Actual Return Date"
+msgstr "Werkelijke Retourdatum"
+
+msgid "Rental Days"
+msgstr "Verhuurdagen"
+
+msgid "Price / Day (€)"
+msgstr "Prijs / Dag (€)"
+
+msgid "Rental Price (€)"
+msgstr "Verhuurprijs (€)"
+
+msgid "Deposit (€)"
+msgstr "Borg (€)"
+
+msgid "Deposit Paid"
+msgstr "Borg Betaald"
+
+msgid "Deposit Returned"
+msgstr "Borg Terugbetaald"
+
+msgid "Deposit Deducted (€)"
+msgstr "Borg Ingehouden (€)"
+
+msgid "Insurance (€)"
+msgstr "Verzekering (€)"
+
+msgid "Cleaning Fee (€)"
+msgstr "Schoonmaakkosten (€)"
+
+msgid "Damage Waiver (€)"
+msgstr "Schadedekking (€)"
+
+msgid "Late Fee (€)"
+msgstr "Boete Te Laat (€)"
+
+msgid "Damage Cost (€)"
+msgstr "Schadekosten (€)"
+
+msgid "Final Total (€)"
+msgstr "Eindtotaal (€)"
+
+msgid "Discount (%)"
+msgstr "Korting (%)"
+
+msgid "Discount Reason"
+msgstr "Reden Korting"
+
+msgid "Discount Approved"
+msgstr "Korting Goedgekeurd"
+
+msgid "Approved By"
+msgstr "Goedgekeurd Door"
+
+msgid "Verification Record"
+msgstr "Verificatierecord"
+
+msgid "Verification Status"
+msgstr "Verificatiestatus"
+
+msgid "Notes / Special Conditions"
+msgstr "Notities / Bijzondere Voorwaarden"
+
+msgid "Damage Description"
+msgstr "Schadebeschrijving"
+
+msgid "Return / Inspection Notes"
+msgstr "Retour- / Inspectinotities"
+
+msgid "Stock Product"
+msgstr "Voorraadproduct"
+
+msgid "Price / Week (€)"
+msgstr "Prijs / Week (€)"
+
+msgid "Price / Month (€)"
+msgstr "Prijs / Maand (€)"
+
+msgid "Minimum Rental Days"
+msgstr "Minimum Verhuurdagen"
+
+msgid "Insurance / Day (€)"
+msgstr "Verzekering / Dag (€)"
+
+msgid "Damage Waiver / Day (€)"
+msgstr "Schadedekking / Dag (€)"
+
+msgid "Late Return Fee / Day (€)"
+msgstr "Boete Te Laat Retour / Dag (€)"
+
+msgid "Weekend Surcharge (%)"
+msgstr "Weekendtoeslag (%)"
+
+msgid "Total Units Available"
+msgstr "Totaal Beschikbare Eenheden"
+
+msgid "Active Rentals"
+msgstr "Actieve Verhuren"
+
+msgid "Rental Orders"
+msgstr "Verhuurorders"
+
+msgid "ID Document"
+msgstr "Identiteitsdocument"
+
+msgid "KVK / Chamber of Commerce"
+msgstr "KVK / Kamer van Koophandel"
+
+msgid "Passport"
+msgstr "Paspoort"
+
+msgid "Driving Licence"
+msgstr "Rijbewijs"
+
+msgid "Pending"
+msgstr "In Behandeling"
+
+msgid "Verified"
+msgstr "Geverifieerd"
+
+msgid "Expired"
+msgstr "Verlopen"
+
+msgid "Rejected"
+msgstr "Afgewezen"
+
+msgid "Verified By"
+msgstr "Geverifieerd Door"
+
+msgid "Verified On"
+msgstr "Geverifieerd Op"
+
+msgid "Document Expiry"
+msgstr "Vervaldatum Document"
+
+msgid "Reference (last 4 chars only)"
+msgstr "Referentie (alleen laatste 4 tekens)"
+
+msgid "Low Risk"
+msgstr "Laag Risico"
+
+msgid "Medium Risk"
+msgstr "Gemiddeld Risico"
+
+msgid "High Risk"
+msgstr "Hoog Risico"
+
+msgid "Internal Notes"
+msgstr "Interne Notities"
+
+msgid "Retain Until"
+msgstr "Bewaren Tot"
+
+msgid "Please record the deposit payment before confirming the rental."
+msgstr "Registreer de borgbetaling voordat u de verhuur bevestigt."
+
+msgid "Only confirmed or reserved rentals can be picked up."
+msgstr "Alleen bevestigde of gereserveerde verhuren kunnen worden opgehaald."
+
+msgid "Cannot cancel an active rental. Complete return first."
+msgstr "Een actieve verhuur kan niet worden geannuleerd. Verwerk eerst de retour."
+
+msgid "Deposit"
+msgstr "Borg"
+
+msgid "Pickup"
+msgstr "Ophalen"
+
+msgid "Return"
+msgstr "Retour"
+
+msgid "Inspection"
+msgstr "Inspectie"

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "platform.fullname" . }}-support-app
+  labels: {{- include "platform.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.supportApp.replicas }}
+  selector:
+    matchLabels: {{- include "platform.selectorLabels" (dict "component" "support-app" "context" .) | nindent 6 }}
+  template:
+    metadata:
+      labels: {{- include "platform.selectorLabels" (dict "component" "support-app" "context" .) | nindent 8 }}
+    spec:
+      containers:
+        - name: support-app
+          image: {{ .Values.supportApp.image.repository }}:{{ .Values.supportApp.image.tag }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          ports:
+            - containerPort: 80
+          env:
+            - name: REACT_APP_ODOO_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "platform.fullname" . }}-config
+                  key: ODOO_URL
+          resources: {{- toYaml .Values.supportApp.resources | nindent 12 }}

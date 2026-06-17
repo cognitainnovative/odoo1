@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <record id="leave_type_vacation" model="hr.leave.type">
+        <field name="name">Annual Leave / Vacation</field>
+        <field name="requires_allocation" eval="True"/>
+        <field name="leave_validation_type">manager</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="leave_type_sick" model="hr.leave.type">
+        <field name="name">Sick Leave</field>
+        <field name="requires_allocation" eval="False"/>
+        <field name="leave_validation_type">no_validation</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="leave_type_special" model="hr.leave.type">
+        <field name="name">Special Leave</field>
+        <field name="requires_allocation" eval="False"/>
+        <field name="leave_validation_type">manager</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="leave_type_unpaid" model="hr.leave.type">
+        <field name="name">Unpaid Leave</field>
+        <field name="requires_allocation" eval="False"/>
+        <field name="leave_validation_type">manager</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="leave_type_parental" model="hr.leave.type">
+        <field name="name">Parental / Maternity / Paternity Leave</field>
+        <field name="requires_allocation" eval="False"/>
+        <field name="leave_validation_type">hr</field>
+        <field name="color">5</field>
+    </record>
+
+</data>
+</odoo>

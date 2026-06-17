@@ -1,0 +1,46 @@
+{
+  "name": "support-app",
+  "version": "1.0.0",
+  "description": "Employee-facing live support console for Odoo 19 Community ERP",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "clsx": "^2.1.1",
+    "core-js": "^3.37.1",
+    "date-fns": "^3.6.0",
+    "lucide-react": "^0.395.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-legacy": "^5.4.1",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "terser": "^5.31.1",
+    "typescript": "^5.4.5",
+    "vite": "^5.3.1"
+  },
+  "browserslist": [
+    "Chrome >= 51",
+    "Firefox >= 54",
+    "Edge >= 15",
+    "Safari >= 10",
+    "Android >= 6",
+    "not dead"
+  ]
+}

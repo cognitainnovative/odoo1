@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="rule_email_ai_message_company" model="ir.rule">
+        <field name="name">Email AI Message: company scope</field>
+        <field name="model_id" ref="model_email_ai_message"/>
+        <field name="domain_force">[('company_id','in',company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="rule_email_ai_mailbox_company" model="ir.rule">
+        <field name="name">Email Mailbox: company isolation</field>
+        <field name="model_id" ref="model_email_ai_mailbox"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="rule_email_ai_outbox_company" model="ir.rule">
+        <field name="name">Email Outbox: company isolation</field>
+        <field name="model_id" ref="model_email_ai_outbox"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    <record id="rule_email_ai_finance_task_company" model="ir.rule">
+        <field name="name">Email Finance Task: company isolation</field>
+        <field name="model_id" ref="model_email_ai_finance_task"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+</odoo>

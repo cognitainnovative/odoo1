@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Platform home dashboard ── -->
+    <record id="view_platform_home_dashboard" model="ir.ui.view">
+        <field name="name">platform.home.dashboard</field>
+        <field name="model">res.company</field>
+        <field name="priority">999</field>
+        <field name="arch" type="xml">
+            <form string="Platform Dashboard" create="false" edit="false" delete="false">
+                <sheet>
+                    <div class="o_horizontal_separator mt-0 mb-4">
+                        <h2>Platform Overview</h2>
+                    </div>
+                    <!-- KPI card row — populated via JS/stat buttons in full impl;
+                         for now surfaces quick-action links per module. -->
+                    <div class="row mt-2">
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <button type="action" name="%(custom_crm_core.action_crm_campaign)d" class="card border-0 shadow-sm h-100 w-100 p-0 border-0 bg-transparent" style="cursor:pointer;">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-handshake-o fa-2x text-primary mb-2" title="Handshake O" role="img"/>
+                                    <h5 class="card-title">CRM</h5>
+                                    <p class="card-text text-muted small">Leads, deals, pipeline</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <button type="action" name="%(custom_accounting_advanced.action_accrual_provision)d" class="card border-0 shadow-sm h-100 w-100 p-0 border-0 bg-transparent" style="cursor:pointer;">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-file-text-o fa-2x text-success mb-2" title="File Text O" role="img"/>
+                                    <h5 class="card-title">Finance</h5>
+                                    <p class="card-text text-muted small">Invoices, payments, reports</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <button type="action" name="%(custom_hrm.action_hr_active_employees)d" class="card border-0 shadow-sm h-100 w-100 p-0 border-0 bg-transparent" style="cursor:pointer;">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-users fa-2x text-warning mb-2" title="Users" role="img"/>
+                                    <h5 class="card-title">HR</h5>
+                                    <p class="card-text text-muted small">Employees, leave, payroll</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <button type="action" name="%(custom_ai_core.action_ai_provider)d" class="card border-0 shadow-sm h-100 w-100 p-0 border-0 bg-transparent" style="cursor:pointer;">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-robot fa-2x text-info mb-2" title="Robot" role="img"/>
+                                    <h5 class="card-title">AI Platform</h5>
+                                    <p class="card-text text-muted small">Chat, voice, email AI</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <button type="action" name="%(custom_inventory.action_stock_moves_today)d" class="card border-0 shadow-sm h-100 w-100 p-0 border-0 bg-transparent" style="cursor:pointer;">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-cubes fa-2x text-secondary mb-2" title="Cubes" role="img"/>
+                                    <h5 class="card-title">Inventory</h5>
+                                    <p class="card-text text-muted small">Stock, products, suppliers</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <button type="action" name="%(custom_rental.action_rental_active)d" class="card border-0 shadow-sm h-100 w-100 p-0 border-0 bg-transparent" style="cursor:pointer;">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-calendar fa-2x text-danger mb-2" title="Calendar" role="img"/>
+                                    <h5 class="card-title">Rental</h5>
+                                    <p class="card-text text-muted small">Orders, availability, returns</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <button type="action" name="%(custom_helpdesk.action_helpdesk_ticket_analysis)d" class="card border-0 shadow-sm h-100 w-100 p-0 border-0 bg-transparent" style="cursor:pointer;">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-life-ring fa-2x text-primary mb-2" title="Life Ring" role="img"/>
+                                    <h5 class="card-title">Helpdesk</h5>
+                                    <p class="card-text text-muted small">Tickets, SLA, support</p>
+                                </div>
+                            </button>
+                        </div>
+                        <div class="col-lg-3 col-md-6 mb-4">
+                            <button type="action" name="%(custom_whatsapp_social.action_social_post)d" class="card border-0 shadow-sm h-100 w-100 p-0 border-0 bg-transparent" style="cursor:pointer;">
+                                <div class="card-body text-center">
+                                    <i class="fa fa-share-alt fa-2x text-success mb-2" title="Social Media" role="img"/>
+                                    <h5 class="card-title">Social</h5>
+                                    <p class="card-text text-muted small">WhatsApp, posts, inbox</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_platform_home_dashboard" model="ir.actions.act_window">
+        <field name="name">Platform Home</field>
+        <field name="res_model">res.company</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_platform_home_dashboard"/>
+        <field name="target">main</field>
+    </record>
+
+    <!-- <menuitem id="menu_platform_home_root"
+              name="Home"
+              sequence="0"
+              action="action_platform_home_dashboard"
+              groups="base.group_user"/> -->
+
+</odoo>

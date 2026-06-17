@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_planning_reschedule_wizard_form" model="ir.ui.view">
+        <field name="name">planning.reschedule.wizard.form</field>
+        <field name="model">planning.reschedule.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reschedule Job">
+                <group string="Current Schedule (read-only)">
+                    <field name="current_start" readonly="1"/>
+                    <field name="current_end" readonly="1"/>
+                </group>
+                <group string="New Schedule">
+                    <field name="new_start_datetime"/>
+                    <field name="new_end_datetime"/>
+                </group>
+                <group string="Notification">
+                    <field name="reason" widget="text"
+                           placeholder="Optional: reason for rescheduling (included in customer message)"/>
+                    <field name="notify_customer"/>
+                </group>
+                <div class="alert alert-info" role="alert" invisible="not notify_customer">
+                    A rescheduling notice will be posted to the customer via the job's chatter.
+                </div>
+                <footer>
+                    <button name="action_confirm_reschedule" string="Confirm Reschedule"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_planning_reschedule_wizard" model="ir.actions.act_window">
+        <field name="name">Reschedule Job</field>
+        <field name="res_model">planning.reschedule.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="model_platform_planning_job"/>
+        <field name="binding_type">action</field>
+    </record>
+
+</odoo>

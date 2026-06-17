@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── Audit log ─────────────────────────────────────────────────────── -->
+    <!-- Users can only read their own company's audit entries. No write/delete. -->
+    <record id="rule_audit_log_company" model="ir.rule">
+        <field name="name">Audit Log: company isolation (read-only)</field>
+        <field name="model_id" ref="model_platform_audit_log"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- ── GDPR requests ─────────────────────────────────────────────────── -->
+    <record id="rule_gdpr_request_company" model="ir.rule">
+        <field name="name">GDPR Request: company isolation</field>
+        <field name="model_id" ref="model_platform_gdpr_request"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- ── GDPR retention policies ───────────────────────────────────────── -->
+    <record id="rule_gdpr_retention_company" model="ir.rule">
+        <field name="name">GDPR Retention Policy: company isolation</field>
+        <field name="model_id" ref="model_platform_gdpr_retention_policy"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <!-- ── API tokens ────────────────────────────────────────────────────────
+         Odoo ORs all record rules belonging to a user's groups. So the model
+         here is: base.group_user gets ONLY the own-tokens rule, and members of
+         group_company_admin get an additional company-wide rule OR'd on top.
+         There must be NO broad base.group_user rule, or it would be OR'd into
+         every employee's access and defeat the restriction. -->
+    <record id="rule_api_token_own_user" model="ir.rule">
+        <field name="name">API Token: non-admins see only tokens acting as them</field>
+        <field name="model_id" ref="model_platform_api_token"/>
+        <field name="domain_force">['&amp;', ('company_id', 'in', company_ids), '|', ('user_id', '=', user.id), ('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('base.group_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    <!-- Company admins additionally see every token in their companies -->
+    <record id="rule_api_token_admin_all" model="ir.rule">
+        <field name="name">API Token: admins see all in company</field>
+        <field name="model_id" ref="model_platform_api_token"/>
+        <field name="domain_force">[('company_id', 'in', company_ids)]</field>
+        <field name="groups" eval="[(4, ref('custom_platform_security.group_company_admin'))]"/>
+    </record>
+
+</odoo>

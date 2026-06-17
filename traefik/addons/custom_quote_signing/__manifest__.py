@@ -1,0 +1,23 @@
+{
+    "name": "Platform Quote Signing",
+    "version": "19.0.1.0.0",
+    "summary": "Quote lifecycle with electronic signing portal and full audit evidence trail.",
+    "author": "Cognita Innovative",
+    "license": "LGPL-3",
+    "category": "Sales",
+    "depends": ["sale", "mail", "portal", "custom_crm_core", "custom_platform_security"],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/record_rules.xml",
+        "data/signing_terms.xml",
+        "data/email_templates.xml",
+        "data/ir_cron.xml",
+        "views/quote_views.xml",
+        "views/signing_portal_templates.xml",
+        "report/signed_quote_report.xml",
+        "views/menus.xml",
+    ],
+    "installable": True,
+    "application": False,
+    "auto_install": False,
+}

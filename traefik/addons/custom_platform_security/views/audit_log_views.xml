@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_audit_log_list" model="ir.ui.view">
+        <field name="name">platform.audit.log.list</field>
+        <field name="model">platform.audit.log</field>
+        <field name="arch" type="xml">
+            <list string="Audit Log" create="false" edit="false" delete="false"
+                  default_order="create_date desc">
+                <field name="create_date" string="When"/>
+                <field name="user_id"/>
+                <field name="event_type"/>
+                <field name="severity"
+                       decoration-danger="severity == 'critical'"
+                       decoration-warning="severity == 'warning'"/>
+                <field name="res_model" optional="show"/>
+                <field name="res_name" optional="show"/>
+                <field name="summary"/>
+                <field name="ip_address" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_audit_log_form" model="ir.ui.view">
+        <field name="name">platform.audit.log.form</field>
+        <field name="model">platform.audit.log</field>
+        <field name="arch" type="xml">
+            <form string="Audit Log Entry" create="false" edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="create_date" string="Timestamp"/>
+                            <field name="user_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="event_type"/>
+                            <field name="severity"/>
+                        </group>
+                        <group>
+                            <field name="res_model"/>
+                            <field name="res_id"/>
+                            <field name="res_name"/>
+                            <field name="ip_address"/>
+                            <field name="session_id"/>
+                        </group>
+                    </group>
+                    <group string="Summary">
+                        <field name="summary" nolabel="1"/>
+                    </group>
+                    <group string="Details (JSON)">
+                        <field name="details" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_audit_log_search" model="ir.ui.view">
+        <field name="name">platform.audit.log.search</field>
+        <field name="model">platform.audit.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="user_id"/>
+                <field name="event_type"/>
+                <field name="res_model"/>
+                <field name="summary"/>
+                <filter string="Critical" name="critical"
+                        domain="[('severity','=','critical')]"/>
+                <filter string="Warning" name="warning"
+                        domain="[('severity','=','warning')]"/>
+                <filter string="Payroll" name="payroll"
+                        domain="[('event_type','like','payroll')]"/>
+                <filter string="Financial" name="financial"
+                        domain="[('event_type','like','financial')]"/>
+                <filter string="GDPR" name="gdpr"
+                        domain="[('event_type','like','gdpr')]"/>
+                <filter string="AI" name="ai"
+                        domain="[('event_type','like','ai')]"/>
+                <group>
+                    <filter string="Event Type" name="by_event"
+                            context="{'group_by':'event_type'}"/>
+                    <filter string="User" name="by_user"
+                            context="{'group_by':'user_id'}"/>
+                    <filter string="Date" name="by_date"
+                            context="{'group_by':'create_date:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_audit_log" model="ir.actions.act_window">
+        <field name="name">Audit Log</field>
+        <field name="res_model">platform.audit.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_audit_log_search"/>
+        <field name="context">{'search_default_critical': 0}</field>
+    </record>
+
+</odoo>

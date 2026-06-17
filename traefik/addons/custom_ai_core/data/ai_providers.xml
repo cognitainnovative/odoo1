@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Default provider configs created for the first company. noupdate=1 so admins can change them. -->
+<odoo noupdate="1">
+
+    <record id="ai_provider_mock" model="ai.provider">
+        <field name="name">Mock Provider (Testing)</field>
+        <field name="code">mock</field>
+        <field name="sequence">0</field>
+        <field name="allow_external" eval="False"/>
+        <field name="privacy_mode" eval="False"/>
+        <field name="is_active" eval="True"/>
+    </record>
+
+    <record id="ai_provider_anthropic" model="ai.provider">
+        <field name="name">Anthropic — Claude</field>
+        <field name="code">anthropic</field>
+        <field name="sequence">10</field>
+        <field name="model_name">claude-haiku-4-5-20251001</field>
+        <field name="embedding_model"></field>
+        <field name="temperature">0.7</field>
+        <field name="max_tokens">2048</field>
+        <field name="allow_external" eval="False"/>
+        <field name="privacy_mode" eval="True"/>
+        <field name="is_active" eval="False"/>
+        <field name="notes">Set ANTHROPIC_API_KEY and enable 'Allow External Calls' to activate.</field>
+    </record>
+
+    <record id="ai_provider_openai" model="ai.provider">
+        <field name="name">OpenAI — GPT</field>
+        <field name="code">openai</field>
+        <field name="sequence">20</field>
+        <field name="model_name">gpt-4o-mini</field>
+        <field name="embedding_model">text-embedding-3-small</field>
+        <field name="temperature">0.7</field>
+        <field name="max_tokens">2048</field>
+        <field name="allow_external" eval="False"/>
+        <field name="privacy_mode" eval="True"/>
+        <field name="is_active" eval="False"/>
+        <field name="notes">Set OPENAI_API_KEY and enable 'Allow External Calls' to activate.</field>
+    </record>
+
+    <record id="ai_provider_azure" model="ai.provider">
+        <field name="name">Azure OpenAI (placeholder)</field>
+        <field name="code">azure</field>
+        <field name="sequence">15</field>
+        <field name="model_name">gpt-4o</field>
+        <field name="temperature">0.7</field>
+        <field name="max_tokens">2048</field>
+        <field name="allow_external" eval="False"/>
+        <field name="privacy_mode" eval="True"/>
+        <field name="is_active" eval="False"/>
+        <field name="notes">Set base_url to your Azure deployment endpoint, add api key, enable external calls.</field>
+    </record>
+
+    <record id="ai_provider_ollama" model="ai.provider">
+        <field name="name">Ollama (Local)</field>
+        <field name="code">ollama</field>
+        <field name="base_url">http://localhost:11434</field>
+        <field name="sequence">5</field>
+        <field name="model_name">llama3.2</field>
+        <field name="embedding_model">nomic-embed-text</field>
+        <field name="temperature">0.7</field>
+        <field name="max_tokens">2048</field>
+        <field name="allow_external" eval="True"/>
+        <field name="privacy_mode" eval="False"/>
+        <field name="is_active" eval="False"/>
+        <field name="notes">Install Ollama and pull a model to activate local AI.</field>
+    </record>
+
+</odoo>

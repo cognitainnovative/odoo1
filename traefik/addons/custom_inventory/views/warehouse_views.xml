@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ Per-warehouse stock quant overview action ═══ -->
+    <record id="action_warehouse_quant_overview" model="ir.actions.act_window">
+        <field name="name">Warehouse Stock Levels</field>
+        <field name="res_model">stock.quant</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('location_id.usage','=','internal')]</field>
+        <field name="context">{"search_default_group_by_location": 1}</field>
+    </record>
+
+    <!-- ═══ stock.lot — platform fields extension ═══ -->
+    <record id="view_stock_lot_platform" model="ir.ui.view">
+        <field name="name">stock.lot.platform</field>
+        <field name="model">stock.lot</field>
+        <field name="inherit_id" ref="stock.view_production_lot_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='description']" position="after">
+                <group name="platform_lot" string="Platform">
+                    <group>
+                        <field name="supplier_lot_ref"/>
+                        <field name="expiry_alert_sent" readonly="1"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="platform_notes" nolabel="1"/>
+                    </group>
+                </group>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_stock_moves" string="Stock Moves" type="object"
+                        class="oe_stat_button" icon="fa-exchange"
+                        invisible="not display_complete"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

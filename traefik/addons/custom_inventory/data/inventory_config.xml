@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <!-- Default: use Odoo's delivery-based stock deduction -->
+    <record id="param_stock_deduct_on" model="ir.config_parameter">
+        <field name="key">custom_inventory.stock_deduct_on</field>
+        <field name="value">delivery</field>
+    </record>
+
+    <!-- Cron: daily low-stock alert check -->
+    <record id="cron_low_stock_alerts" model="ir.cron">
+        <field name="name">Platform: Low Stock Alerts</field>
+        <field name="model_id" ref="stock.model_stock_warehouse_orderpoint"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_low_stock_alerts()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+    <!-- Cron: auto-start physical counts scheduled for today -->
+    <record id="cron_stock_count_scheduler" model="ir.cron">
+        <field name="name">Platform: Auto-Start Scheduled Stock Counts</field>
+        <field name="model_id" ref="model_platform_stock_count"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_scheduled_counts()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active" eval="True"/>
+    </record>
+
+</data>
+</odoo>

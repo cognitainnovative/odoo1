@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_payroll_employee_maria" model="hr.employee">
+        <field name="name">Maria Visser</field>
+        <field name="job_title">Administratief Medewerker</field>
+        <field name="work_email">m.visser@bedrijf.nl</field>
+        <field name="payroll_gross_monthly">3500.0</field>
+        <field name="payroll_loonheffingskorting">True</field>
+        <field name="payroll_contract_hours">40.0</field>
+        <field name="payroll_vakantiegeld_pct">8.0</field>
+        <field name="payroll_pension_employee_pct">4.0</field>
+        <field name="payroll_pension_employer_pct">8.0</field>
+    </record>
+
+    <record id="demo_payroll_employee_thomas" model="hr.employee">
+        <field name="name">Thomas Bakker</field>
+        <field name="job_title">Projectmanager</field>
+        <field name="work_email">t.bakker@bedrijf.nl</field>
+        <field name="payroll_gross_monthly">4200.0</field>
+        <field name="payroll_loonheffingskorting">True</field>
+        <field name="payroll_contract_hours">40.0</field>
+        <field name="payroll_vakantiegeld_pct">8.0</field>
+        <field name="payroll_pension_employee_pct">4.0</field>
+        <field name="payroll_pension_employer_pct">8.0</field>
+    </record>
+</odoo>

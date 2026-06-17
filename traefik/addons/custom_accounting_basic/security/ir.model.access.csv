@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bank_import_wizard,bank.statement.import.wizard,model_bank_statement_import_wizard,account.group_account_invoice,1,1,1,1
+access_invoice_import_wizard,invoice.import.wizard,model_invoice_import_wizard,account.group_account_invoice,1,1,1,1
+access_recurring_invoice_template_manager,recurring.invoice.template (manager),model_recurring_invoice_template,account.group_account_manager,1,1,1,1
+access_recurring_invoice_template_user,recurring.invoice.template (user),model_recurring_invoice_template,account.group_account_invoice,1,0,0,0
+access_recurring_invoice_template_line_manager,recurring.invoice.template.line (manager),model_recurring_invoice_template_line,account.group_account_manager,1,1,1,1
+access_recurring_invoice_template_line_user,recurring.invoice.template.line (user),model_recurring_invoice_template_line,account.group_account_invoice,1,0,0,0
+access_accounting_audit_log_admin,accounting.audit.log (admin),model_accounting_audit_log,account.group_account_manager,1,1,1,0
+access_accounting_audit_log_manager,accounting.audit.log (manager read),model_accounting_audit_log,account.group_account_manager,1,0,0,0
+access_accounting_audit_log_user,accounting.audit.log (user read),model_accounting_audit_log,account.group_account_invoice,1,0,0,0
+access_invoice_export_wizard,invoice.export.wizard,model_invoice_export_wizard,account.group_account_invoice,1,1,1,1

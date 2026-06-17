@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_bv_annual_accounts" model="ir.actions.report">
+        <field name="name">BV Annual Accounts</field>
+        <field name="model">bv.annual.accounts</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_accounting_advanced.report_bv_annual_accounts_document</field>
+        <field name="report_file">custom_accounting_advanced.report_bv_annual_accounts_document</field>
+        <field name="binding_model_id" ref="model_bv_annual_accounts"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_bv_annual_accounts_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="rec">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>BV Annual Accounts — <span t-field="rec.fiscal_year"/></h2>
+                        <h4><span t-field="rec.company_id.name"/></h4>
+
+                        <div class="alert alert-warning mt-2" role="alert">
+                            <strong>Note:</strong> This document is prepared for internal review and
+                            accountant sign-off. Actual filing with the KvK requires the official
+                            publication pathway.
+                        </div>
+
+                        <!-- Profit & Loss -->
+                        <h5 class="mt-4">Profit &amp; Loss</h5>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <td>Total Revenue</td>
+                                    <td class="text-end">€ <span t-esc="'%.2f' % rec.total_revenue"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Expenses</td>
+                                    <td class="text-end text-danger">€ <span t-esc="'%.2f' % rec.total_expenses"/></td>
+                                </tr>
+                                <tr class="table-success fw-bold">
+                                    <td>Net Result</td>
+                                    <td class="text-end">€ <span t-esc="'%.2f' % rec.net_result"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Balance Sheet -->
+                        <h5 class="mt-4">Balance Sheet</h5>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <td>Total Assets</td>
+                                    <td class="text-end">€ <span t-esc="'%.2f' % rec.total_assets"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Total Liabilities</td>
+                                    <td class="text-end">€ <span t-esc="'%.2f' % rec.total_liabilities"/></td>
+                                </tr>
+                                <tr class="table-primary fw-bold">
+                                    <td>Total Equity</td>
+                                    <td class="text-end">€ <span t-esc="'%.2f' % rec.total_equity"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Retained Earnings -->
+                        <h5 class="mt-4">Retained Earnings</h5>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr>
+                                    <td>Retained Earnings (start of year)</td>
+                                    <td class="text-end">€ <span t-esc="'%.2f' % rec.retained_earnings_start"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Net Result</td>
+                                    <td class="text-end">€ <span t-esc="'%.2f' % rec.net_result"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Dividends</td>
+                                    <td class="text-end text-danger">€ <span t-esc="'%.2f' % rec.dividends"/></td>
+                                </tr>
+                                <tr class="table-primary fw-bold">
+                                    <td>Retained Earnings (end of year)</td>
+                                    <td class="text-end">€ <span t-esc="'%.2f' % rec.retained_earnings_end"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Workflow status -->
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <strong>Status:</strong> <span t-field="rec.state"/>
+                            </div>
+                            <div class="col-6" t-if="rec.accountant_id">
+                                <strong>Accountant:</strong> <span t-field="rec.accountant_id.name"/>
+                            </div>
+                        </div>
+                        <div class="row mt-1" t-if="rec.accountant_approved_date">
+                            <div class="col-12">
+                                <strong>Approved on:</strong>
+                                <span t-field="rec.accountant_approved_date"/>
+                            </div>
+                        </div>
+
+                        <!-- Notes -->
+                        <div class="mt-4" t-if="rec.notes">
+                            <h5>Notes to Financial Statements</h5>
+                            <div t-out="rec.notes"/>
+                        </div>
+
+                        <p class="text-muted small mt-5">
+                            Prepared by <span t-field="rec.company_id.name"/> |
+                            Fiscal Year <span t-field="rec.fiscal_year"/> |
+                            This is a draft package — not an official KvK filing.
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

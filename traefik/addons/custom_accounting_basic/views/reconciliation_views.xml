@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ account.bank.statement.line — standalone AI match list ═══ -->
+    <record id="view_bank_stmt_line_ai_list" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.ai.list</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="priority">16</field>
+        <field name="arch" type="xml">
+            <list string="Bank Lines — AI Match"
+                  create="false"
+                  decoration-success="ai_match_confidence &gt;= 0.7"
+                  decoration-warning="ai_match_confidence &gt; 0 and ai_match_confidence &lt; 0.7">
+                <field name="date"/>
+                <field name="payment_ref"/>
+                <field name="partner_name"/>
+                <field name="amount"/>
+                <field name="ai_match_confidence" string="Confidence"/>
+                <field name="ai_match_invoice_id" string="AI Match"/>
+                <field name="ai_match_done"/>
+                <button name="action_suggest_ai_match" string="Run AI Match"
+                        type="object" icon="fa-magic" class="btn-sm btn-primary"
+                        invisible="ai_match_done"/>
+                <button name="action_confirm_ai_match" string="Confirm Match"
+                        type="object" icon="fa-check" class="btn-sm btn-success"
+                        invisible="not ai_match_invoice_id"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Statement lines that need AI matching -->
+    <record id="action_bank_lines_ai_match" model="ir.actions.act_window">
+        <field name="name">Bank Lines — Run AI Match</field>
+        <field name="res_model">account.bank.statement.line</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('is_reconciled','=',False)]</field>
+        <field name="context">{"search_default_not_reconciled": 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">No bank lines to match</p>
+            <p>Import a bank statement, then use "Run AI Match" on each line.
+               After a match is found, "Confirm Match" appears on the same row.</p>
+        </field>
+    </record>
+
+    <!-- ═══ Unknown-payment queue ═══ -->
+    <!-- Bank lines where AI matching was run but found no match (confidence = 0) -->
+    <record id="view_unknown_payments_list" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.unknown.list</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="priority">17</field>
+        <field name="arch" type="xml">
+            <list string="Unknown Payments Queue"
+                  create="false"
+                  decoration-danger="ai_match_confidence == 0 and ai_match_done">
+                <field name="date"/>
+                <field name="payment_ref"/>
+                <field name="partner_name"/>
+                <field name="amount"/>
+                <field name="ai_match_reason"/>
+                <field name="ai_match_done" optional="hide"/>
+                <button name="action_suggest_ai_match" string="Retry AI Match"
+                        type="object" icon="fa-refresh" class="btn-sm btn-warning"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_unknown_payments_queue" model="ir.actions.act_window">
+        <field name="name">Unknown Payments Queue</field>
+        <field name="res_model">account.bank.statement.line</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('ai_match_done','=',True),('ai_match_confidence','=',0.0),('is_reconciled','=',False)]</field>
+    </record>
+
+</odoo>

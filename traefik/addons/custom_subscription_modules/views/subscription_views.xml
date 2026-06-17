@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         platform.package — Package catalogue
+    ═══════════════════════════════════════════════════════════ -->
+
+    <record id="view_platform_package_list" model="ir.ui.view">
+        <field name="name">platform.package.list</field>
+        <field name="model">platform.package</field>
+        <field name="arch" type="xml">
+            <list string="Packages" editable="bottom" decoration-muted="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="module_codes"/>
+                <field name="monthly_price" string="Monthly (€)"/>
+                <field name="annual_price" string="Annual (€)"/>
+                <field name="subscription_count" string="Subscriptions"/>
+                <field name="active" column_invisible="True"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_platform_package_kanban" model="ir.ui.view">
+        <field name="name">platform.package.kanban</field>
+        <field name="model">platform.package</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="active" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+                <field name="monthly_price"/>
+                <field name="annual_price"/>
+                <field name="subscription_count"/>
+                <field name="color"/>
+                <field name="active"/>
+                <templates>
+                    <t t-name="card">
+                        <div t-attf-class="oe_kanban_color_#{record.color.raw_value}">
+                            <div class="oe_kanban_top">
+                                <strong><field name="name"/></strong>
+                                <small class="text-muted ms-2"><t t-esc="record.code.value"/></small>
+                            </div>
+                            <div class="oe_kanban_details mt-2">
+                                <p class="text-muted small"><field name="description"/></p>
+                                <div class="d-flex justify-content-between mt-2">
+                                    <span>€<t t-esc="record.monthly_price.value"/>/mo</span>
+                                    <span class="badge bg-info"><t t-esc="record.subscription_count.value"/> subscriptions</span>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_platform_package_form" model="ir.ui.view">
+        <field name="name">platform.package.form</field>
+        <field name="model">platform.package</field>
+        <field name="arch" type="xml">
+            <form string="Package">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_subscriptions" type="object"
+                                class="oe_stat_button" icon="fa-users">
+                            <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="monthly_price" string="Monthly Price (€)"/>
+                            <field name="annual_price" string="Annual Price (€)"/>
+                            <field name="color" widget="color_picker"/>
+                        </group>
+                    </group>
+                    <group string="Module Codes">
+                        <field name="module_codes" nolabel="1"
+                               placeholder="e.g. crm,accounting_basic,hrm"
+                               help="Comma-separated module codes granted by this package."/>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_platform_package" model="ir.actions.act_window">
+        <field name="name">Packages</field>
+        <field name="res_model">platform.package</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{"search_default_active": 1}</field>
+    </record>
+
+    <!-- ═══════════════════════════════════════════════════════════
+         platform.subscription — Subscriptions
+    ═══════════════════════════════════════════════════════════ -->
+
+    <record id="view_platform_subscription_list" model="ir.ui.view">
+        <field name="name">platform.subscription.list</field>
+        <field name="model">platform.subscription</field>
+        <field name="arch" type="xml">
+            <list string="Subscriptions"
+                  decoration-success="state == 'active'"
+                  decoration-warning="state == 'trial'"
+                  decoration-muted="state in ('expired', 'cancelled')">
+                <field name="company_id"/>
+                <field name="package_id"/>
+                <field name="state" widget="badge"/>
+                <field name="is_active"/>
+                <field name="days_remaining" string="Days Left"/>
+                <field name="trial_end" optional="show"/>
+                <field name="start_date" optional="show"/>
+                <field name="end_date" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_platform_subscription_kanban" model="ir.ui.view">
+        <field name="name">platform.subscription.kanban</field>
+        <field name="model">platform.subscription</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="company_id"/>
+                <field name="package_id"/>
+                <field name="state"/>
+                <field name="is_active"/>
+                <field name="days_remaining"/>
+                <field name="trial_end"/>
+                <field name="end_date"/>
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <strong><field name="company_id"/></strong>
+                            <div class="text-muted small"><field name="package_id"/></div>
+                            <div class="mt-2 d-flex justify-content-between align-items-center">
+                                <field name="state" widget="badge"
+                                       decoration-success="state == 'active'"
+                                       decoration-warning="state == 'trial'"
+                                       decoration-danger="state == 'expired'"
+                                       decoration-secondary="state == 'cancelled'"/>
+                                <t t-if="record.days_remaining.raw_value">
+                                    <span class="small text-muted">
+                                        <t t-esc="record.days_remaining.value"/> days left
+                                    </span>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_platform_subscription_form" model="ir.ui.view">
+        <field name="name">platform.subscription.form</field>
+        <field name="model">platform.subscription</field>
+        <field name="arch" type="xml">
+            <form string="Subscription">
+                <header>
+                    <button name="action_activate" string="Activate" type="object"
+                            invisible="state == 'active'"
+                            class="btn-primary"/>
+                    <button name="action_reactivate" string="Reactivate" type="object"
+                            invisible="state != 'cancelled'"
+                            class="btn-warning"/>
+                    <button name="action_expire" string="Mark Expired" type="object"
+                            invisible="state not in ('trial', 'active')"
+                            class="btn-secondary"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            invisible="state in ('expired', 'cancelled')"
+                            class="btn-danger"/>
+                    <button name="action_reset_trial" string="Reset Trial" type="object"
+                            invisible="state not in ('expired', 'cancelled')"
+                            class="btn-secondary"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="trial,active,expired"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="package_id"/>
+                            <field name="is_active"/>
+                        </group>
+                        <group>
+                            <field name="trial_start"/>
+                            <field name="trial_days"/>
+                            <field name="trial_end"/>
+                        </group>
+                    </group>
+                    <group string="Active Period">
+                        <group>
+                            <field name="start_date"/>
+                            <field name="end_date" placeholder="Leave blank for unlimited"/>
+                        </group>
+                        <group>
+                            <field name="days_remaining" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="License">
+                        <field name="license_key" readonly="1"
+                               placeholder="Generated on activation"/>
+                    </group>
+                    <group string="Notes">
+                        <field name="notes" nolabel="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_platform_subscription_search" model="ir.ui.view">
+        <field name="name">platform.subscription.search</field>
+        <field name="model">platform.subscription</field>
+        <field name="arch" type="xml">
+            <search string="Subscriptions">
+                <field name="company_id"/>
+                <field name="package_id"/>
+                <filter string="Active" name="active" domain="[('state', '=', 'active')]"/>
+                <filter string="Trial" name="trial" domain="[('state', '=', 'trial')]"/>
+                <filter string="Expired" name="expired" domain="[('state', '=', 'expired')]"/>
+                <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Currently Accessible" name="is_active" domain="[('is_active', '=', True)]"/>
+                <group>
+                    <filter string="Company" name="by_company" context="{'group_by': 'company_id'}"/>
+                    <filter string="Package" name="by_package" context="{'group_by': 'package_id'}"/>
+                    <filter string="State" name="by_state" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_platform_subscription" model="ir.actions.act_window">
+        <field name="name">Subscriptions</field>
+        <field name="res_model">platform.subscription</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="view_platform_subscription_search"/>
+        <field name="context">{"search_default_is_active": 1}</field>
+    </record>
+
+    <record id="action_platform_subscription_all" model="ir.actions.act_window">
+        <field name="name">All Subscriptions</field>
+        <field name="res_model">platform.subscription</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_platform_subscription_search"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_ai_document_list" model="ir.ui.view">
+        <field name="name">ai.document.list</field>
+        <field name="model">ai.document</field>
+        <field name="arch" type="xml">
+            <list string="Knowledge Base"
+                  decoration-success="status == 'indexed'"
+                  decoration-warning="status == 'pending'"
+                  decoration-danger="status == 'error'"
+                  decoration-muted="not is_active">
+                <field name="name"/>
+                <field name="status" widget="badge"/>
+                <field name="chunk_count" string="Chunks"/>
+                <field name="last_indexed"/>
+                <field name="is_active"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+                <button name="action_index" string="Index" type="object"
+                        icon="fa-refresh" class="btn-sm"
+                        invisible="status == 'indexed'"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_document_form" model="ir.ui.view">
+        <field name="name">ai.document.form</field>
+        <field name="model">ai.document</field>
+        <field name="arch" type="xml">
+            <form string="Knowledge Base Document">
+                <header>
+                    <button name="action_index" string="Index Document"
+                            type="object" class="btn-primary"
+                            invisible="status == 'indexed'"/>
+                    <button name="action_index" string="Re-Index"
+                            type="object" class="btn-secondary"
+                            invisible="status != 'indexed'"/>
+                    <button name="action_delete_index" string="Clear Index"
+                            type="object" class="btn-danger"
+                            invisible="chunk_count == 0"/>
+                    <field name="status" widget="statusbar"
+                           statusbar_visible="draft,pending,indexed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-puzzle-piece" type="object"
+                                name="action_view_chunks">
+                            <field name="chunk_count" widget="statinfo" string="Chunks"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="is_active"/>
+                            <field name="tags" placeholder="tag1, tag2"/>
+                            <field name="source_url" placeholder="https://..."/>
+                        </group>
+                        <group>
+                            <field name="attachment_id" widget="many2one_binary"/>
+                            <field name="last_indexed" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Plain Text Content"
+                           invisible="attachment_id">
+                        <field name="content" nolabel="1" widget="text"
+                               placeholder="Paste or type the document text here..."/>
+                    </group>
+                    <group string="Index Error" invisible="not index_error">
+                        <field name="index_error" nolabel="1" readonly="1"/>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_ai_document_chunk_list" model="ir.ui.view">
+        <field name="name">ai.document.chunk.list</field>
+        <field name="model">ai.document.chunk</field>
+        <field name="arch" type="xml">
+            <list string="Chunks">
+                <field name="chunk_index"/>
+                <field name="content"/>
+                <field name="token_count"/>
+                <field name="document_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_ai_document_chunk_form" model="ir.ui.view">
+        <field name="name">ai.document.chunk.form</field>
+        <field name="model">ai.document.chunk</field>
+        <field name="arch" type="xml">
+            <form string="Chunk">
+                <sheet>
+                    <group>
+                        <field name="document_id" readonly="1"/>
+                        <field name="chunk_index" readonly="1"/>
+                        <field name="token_count" readonly="1"/>
+                        <field name="company_id" readonly="1" groups="base.group_multi_company"/>
+                    </group>
+                    <group string="Content">
+                        <field name="content" nolabel="1" readonly="1"/>
+                    </group>
+                    <group string="Embedding (JSON)" invisible="not embedding_json">
+                        <field name="embedding_json" nolabel="1" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ai_document" model="ir.actions.act_window">
+        <field name="name">Knowledge Base</field>
+        <field name="res_model">ai.document</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

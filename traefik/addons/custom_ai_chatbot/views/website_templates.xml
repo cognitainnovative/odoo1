@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Inject chat widget script into every website page -->
+    <template id="chat_widget_inject" inherit_id="website.layout">
+        <xpath expr="//div[@id='wrapwrap']" position="after">
+            <!-- Chat widget container injected by JS — no QWeb rendering needed -->
+        </xpath>
+    </template>
+
+</odoo>

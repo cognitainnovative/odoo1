@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_create_recurring_invoices" model="ir.cron">
+        <field name="name">Accounting: Create Recurring Invoices</field>
+        <field name="model_id" ref="model_recurring_invoice_template"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_create_recurring()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+</odoo>

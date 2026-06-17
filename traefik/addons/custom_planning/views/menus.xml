@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top-level Planning menu -->
+    <menuitem id="menu_planning_root"
+              name="Planning"
+              sequence="50"
+              web_icon="custom_planning,static/description/icon.png"
+              groups="base.group_user"/>
+
+    <!-- My Jobs (mobile-friendly employee view) -->
+    <menuitem id="menu_planning_my_jobs"
+              name="My Jobs"
+              parent="menu_planning_root"
+              action="action_planning_my_jobs"
+              sequence="1"
+              groups="base.group_user"/>
+
+    <!-- Calendar -->
+    <menuitem id="menu_planning_calendar"
+              name="Calendar"
+              parent="menu_planning_root"
+              action="action_planning_job_calendar"
+              sequence="5"
+              groups="base.group_user"/>
+
+    <!-- Jobs -->
+    <menuitem id="menu_planning_jobs"
+              name="Jobs"
+              parent="menu_planning_root"
+              action="action_planning_job"
+              sequence="10"
+              groups="base.group_user"/>
+
+    <!-- Configuration -->
+    <menuitem id="menu_planning_config"
+              name="Configuration"
+              parent="menu_planning_root"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_planning_resources"
+              name="Resources"
+              parent="menu_planning_config"
+              action="action_planning_resource"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_planning_job_types"
+              name="Job Types"
+              parent="menu_planning_config"
+              action="action_planning_job_types"
+              sequence="20"
+              groups="base.group_system"/>
+
+</odoo>

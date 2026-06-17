@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_payslip" model="ir.actions.report">
+        <field name="name">Payslip</field>
+        <field name="model">hr.payroll.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_payroll_nl.report_payslip_document</field>
+        <field name="report_file">custom_payroll_nl.report_payslip_document</field>
+        <field name="binding_model_id" ref="model_hr_payroll_payslip"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_payslip_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="slip">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Payslip — <span t-field="slip.period_start"/> to <span t-field="slip.period_end"/></h2>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <strong>Employee:</strong> <span t-field="slip.employee_id.name"/><br/>
+                                <strong>Period Type:</strong> <span t-field="slip.period_type"/><br/>
+                                <strong>LHK Applied:</strong> <span t-field="slip.loonheffingskorting_applied"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>Reference:</strong> <span t-field="slip.name"/><br/>
+                                <strong>Rule Version:</strong> <span t-field="slip.rule_version_id.display_name"/>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm mt-3">
+                            <thead><tr><th>Component</th><th class="text-end">Amount (€)</th></tr></thead>
+                            <tbody>
+                                <tr><td>Gross Salary</td><td class="text-end"><span t-field="slip.gross_salary"/></td></tr>
+                                <tr t-if="slip.overtime_gross"><td>Overtime</td><td class="text-end"><span t-field="slip.overtime_gross"/></td></tr>
+                                <tr t-if="slip.bonus_gross"><td>Bonus</td><td class="text-end"><span t-field="slip.bonus_gross"/></td></tr>
+                                <tr t-if="slip.allowances"><td>Allowances</td><td class="text-end"><span t-field="slip.allowances"/></td></tr>
+                                <tr><td>Vakantiegeld Accrual (<span t-esc="slip.vakantiegeld_pct"/>%)</td><td class="text-end"><span t-field="slip.vakantiegeld_accrual"/></td></tr>
+                                <tr class="table-warning"><td><strong>Loonheffing</strong></td><td class="text-end text-danger"><strong>- <span t-field="slip.loonheffing"/></strong></td></tr>
+                                <tr t-if="slip.pension_employee"><td>Pension (Employee)</td><td class="text-end text-danger">- <span t-field="slip.pension_employee"/></td></tr>
+                                <tr class="table-success"><td><strong>Net Salary</strong></td><td class="text-end"><strong><span t-field="slip.net_salary"/></strong></td></tr>
+                            </tbody>
+                        </table>
+
+                        <div class="mt-3">
+                            <strong>Employer Contributions (not deducted from pay):</strong>
+                            Pension €<span t-field="slip.pension_employer"/> |
+                            AWF €<span t-field="slip.awf_employer"/> |
+                            ZVW €<span t-field="slip.zvw_employer"/> |
+                            <strong>Total Employer Cost: €<span t-field="slip.total_employer_cost"/></strong>
+                        </div>
+
+                        <div class="mt-3">
+                            <strong>Year-to-Date (YTD — <span t-esc="slip.period_start and slip.period_start.year"/>):</strong>
+                            <table class="table table-sm table-borderless mt-1" style="width:auto;">
+                                <tr>
+                                    <td>YTD Gross</td>
+                                    <td class="ps-3">€<span t-esc="'%.2f' % slip.employee_id.ytd_gross"/></td>
+                                </tr>
+                                <tr>
+                                    <td>YTD Loonheffing</td>
+                                    <td class="ps-3">€<span t-esc="'%.2f' % slip.employee_id.ytd_loonheffing"/></td>
+                                </tr>
+                                <tr>
+                                    <td>YTD Vakantiegeld Accrued</td>
+                                    <td class="ps-3">€<span t-esc="'%.2f' % slip.employee_id.ytd_vakantiegeld"/></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>YTD Net</strong></td>
+                                    <td class="ps-3"><strong>€<span t-esc="'%.2f' % slip.employee_id.ytd_net"/></strong></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <p class="text-muted small mt-4">
+                            This payslip is generated for internal use only.
+                            Direct Belastingdienst filing requires a certified submission route.
+                        </p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

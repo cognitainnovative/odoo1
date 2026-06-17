@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <record id="terms_standard_en_v1" model="quote.terms.version">
+        <field name="name">Standard Terms — English v1</field>
+        <field name="code">standard_en</field>
+        <field name="version">1</field>
+        <field name="language">en</field>
+        <field name="is_active" eval="True"/>
+        <field name="content" type="html"><h4>Terms and Conditions</h4><ol><li><b>Acceptance.</b> By signing this quotation, the customer accepts all items, quantities, and prices listed.</li><li><b>Payment.</b> Payment is due within the number of days stated on the quotation from the invoice date.</li><li><b>Cancellation.</b> Orders may not be cancelled after signing without written agreement.</li><li><b>Warranty.</b> Products and services carry the warranty stated in the product description.</li></ol></field>
+        <field name="payment_obligation_text">By signing, I confirm that I have read and accepted this quotation in full, and I agree to pay the total amount stated above in accordance with the agreed payment terms. I understand this creates a binding payment obligation.</field>
+    </record>
+
+    <record id="terms_standard_nl_v1" model="quote.terms.version">
+        <field name="name">Standaardvoorwaarden — Nederlands v1</field>
+        <field name="code">standard_nl</field>
+        <field name="version">1</field>
+        <field name="language">nl</field>
+        <field name="is_active" eval="True"/>
+        <field name="content" type="html"><h4>Algemene Voorwaarden</h4><ol><li><b>Acceptatie.</b> Door ondertekening accepteert de klant alle onderdelen en prijzen zoals vermeld in de offerte.</li><li><b>Betaling.</b> Betaling dient te geschieden binnen het op de offerte vermelde aantal dagen na factuurdatum.</li><li><b>Annulering.</b> Na ondertekening kan een opdracht niet worden geannuleerd zonder schriftelijk akkoord.</li></ol></field>
+        <field name="payment_obligation_text">Door te ondertekenen bevestig ik dat ik deze offerte volledig heb gelezen en geaccepteerd, en dat ik akkoord ga met betaling van het bovenstaande totaalbedrag. Ik begrijp dat dit een bindende betalingsverplichting schept.</field>
+    </record>
+
+</data>
+</odoo>

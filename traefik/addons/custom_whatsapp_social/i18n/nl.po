@@ -1,0 +1,235 @@
+# Dutch translations for custom_whatsapp_social
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "WhatsApp Provider Configuration"
+msgstr "WhatsApp-providerconfiguratie"
+
+msgid "WhatsApp Message"
+msgstr "WhatsApp-bericht"
+
+msgid "WhatsApp Message Template"
+msgstr "WhatsApp-berichtsjabloon"
+
+msgid "Social Campaign"
+msgstr "Sociale Campagne"
+
+msgid "Recurring Post Topic"
+msgstr "Terugkerend Berichtonderwerp"
+
+msgid "Social Post"
+msgstr "Sociale Post"
+
+msgid "Mock (Sandbox — No Real Sending)"
+msgstr "Nep (Sandbox — Geen Echt Verzenden)"
+
+msgid "Webhook Verify Token"
+msgstr "Webhook Verificatietoken"
+
+msgid "Phone Number ID (Meta)"
+msgstr "Telefoonnummer-ID (Meta)"
+
+msgid "Account SID (Twilio)"
+msgstr "Account-SID (Twilio)"
+
+msgid "From Number"
+msgstr "Van Nummer"
+
+msgid "Not Submitted"
+msgstr "Niet Ingediend"
+
+msgid "App Review Pending"
+msgstr "App-beoordeling In Behandeling"
+
+msgid "Approved"
+msgstr "Goedgekeurd"
+
+msgid "Rejected"
+msgstr "Afgewezen"
+
+msgid "Received"
+msgstr "Ontvangen"
+
+msgid "Draft (AI)"
+msgstr "Concept (AI)"
+
+msgid "Pending Approval"
+msgstr "Wacht op Goedkeuring"
+
+msgid "Sent"
+msgstr "Verzonden"
+
+msgid "Delivered"
+msgstr "Bezorgd"
+
+msgid "Read"
+msgstr "Gelezen"
+
+msgid "Failed"
+msgstr "Mislukt"
+
+msgid "Contact"
+msgstr "Contactpersoon"
+
+msgid "Message Body"
+msgstr "Berichtinhoud"
+
+msgid "Media URL"
+msgstr "Media-URL"
+
+msgid "Media Type"
+msgstr "Mediatype"
+
+msgid "Template Used"
+msgstr "Gebruikte Sjabloon"
+
+msgid "AI Draft Reply"
+msgstr "AI-conceptantwoord"
+
+msgid "Edit Reason"
+msgstr "Reden voor Bewerking"
+
+msgid "Opted In"
+msgstr "Aangemeld"
+
+msgid "Provider Message ID"
+msgstr "Provider-bericht-ID"
+
+msgid "Template Name (Provider)"
+msgstr "Sjabloonnaam (Provider)"
+
+msgid "Language"
+msgstr "Taal"
+
+msgid "Body Preview"
+msgstr "Inhoudsvoorbeeld"
+
+msgid "Marketing"
+msgstr "Marketing"
+
+msgid "Utility"
+msgstr "Nuttig"
+
+msgid "Authentication"
+msgstr "Authenticatie"
+
+msgid "Draft"
+msgstr "Concept"
+
+msgid "Submitted for Review"
+msgstr "Ingediend ter Beoordeling"
+
+msgid "Professional"
+msgstr "Professioneel"
+
+msgid "Casual"
+msgstr "Informeel"
+
+msgid "Inspirational"
+msgstr "Inspirerend"
+
+msgid "Promotional"
+msgstr "Promotioneel"
+
+msgid "Educational"
+msgstr "Educatief"
+
+msgid "Daily"
+msgstr "Dagelijks"
+
+msgid "Weekly"
+msgstr "Wekelijks"
+
+msgid "Bi-weekly"
+msgstr "Tweewekelijks"
+
+msgid "Monthly"
+msgstr "Maandelijks"
+
+msgid "Channels"
+msgstr "Kanalen"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Post Body"
+msgstr "Berichtinhoud"
+
+msgid "Media"
+msgstr "Media"
+
+msgid "Hashtags"
+msgstr "Hashtags"
+
+msgid "Link URL"
+msgstr "Link-URL"
+
+msgid "AI Generated"
+msgstr "AI-gegenereerd"
+
+msgid "AI Prompt"
+msgstr "AI-prompt"
+
+msgid "Scheduled For"
+msgstr "Ingepland Voor"
+
+msgid "Publish To"
+msgstr "Publiceren Op"
+
+msgid "Approval Note"
+msgstr "Goedkeuringsnotitie"
+
+msgid "Reach"
+msgstr "Bereik"
+
+msgid "Impressions"
+msgstr "Vertoningen"
+
+msgid "Engagement"
+msgstr "Betrokkenheid"
+
+msgid "Clicks"
+msgstr "Klikken"
+
+msgid "AI Generated"
+msgstr "AI-gegenereerd"
+
+msgid "Pending Approval"
+msgstr "Wacht op Goedkeuring"
+
+msgid "Approved"
+msgstr "Goedgekeurd"
+
+msgid "Scheduled"
+msgstr "Ingepland"
+
+msgid "Published"
+msgstr "Gepubliceerd"
+
+msgid "Cancelled"
+msgstr "Geannuleerd"
+
+msgid "Reply must be approved before sending."
+msgstr "Antwoord moet worden goedgekeurd voor verzending."
+
+msgid "Please set a scheduled date before scheduling."
+msgstr "Stel een ingeplande datum in voordat u inplant."
+
+msgid "Post must be approved before scheduling."
+msgstr "Bericht moet worden goedgekeurd voor inplanning."
+
+msgid "Post must be approved before publishing."
+msgstr "Bericht moet worden goedgekeurd voor publicatie."

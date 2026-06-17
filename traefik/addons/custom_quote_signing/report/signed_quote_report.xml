@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Report action — renders the QWeb template below -->
+    <record id="action_report_signed_quote" model="ir.actions.report">
+        <field name="name">Signed Quotation</field>
+        <field name="model">sale.order</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_quote_signing.report_signed_quote_document</field>
+        <field name="report_file">custom_quote_signing.report_signed_quote_document</field>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!-- QWeb report template -->
+    <template id="report_signed_quote_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Quotation <span t-field="o.name"/></h2>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <strong>Customer:</strong> <span t-field="o.partner_id.name"/><br/>
+                                <span t-field="o.partner_id.street"/><br/>
+                                <span t-field="o.partner_id.city"/>
+                            </div>
+                            <div class="col-6 text-end">
+                                <strong>Date:</strong> <span t-field="o.date_order" t-options='{"widget": "date"}'/><br/>
+                                <t t-if="o.quote_expiry_date">
+                                    <strong>Valid until:</strong> <span t-field="o.quote_expiry_date"/>
+                                </t>
+                            </div>
+                        </div>
+
+                        <table class="table table-sm mt-3">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th class="text-end">Qty</th>
+                                    <th class="text-end">Unit Price</th>
+                                    <th class="text-end">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.order_line" t-as="line">
+                                    <td><span t-field="line.name"/></td>
+                                    <td class="text-end"><span t-field="line.product_uom_qty"/> <span t-field="line.product_uom_id.name"/></td>
+                                    <td class="text-end"><span t-field="line.price_unit" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr t-if="o.amount_tax">
+                                    <td colspan="3" class="text-end"><strong>Tax</strong></td>
+                                    <td class="text-end"><span t-field="o.amount_tax" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>TOTAL</strong></td>
+                                    <td class="text-end"><strong><span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                        <!-- Signing evidence (only shown when signed) -->
+                        <t t-if="o.signing_id">
+                            <div class="mt-4 p-3 border rounded" style="border-color:#1E40AF!important;">
+                                <h5 style="color:#1E40AF;">Electronic Signature Evidence</h5>
+                                <table class="table table-sm table-borderless">
+                                    <tr><td><strong>Signed by:</strong></td><td><span t-field="o.signing_id.signer_name"/></td></tr>
+                                    <tr><td><strong>Email:</strong></td><td><span t-field="o.signing_id.signer_email"/></td></tr>
+                                    <tr><td><strong>Date / Time:</strong></td><td><span t-field="o.signing_id.signed_at"/></td></tr>
+                                    <tr><td><strong>IP Address:</strong></td><td><span t-field="o.signing_id.ip_address"/></td></tr>
+                                    <tr><td><strong>Document Hash:</strong></td><td><span t-field="o.signing_id.document_hash" style="font-size:0.75em;word-break:break-all;"/></td></tr>
+                                    <tr><td><strong>Terms Version:</strong></td><td><span t-field="o.signing_id.terms_version_id.name"/></td></tr>
+                                    <tr><td><strong>Terms Accepted:</strong></td><td><span t-field="o.signing_id.terms_accepted"/></td></tr>
+                                </table>
+                                <t t-if="o.signing_id.signature_data">
+                                    <img t-attf-src="{{ o.signing_id.signature_data }}"
+                                         style="max-height:80px; border:1px solid #E2E8F0;"/>
+                                </t>
+                                <p class="text-muted small mt-2">
+                                    This is a simple electronic signature. Not an eIDAS qualified/advanced signature.
+                                </p>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

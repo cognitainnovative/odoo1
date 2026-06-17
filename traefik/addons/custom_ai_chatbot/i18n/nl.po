@@ -1,0 +1,145 @@
+# Dutch translations for custom_ai_chatbot
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Chat Session"
+msgstr "Chatsessie"
+
+msgid "Chat Transcript Line"
+msgstr "Chatgespreksregel"
+
+msgid "Chatbot Configuration"
+msgstr "Chatbotconfiguratie"
+
+msgid "Website Visitor"
+msgstr "Websitebezoeker"
+
+msgid "Open — AI Answering"
+msgstr "Open — AI beantwoordt"
+
+msgid "Escalated — Awaiting Agent"
+msgstr "Geëscaleerd — Wacht op Medewerker"
+
+msgid "Assigned to Agent"
+msgstr "Toegewezen aan Medewerker"
+
+msgid "Resolved"
+msgstr "Opgelost"
+
+msgid "Closed"
+msgstr "Gesloten"
+
+msgid "Low AI Confidence"
+msgstr "Laag AI-vertrouwen"
+
+msgid "Visitor Requested Human"
+msgstr "Bezoeker Vraagt om Mens"
+
+msgid "Trigger Word Detected"
+msgstr "Triggerwoord Gedetecteerd"
+
+msgid "Frustration / Anger Detected"
+msgstr "Frustratie / Boosheid Gedetecteerd"
+
+msgid "High-Risk Topic (legal/financial/medical)"
+msgstr "Hoogrisicoonderwerp (juridisch/financieel/medisch)"
+
+msgid "Assigned Agent"
+msgstr "Toegewezen Medewerker"
+
+msgid "Resolved By"
+msgstr "Opgelost Door"
+
+msgid "Positive"
+msgstr "Positief"
+
+msgid "Neutral"
+msgstr "Neutraal"
+
+msgid "Frustrated"
+msgstr "Gefrustreerd"
+
+msgid "Angry"
+msgstr "Boos"
+
+msgid "Urgent"
+msgstr "Dringend"
+
+msgid "AI Summary"
+msgstr "AI-samenvatting"
+
+msgid "Suggested Next Action"
+msgstr "Voorgestelde Volgende Actie"
+
+msgid "Linked Lead"
+msgstr "Gekoppelde Lead"
+
+msgid "Transcript"
+msgstr "Gespreksverslag"
+
+msgid "Visitor"
+msgstr "Bezoeker"
+
+msgid "AI"
+msgstr "AI"
+
+msgid "Human Agent"
+msgstr "Menselijke Medewerker"
+
+msgid "Used RAG"
+msgstr "RAG Gebruikt"
+
+msgid "Chatbot Enabled"
+msgstr "Chatbot Ingeschakeld"
+
+msgid "Greeting Message"
+msgstr "Begroetingsbericht"
+
+msgid "Offline Message"
+msgstr "Offlinebericht"
+
+msgid "Escalation Message"
+msgstr "Escalatiebericht"
+
+msgid "Ask for Email"
+msgstr "Vraag om E-mail"
+
+msgid "Ask for Company Name"
+msgstr "Vraag om Bedrijfsnaam"
+
+msgid "Show on Pages"
+msgstr "Tonen op Pagina's"
+
+msgid "Widget Color"
+msgstr "Widgetkleur"
+
+msgid "Tracking Consent Given"
+msgstr "Toestemming voor Tracking Gegeven"
+
+msgid "Identified Contact"
+msgstr "Geïdentificeerde Contactpersoon"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Visitor Company"
+msgstr "Bezoekersbedrijf"
+
+msgid "Chat Sessions"
+msgstr "Chatsessies"
+
+msgid "Chat session not found."
+msgstr "Chatsessie niet gevonden."

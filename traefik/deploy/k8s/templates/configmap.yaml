@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "platform.fullname" . }}-config
+  labels: {{- include "platform.labels" . | nindent 4 }}
+data:
+  POSTGRES_USER: {{ .Values.postgres.user | quote }}
+  POSTGRES_DB: {{ .Values.postgres.database | quote }}
+  POSTGRES_HOST: {{ include "platform.fullname" . }}-postgres
+  REDIS_URL: "redis://{{ include "platform.fullname" . }}-redis:6379/0"
+  MINIO_ENDPOINT: "http://{{ include "platform.fullname" . }}-minio:9000"
+  MINIO_ACCESS_KEY: {{ .Values.minio.rootUser | quote }}
+  ODOO_URL: "http://{{ include "platform.fullname" . }}-odoo:8069"
+  ODOO_DB: {{ .Values.postgres.database | quote }}
+  ODOO_ADMIN_USER: {{ .Values.odoo.adminUser | quote }}
+  AI_DEFAULT_PROVIDER: {{ .Values.aiGateway.defaultProvider | quote }}
+  REDACT_PII_EXTERNAL: {{ .Values.aiGateway.redactPiiExternal | quote }}

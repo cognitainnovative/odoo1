@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_planning_job_manager,platform.planning.job manager,model_platform_planning_job,sales_team.group_sale_manager,1,1,1,1
+access_planning_job_user,platform.planning.job user,model_platform_planning_job,base.group_user,1,1,1,0
+access_planning_job_type_admin,platform.planning.job.type admin,model_platform_planning_job_type,sales_team.group_sale_manager,1,1,1,1
+access_planning_job_type_user,platform.planning.job.type user,model_platform_planning_job_type,base.group_user,1,0,0,0
+access_planning_resource_manager,platform.planning.resource manager,model_platform_planning_resource,sales_team.group_sale_manager,1,1,1,1
+access_planning_resource_user,platform.planning.resource user,model_platform_planning_resource,base.group_user,1,1,1,0
+access_planning_reschedule_wizard,planning.reschedule.wizard,model_planning_reschedule_wizard,base.group_user,1,1,1,1

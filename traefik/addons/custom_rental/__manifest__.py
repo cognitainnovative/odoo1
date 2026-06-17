@@ -1,0 +1,23 @@
+{
+    "name": "Platform Rental",
+    "version": "19.0.1.0.0",
+    "summary": "Rental workflow, pricing tiers, deposits, availability calendar, discount tiers.",
+    "author": "Cognita Innovative",
+    "license": "LGPL-3",
+    "category": "Sales",
+    "depends": ["sale", "stock", "mail", "custom_quote_signing", "custom_platform_security"],
+    "data": [
+        "security/ir.model.access.csv",
+        "security/record_rules.xml",
+        "data/rental_discount_tiers.xml",
+        "views/rental_product_views.xml",
+        "views/rental_order_views.xml",
+        "views/rental_calendar_views.xml",
+        "views/dashboard_views.xml",
+        "views/menus.xml",
+    ],
+    "demo": ["data/demo/demo_rental.xml"],
+    "installable": True,
+    "application": True,
+    "auto_install": False,
+}

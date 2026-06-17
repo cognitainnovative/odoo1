@@ -1,0 +1,250 @@
+# Dutch translations for custom_accounting_advanced
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Budget"
+msgstr "Budget"
+
+msgid "Budget Line"
+msgstr "Budgetregel"
+
+msgid "Budget Lines"
+msgstr "Budgetregels"
+
+msgid "From"
+msgstr "Van"
+
+msgid "To"
+msgstr "Tot"
+
+msgid "Draft"
+msgstr "Concept"
+
+msgid "Active"
+msgstr "Actief"
+
+msgid "Done"
+msgstr "Gereed"
+
+msgid "Account"
+msgstr "Rekening"
+
+msgid "Budget (€)"
+msgstr "Budget (€)"
+
+msgid "Actual (€)"
+msgstr "Werkelijk (€)"
+
+msgid "Variance (€)"
+msgstr "Afwijking (€)"
+
+msgid "Fiscal Year"
+msgstr "Boekjaar"
+
+msgid "Start Date"
+msgstr "Begindatum"
+
+msgid "End Date"
+msgstr "Einddatum"
+
+msgid "Open"
+msgstr "Open"
+
+msgid "Locked"
+msgstr "Vergrendeld"
+
+msgid "Closed"
+msgstr "Gesloten"
+
+msgid "Opening Balance Posted"
+msgstr "Openingsbalans Geboekt"
+
+msgid "Closing Entries Posted"
+msgstr "Afsluitingsposten Geboekt"
+
+msgid "Notes"
+msgstr "Notities"
+
+msgid "Last Lock Override Reason"
+msgstr "Laatste Overschrijvingsreden Vergrendeling"
+
+msgid "Last Override On"
+msgstr "Laatste Overschrijving Op"
+
+msgid "Last Override By"
+msgstr "Laatste Overschrijving Door"
+
+msgid "Reversal Reason"
+msgstr "Reden Terugboeking"
+
+msgid "Audit Attachments"
+msgstr "Auditbijlagen"
+
+msgid "Fixed Asset"
+msgstr "Vaste Activa"
+
+msgid "Asset Depreciation Line"
+msgstr "Afschrijvingsregel Activa"
+
+msgid "Building"
+msgstr "Gebouw"
+
+msgid "Machinery / Equipment"
+msgstr "Machines / Apparatuur"
+
+msgid "Vehicle"
+msgstr "Voertuig"
+
+msgid "Furniture & Fittings"
+msgstr "Meubilair & Inrichting"
+
+msgid "Computer / IT Equipment"
+msgstr "Computer / IT-apparatuur"
+
+msgid "Intangible Asset"
+msgstr "Immaterieel Actief"
+
+msgid "Other"
+msgstr "Overig"
+
+msgid "Disposed"
+msgstr "Vervreemd"
+
+msgid "Acquisition Date"
+msgstr "Aankoopdatum"
+
+msgid "Acquisition Value (€)"
+msgstr "Aankoopwaarde (€)"
+
+msgid "Residual Value (€)"
+msgstr "Restwaarde (€)"
+
+msgid "Straight Line"
+msgstr "Lineair"
+
+msgid "No Depreciation"
+msgstr "Geen Afschrijving"
+
+msgid "Useful Life (years)"
+msgstr "Gebruiksduur (jaren)"
+
+msgid "Annual Depreciation (€)"
+msgstr "Jaarlijkse Afschrijving (€)"
+
+msgid "Accumulated Depreciation (€)"
+msgstr "Gecumuleerde Afschrijving (€)"
+
+msgid "Net Book Value (€)"
+msgstr "Boekwaarde (€)"
+
+msgid "Disposal Value (€)"
+msgstr "Vervreemdingswaarde (€)"
+
+msgid "Gain / Loss on Disposal (€)"
+msgstr "Boekwinst / -verlies bij Vervreemding (€)"
+
+msgid "Asset Account"
+msgstr "Activarekening"
+
+msgid "Depreciation Expense Account"
+msgstr "Afschrijvingskostenrekening"
+
+msgid "Accumulated Dep. Account"
+msgstr "Rekening Gecumuleerde Afschrijving"
+
+msgid "Depreciation Schedule"
+msgstr "Afschrijvingsplan"
+
+msgid "Depreciation (€)"
+msgstr "Afschrijving (€)"
+
+msgid "Accumulated (€)"
+msgstr "Gecumuleerd (€)"
+
+msgid "NBV (€)"
+msgstr "Boekwaarde (€)"
+
+msgid "Posted"
+msgstr "Geboekt"
+
+msgid "Journal Entry"
+msgstr "Journaalboeking"
+
+msgid "BV Annual Accounts Package"
+msgstr "BV Jaarrekeningpakket"
+
+msgid "Accountant Review"
+msgstr "Accountantscontrole"
+
+msgid "Approved"
+msgstr "Goedgekeurd"
+
+msgid "Filed"
+msgstr "Ingediend"
+
+msgid "Total Assets (€)"
+msgstr "Totaal Activa (€)"
+
+msgid "Total Liabilities (€)"
+msgstr "Totaal Passiva (€)"
+
+msgid "Total Equity (€)"
+msgstr "Totaal Eigen Vermogen (€)"
+
+msgid "Total Revenue (€)"
+msgstr "Totale Omzet (€)"
+
+msgid "Total Expenses (€)"
+msgstr "Totale Kosten (€)"
+
+msgid "Net Result (€)"
+msgstr "Nettoresultaat (€)"
+
+msgid "Retained Earnings (Start of Year)"
+msgstr "Ingehouden Winst (Begin Boekjaar)"
+
+msgid "Dividends (€)"
+msgstr "Dividenden (€)"
+
+msgid "Retained Earnings (End of Year)"
+msgstr "Ingehouden Winst (Einde Boekjaar)"
+
+msgid "Notes to Financial Statements"
+msgstr "Toelichting op de Jaarrekening"
+
+msgid "Management Report / Director's Commentary"
+msgstr "Bestuursverslag / Directieverklaring"
+
+msgid "Auditor / Accountant Notes"
+msgstr "Opmerkingen Accountant"
+
+msgid "Assigned Accountant"
+msgstr "Toegewezen Accountant"
+
+msgid "Review Submitted"
+msgstr "Beoordeling Ingediend"
+
+msgid "Approved By Accountant"
+msgstr "Goedgekeurd door Accountant"
+
+msgid "Documents"
+msgstr "Documenten"
+
+msgid "A reason is required to override a period lock."
+msgstr "Een reden is vereist om een periodeafsluiting te overschrijven."
+
+msgid "Please assign an accountant before submitting for review."
+msgstr "Wijs een accountant toe voordat u ter beoordeling indient."

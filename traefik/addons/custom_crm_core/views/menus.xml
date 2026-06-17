@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- All platform CRM extras hang under Odoo's existing CRM menu -->
+
+    <!-- Campaigns sub-menu under CRM > Reporting -->
+    <menuitem id="menu_crm_campaigns"
+              name="Campaigns"
+              parent="crm.crm_menu_report"
+              action="action_crm_campaign"
+              sequence="5"
+              groups="sales_team.group_sale_salesman"/>
+
+    <!-- Dashboard quick-links under CRM > Leads & Deals -->
+    <menuitem id="menu_crm_hot_leads"
+              name="Hot Leads"
+              parent="crm.crm_menu_leads"
+              action="action_crm_high_score_leads"
+              sequence="15"
+              groups="sales_team.group_sale_salesman"/>
+
+    <menuitem id="menu_crm_overdue_followups"
+              name="Overdue Follow-ups"
+              parent="crm.crm_menu_leads"
+              action="action_crm_overdue_followups"
+              sequence="20"
+              groups="sales_team.group_sale_salesman"/>
+
+    <!-- GDPR menu under CRM > Configuration (admin only) -->
+    <menuitem id="menu_crm_gdpr"
+              name="GDPR — No Consent"
+              parent="crm.crm_menu_config"
+              action="action_crm_gdpr_no_consent"
+              sequence="50"
+              groups="base.group_system"/>
+
+    <!-- Reporting sub-items -->
+    <menuitem id="menu_crm_revenue_analysis"
+              name="Revenue Analysis"
+              parent="crm.crm_menu_report"
+              action="action_crm_revenue_analysis"
+              sequence="10"
+              groups="sales_team.group_sale_salesman"/>
+
+    <menuitem id="menu_crm_won_deals"
+              name="Won Deals"
+              parent="crm.crm_menu_report"
+              action="action_crm_won_deals"
+              sequence="15"
+              groups="sales_team.group_sale_salesman"/>
+
+    <menuitem id="menu_crm_lost_deals"
+              name="Lost Deals"
+              parent="crm.crm_menu_report"
+              action="action_crm_lost_deals"
+              sequence="16"
+              groups="sales_team.group_sale_salesman"/>
+
+    <menuitem id="menu_crm_conversion_rate"
+              name="Conversion Rate"
+              parent="crm.crm_menu_report"
+              action="action_crm_conversion_rate"
+              sequence="20"
+              groups="sales_team.group_sale_salesman"/>
+
+    <menuitem id="menu_crm_employee_performance"
+              name="Employee Performance"
+              parent="crm.crm_menu_report"
+              action="action_crm_employee_performance"
+              sequence="25"
+              groups="sales_team.group_sale_salesman"/>
+
+    <menuitem id="menu_crm_source_performance"
+              name="Lead Source Performance"
+              parent="crm.crm_menu_report"
+              action="action_crm_source_performance"
+              sequence="30"
+              groups="sales_team.group_sale_salesman"/>
+
+
+    <!-- Custom Field definitions — CRM > Configuration -->
+    <record id="action_crm_custom_field" model="ir.actions.act_window">
+        <field name="name">Custom Fields</field>
+        <field name="res_model">crm.custom.field</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="view_crm_custom_field_list" model="ir.ui.view">
+        <field name="name">crm.custom.field.list</field>
+        <field name="model">crm.custom.field</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="field_key"/>
+                <field name="field_type"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    <menuitem id="menu_crm_custom_field"
+              name="Custom Fields"
+              parent="crm.crm_menu_config"
+              action="action_crm_custom_field"
+              sequence="50"
+              groups="sales_team.group_sale_manager"/>
+
+</odoo>

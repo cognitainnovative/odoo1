@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Social Post List -->
+    <record id="view_social_post_list" model="ir.ui.view">
+        <field name="name">social.post.list</field>
+        <field name="model">social.post</field>
+        <field name="arch" type="xml">
+            <list string="Posts"
+                  decoration-success="state == 'published'"
+                  decoration-primary="state == 'approved'"
+                  decoration-warning="state == 'pending_approval'"
+                  decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="body" optional="show"/>
+                <field name="account_ids" widget="many2many_tags" optional="show"/>
+                <field name="scheduled_date"/>
+                <field name="published_date" optional="show"/>
+                <field name="state" widget="badge"/>
+                <field name="ai_generated"/>
+                <button name="action_approve" string="Approve" type="object"
+                        icon="fa-check" class="btn-sm btn-success"
+                        invisible="state != 'pending_approval'"/>
+                <button name="action_publish_now" string="Publish" type="object"
+                        icon="fa-send" class="btn-sm btn-primary"
+                        invisible="state != 'approved'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Post Calendar View -->
+    <record id="view_social_post_calendar" model="ir.ui.view">
+        <field name="name">social.post.calendar</field>
+        <field name="model">social.post</field>
+        <field name="arch" type="xml">
+            <calendar string="Content Calendar"
+                      date_start="scheduled_date"
+                      color="state"
+                      mode="month">
+                <field name="name"/>
+                <field name="state"/>
+                <field name="account_ids"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Post Kanban -->
+    <record id="view_social_post_kanban" model="ir.ui.view">
+        <field name="name">social.post.kanban</field>
+        <field name="model">social.post</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state">
+                <field name="name"/>
+                <field name="body"/>
+                <field name="state"/>
+                <field name="scheduled_date"/>
+                <field name="ai_generated"/>
+                <templates>
+                    <t t-name="card">
+                        <strong><field name="name"/></strong>
+                        <div class="text-muted small mt-1" invisible="not body">
+                            <field name="body"/>
+                        </div>
+                        <footer>
+                            <field name="state" widget="badge"/>
+                            <span invisible="not ai_generated" class="badge bg-info ms-1">AI</span>
+                        </footer>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Post Form -->
+    <record id="view_social_post_form" model="ir.ui.view">
+        <field name="name">social.post.form</field>
+        <field name="model">social.post</field>
+        <field name="arch" type="xml">
+            <form string="Social Post">
+                <header>
+                    <button name="action_ai_generate" string="Generate with AI" type="object"
+                            class="btn-secondary" invisible="state != 'draft'"/>
+                    <button name="action_submit_for_approval" string="Submit for Approval"
+                            type="object" class="btn-primary"
+                            invisible="state not in ('draft','ai_generated')"/>
+                    <button name="action_approve" string="Approve" type="object"
+                            class="btn-success" invisible="state != 'pending_approval'"/>
+                    <button name="action_reject" string="Reject" type="object"
+                            class="btn-danger" invisible="state != 'pending_approval'"/>
+                    <button name="action_schedule" string="Schedule" type="object"
+                            class="btn-secondary" invisible="state != 'approved'"/>
+                    <button name="action_publish_now" string="Publish Now" type="object"
+                            class="btn-primary"
+                            invisible="state not in ('approved','scheduled')"/>
+                    <button name="action_cancel" string="Cancel" type="object"
+                            class="btn-danger"
+                            invisible="state in ('published','cancelled')"/>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,pending_approval,approved,scheduled,published"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="campaign_id"/>
+                            <field name="topic_id"/>
+                            <field name="account_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="scheduled_date"/>
+                            <field name="published_date" readonly="1"/>
+                            <field name="ai_generated" readonly="1"/>
+                            <field name="approved_by_id" readonly="1"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <group string="Content">
+                        <field name="body" nolabel="1" widget="text"
+                               placeholder="Write your post or use 'Generate with AI'…"/>
+                        <field name="hashtags" placeholder="#hashtag1 #hashtag2"/>
+                        <field name="link_url" placeholder="https://…"/>
+                    </group>
+                    <group string="Performance (placeholder)" invisible="state != 'published'">
+                        <group>
+                            <field name="reach" readonly="1"/>
+                            <field name="impressions" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="engagement" readonly="1"/>
+                            <field name="clicks" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_social_post" model="ir.actions.act_window">
+        <field name="name">Posts</field>
+        <field name="res_model">social.post</field>
+        <field name="view_mode">kanban,list,calendar,form</field>
+    </record>
+
+    <record id="action_social_post_pending" model="ir.actions.act_window">
+        <field name="name">Posts — Pending Approval</field>
+        <field name="res_model">social.post</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('state','=','pending_approval')]</field>
+    </record>
+
+    <!-- Campaigns -->
+    <record id="view_social_campaign_list" model="ir.ui.view">
+        <field name="name">social.campaign.list</field>
+        <field name="model">social.campaign</field>
+        <field name="arch" type="xml">
+            <list string="Campaigns" editable="bottom">
+                <field name="name"/>
+                <field name="date_start"/>
+                <field name="date_end"/>
+                <field name="post_count" string="Posts"/>
+                <field name="state" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_social_campaign" model="ir.actions.act_window">
+        <field name="name">Campaigns</field>
+        <field name="res_model">social.campaign</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Topics -->
+    <record id="view_social_post_topic_list" model="ir.ui.view">
+        <field name="name">social.post.topic.list</field>
+        <field name="model">social.post.topic</field>
+        <field name="arch" type="xml">
+            <list string="Post Topics"
+                  decoration-success="approval_state == 'approved'"
+                  decoration-warning="approval_state == 'pending_approval'"
+                  decoration-muted="not active">
+                <field name="name"/>
+                <field name="tone"/>
+                <field name="frequency"/>
+                <field name="audience"/>
+                <field name="active"/>
+                <field name="approval_state" widget="badge" optional="show"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_social_post_topic_form" model="ir.ui.view">
+        <field name="name">social.post.topic.form</field>
+        <field name="model">social.post.topic</field>
+        <field name="arch" type="xml">
+            <form string="Post Topic">
+                <header>
+                    <button name="action_submit_for_approval" string="Submit for Approval"
+                            type="object" class="btn-primary"
+                            invisible="approval_state != 'draft'"/>
+                    <button name="action_approve_topic" string="Approve" type="object"
+                            class="btn-success"
+                            invisible="approval_state != 'pending_approval'"/>
+                    <button name="action_reset_to_draft" string="Reset to Draft" type="object"
+                            class="btn-secondary"
+                            invisible="approval_state == 'draft'"/>
+                    <field name="approval_state" widget="statusbar"
+                           statusbar_visible="draft,pending_approval,approved"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="tone"/>
+                            <field name="frequency"/>
+                            <field name="audience"/>
+                            <field name="product_focus"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="channel_ids" widget="many2many_tags"/>
+                            <field name="approved_by_id" readonly="1"/>
+                            <field name="approved_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group string="Description">
+                        <field name="description" nolabel="1" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_social_post_topic" model="ir.actions.act_window">
+        <field name="name">Post Topics</field>
+        <field name="res_model">social.post.topic</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

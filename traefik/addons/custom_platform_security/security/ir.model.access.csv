@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_audit_log_admin,platform.audit.log admin,model_platform_audit_log,base.group_system,1,0,1,0
+access_audit_log_company_admin,platform.audit.log company admin,model_platform_audit_log,custom_platform_security.group_company_admin,1,0,0,0
+access_audit_log_ai_admin,platform.audit.log ai admin,model_platform_audit_log,custom_platform_security.group_ai_admin,1,0,0,0
+access_audit_log_payroll_mgr,platform.audit.log payroll manager,model_platform_audit_log,custom_platform_security.group_payroll_manager,1,0,0,0
+access_gdpr_request_admin,platform.gdpr.request admin,model_platform_gdpr_request,base.group_system,1,1,1,1
+access_gdpr_request_company_admin,platform.gdpr.request company admin,model_platform_gdpr_request,custom_platform_security.group_company_admin,1,1,1,0
+access_gdpr_retention_admin,platform.gdpr.retention.policy admin,model_platform_gdpr_retention_policy,base.group_system,1,1,1,1
+access_gdpr_retention_company_admin,platform.gdpr.retention.policy company admin,model_platform_gdpr_retention_policy,custom_platform_security.group_company_admin,1,1,1,0
+access_api_token_admin,platform.api.token admin,model_platform_api_token,base.group_system,1,1,1,1
+access_api_token_company_admin,platform.api.token company admin,model_platform_api_token,custom_platform_security.group_company_admin,1,1,1,0
+access_api_token_generate_admin,platform.api.token.generate admin,model_platform_api_token_generate,base.group_system,1,1,1,1
+access_api_token_generate_company_admin,platform.api.token.generate company admin,model_platform_api_token_generate,custom_platform_security.group_company_admin,1,1,1,1

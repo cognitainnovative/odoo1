@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Top-level menu: Platform Admin -->
+    <menuitem id="menu_platform_root"
+              name="Platform"
+              sequence="100"
+              web_icon="custom_subscription_modules,static/description/icon.png"
+              groups="base.group_system"/>
+
+    <!-- Subscriptions sub-menu -->
+    <menuitem id="menu_platform_subscriptions"
+              name="Subscriptions"
+              parent="menu_platform_root"
+              sequence="10"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_platform_subscription_dashboard"
+              name="Dashboard"
+              parent="menu_platform_subscriptions"
+              action="action_platform_subscription"
+              sequence="1"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_platform_subscription_all"
+              name="All Subscriptions"
+              parent="menu_platform_subscriptions"
+              action="action_platform_subscription_all"
+              sequence="2"
+              groups="base.group_system"/>
+
+    <!-- Packages sub-menu -->
+    <menuitem id="menu_platform_packages"
+              name="Packages"
+              parent="menu_platform_root"
+              sequence="20"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_platform_package_list"
+              name="Module Packages"
+              parent="menu_platform_packages"
+              action="action_platform_package"
+              sequence="1"
+              groups="base.group_system"/>
+
+</odoo>

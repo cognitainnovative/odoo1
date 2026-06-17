@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Pivot for subscription stats -->
+    <record id="view_platform_subscription_pivot" model="ir.ui.view">
+        <field name="name">platform.subscription.pivot</field>
+        <field name="model">platform.subscription</field>
+        <field name="arch" type="xml">
+            <pivot string="Subscription Stats">
+                <field name="package_id" type="row"/>
+                <field name="state" type="col"/>
+                <field name="company_id" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph for subscription stats -->
+    <record id="view_platform_subscription_graph" model="ir.ui.view">
+        <field name="name">platform.subscription.graph</field>
+        <field name="model">platform.subscription</field>
+        <field name="arch" type="xml">
+            <graph string="Subscriptions by State" type="bar" stacked="True">
+                <field name="package_id" type="row"/>
+                <field name="state" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Dashboard action combining graph + list -->
+    <record id="action_platform_admin_dashboard" model="ir.actions.act_window">
+        <field name="name">Subscription Dashboard</field>
+        <field name="res_model">platform.subscription</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="context">{}</field>
+    </record>
+
+    <!-- Expiring soon -->
+    <record id="action_platform_expiring_soon" model="ir.actions.act_window">
+        <field name="name">Expiring Within 30 Days</field>
+        <field name="res_model">platform.subscription</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[
+            ('state', 'in', ['active', 'trial']),
+            ('end_date', '!=', False),
+            ('end_date', '&lt;=', (context_today() + relativedelta(days=30)).strftime('%Y-%m-%d'))
+        ]</field>
+    </record>
+
+    <!-- Menu gate mapping list -->
+    <record id="view_platform_menu_gate_list" model="ir.ui.view">
+        <field name="name">platform.menu.gate.list</field>
+        <field name="model">platform.menu.gate</field>
+        <field name="arch" type="xml">
+            <list string="Menu Gate Rules" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="module_code"/>
+                <field name="menu_xmlid"/>
+                <field name="menu_id"/>
+                <field name="note"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_platform_menu_gate" model="ir.actions.act_window">
+        <field name="name">Menu Gate Rules</field>
+        <field name="res_model">platform.menu.gate</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <!-- Dashboard submenu -->
+    <menuitem id="menu_platform_admin_dashboard"
+              name="Dashboard"
+              parent="menu_platform_root"
+              action="action_platform_admin_dashboard"
+              sequence="1"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_platform_expiring_soon"
+              name="Expiring Soon"
+              parent="menu_platform_root"
+              action="action_platform_expiring_soon"
+              sequence="15"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_platform_menu_gates"
+              name="Menu Gate Rules"
+              parent="menu_platform_root"
+              action="action_platform_menu_gate"
+              sequence="60"
+              groups="base.group_system"/>
+
+</odoo>

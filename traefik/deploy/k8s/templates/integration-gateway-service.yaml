@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "platform.fullname" . }}-integration-gateway
+  labels: {{- include "platform.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: 8001
+      targetPort: 8001
+  selector: {{- include "platform.selectorLabels" (dict "component" "integration-gateway" "context" .) | nindent 4 }}

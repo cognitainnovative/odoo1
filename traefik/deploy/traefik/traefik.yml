@@ -1,0 +1,32 @@
+# Traefik v3 — static configuration
+# Dynamic config (router/service labels) is read from Docker provider.
+
+api:
+  dashboard: true
+  insecure: true   # disable in production; use TLS + auth middleware
+
+providers:
+  docker:
+    exposedByDefault: false
+    network: platform_net
+    watch: true
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+# Uncomment for Let's Encrypt TLS in production:
+# certificatesResolvers:
+#   letsencrypt:
+#     acme:
+#       email: ops@example.com
+#       storage: /letsencrypt/acme.json
+#       httpChallenge:
+#         entryPoint: web
+
+log:
+  level: INFO
+
+accessLog: {}

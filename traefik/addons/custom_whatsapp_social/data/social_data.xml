@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <!-- Default mock WhatsApp provider (no approval needed for testing) -->
+    <record id="wa_provider_mock" model="whatsapp.provider">
+        <field name="name">Mock WhatsApp (Sandbox)</field>
+        <field name="provider">mock</field>
+        <field name="is_active" eval="True"/>
+        <field name="notes">Sandbox provider — no real messages are sent. Configure Meta/Twilio for live use (requires app review).</field>
+    </record>
+
+    <!-- Default mock social account -->
+    <record id="social_account_mock" model="social.account">
+        <field name="name">Mock Social Account (Sandbox)</field>
+        <field name="platform">mock</field>
+        <field name="is_active" eval="True"/>
+    </record>
+
+    <!-- Cron: publish scheduled posts -->
+    <record id="cron_publish_scheduled_posts" model="ir.cron">
+        <field name="name">Social: Publish Scheduled Posts</field>
+        <field name="model_id" ref="model_social_post"/>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_publish_scheduled()</field>
+        <field name="interval_number">15</field>
+        <field name="interval_type">minutes</field>
+        <field name="active" eval="True"/>
+    </record>
+
+</data>
+</odoo>

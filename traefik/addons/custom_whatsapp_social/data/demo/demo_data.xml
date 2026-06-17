@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_wa_provider_1" model="whatsapp.provider">
+        <field name="name">Demo WhatsApp Business</field>
+        <field name="provider">mock</field>
+        <field name="is_active">True</field>
+    </record>
+</odoo>

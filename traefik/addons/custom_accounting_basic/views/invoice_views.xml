@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ account.move — Platform Accounting tab ═══ -->
+    <record id="view_account_move_form_platform" model="ir.ui.view">
+        <field name="name">account.move.form.platform</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- AI extraction notice -->
+            <xpath expr="//header" position="inside">
+                <button name="action_ai_extract_review" string="Review Extraction"
+                        type="object" class="btn-warning" icon="fa-magic"
+                        invisible="not ai_extracted"/>
+                <button name="action_send_payment_reminder" string="Send Reminder"
+                        type="object" class="btn-secondary"
+                        invisible="days_overdue == 0 or move_type not in ('out_invoice',)"/>
+                <!-- Mollie payment-link placeholder — shows when link is set -->
+                <button name="action_open_payment_link" string="Open Payment Link"
+                        type="object" class="btn-info" icon="fa-credit-card"
+                        invisible="not mollie_payment_link"/>
+                <!-- Pro forma — draft customer invoices only -->
+                <button name="action_send_proforma" string="Send Pro Forma"
+                        type="object" class="btn-secondary" icon="fa-file-o"
+                        invisible="state != 'draft' or move_type not in ('out_invoice',) or not is_proforma"/>
+                <button name="action_remove_proforma" string="Remove Pro Forma Flag"
+                        type="object" class="btn-link"
+                        invisible="not is_proforma or state != 'draft'"/>
+            </xpath>
+            <!-- Duplicate warning -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" icon="fa-copy" type="object"
+                        name="action_detect_duplicates"
+                        invisible="duplicate_count == 0">
+                    <field name="duplicate_count" widget="statinfo" string="Duplicates"/>
+                </button>
+            </xpath>
+            <!-- Platform Accounting tab -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Pro Forma" name="proforma_tab"
+                      invisible="move_type not in ('out_invoice',) or state != 'draft'">
+                    <group>
+                        <field name="is_proforma"/>
+                    </group>
+                    <div class="alert alert-info" role="alert" invisible="not is_proforma">
+                        <strong>Pro Forma mode.</strong>
+                        This invoice will not be posted. Use <em>Send Pro Forma</em>
+                        to email/print the indicative price document.
+                        When ready to invoice, uncheck Pro Forma and post normally.
+                    </div>
+                </page>
+                <page string="Import / AI" name="platform_acct"
+                      invisible="not (ai_extracted or import_reference or move_type in ('out_invoice', 'out_receipt'))">
+                    <group>
+                        <group>
+                            <field name="ai_extracted" readonly="1"/>
+                            <field name="extraction_confidence" readonly="1" widget="progressbar"/>
+                            <field name="import_reference" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="reminder_sent" readonly="1"/>
+                            <field name="reminder_sent_date" readonly="1"/>
+                            <field name="days_overdue" readonly="1"/>
+                        </group>
+                    </group>
+                    <div class="alert alert-info mt-2" role="alert"
+                         invisible="not ai_extracted">
+                        This invoice was created via AI extraction.
+                        Please verify all amounts, dates, and tax codes before posting.
+                    </div>
+                    <group string="Payment Link" invisible="move_type not in ('out_invoice', 'out_receipt')">
+                        <field name="mollie_payment_link"
+                               placeholder="https://checkout.mollie.com/… (requires Mollie API credentials)"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Overdue invoices action -->
+    <record id="action_overdue_invoices" model="ir.actions.act_window">
+        <field name="name">Overdue Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('move_type','=','out_invoice'),('payment_state','not in',('paid','reversed')),('invoice_date_due','&lt;',context_today()),('state','=','posted')]</field>
+    </record>
+
+    <!-- Incoming bills to review (AI extracted, not posted) -->
+    <record id="action_ai_extracted_bills" model="ir.actions.act_window">
+        <field name="name">AI-Extracted Bills (Review)</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('move_type','=','in_invoice'),('ai_extracted','=',True),('state','=','draft')]</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,127 @@
+# Dutch translations for custom_quote_signing
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Quote Signing Audit Record"
+msgstr "Auditrecord Offerteondertekening"
+
+msgid "Document Hash (SHA-256)"
+msgstr "Documenthash (SHA-256)"
+
+msgid "Signature (base64 PNG)"
+msgstr "Handtekening (base64 PNG)"
+
+msgid "Drawn"
+msgstr "Getekend"
+
+msgid "Typed"
+msgstr "Getypt"
+
+msgid "Terms Explicitly Accepted"
+msgstr "Voorwaarden Expliciet Geaccepteerd"
+
+msgid "Payment Obligation Accepted"
+msgstr "Betalingsverplichting Geaccepteerd"
+
+msgid "Event Log (JSON)"
+msgstr "Gebeurtenissenlog (JSON)"
+
+msgid "Signed PDF"
+msgstr "Ondertekende PDF"
+
+msgid "Signing audit records are immutable."
+msgstr "Ondertekeningsauditrecords zijn onveranderlijk."
+
+msgid "Signing audit records cannot be deleted."
+msgstr "Ondertekeningsauditrecords kunnen niet worden verwijderd."
+
+msgid "Draft"
+msgstr "Concept"
+
+msgid "Sent"
+msgstr "Verzonden"
+
+msgid "Viewed by Customer"
+msgstr "Bekeken door Klant"
+
+msgid "Accepted — Pending Signature"
+msgstr "Geaccepteerd — Wacht op Handtekening"
+
+msgid "Signed"
+msgstr "Ondertekend"
+
+msgid "Confirmed"
+msgstr "Bevestigd"
+
+msgid "Invoiced"
+msgstr "Gefactureerd"
+
+msgid "Cancelled"
+msgstr "Geannuleerd"
+
+msgid "Expired"
+msgstr "Verlopen"
+
+msgid "Signing Status"
+msgstr "Ondertekeningsstatus"
+
+msgid "Signing Token"
+msgstr "Ondertekeningstoken"
+
+msgid "Signing Record"
+msgstr "Ondertekeningsrecord"
+
+msgid "Signed At"
+msgstr "Ondertekend Op"
+
+msgid "Signer Name"
+msgstr "Naam Ondertekenaar"
+
+msgid "Portal Signing URL"
+msgstr "Portaalondertekenings-URL"
+
+msgid "Terms Version"
+msgstr "Versie Voorwaarden"
+
+msgid "Payment Obligation Wording"
+msgstr "Tekst Betalingsverplichting"
+
+msgid "Requires Planning on Signing"
+msgstr "Vereist Planning bij Ondertekening"
+
+msgid "Quote Expiry Date"
+msgstr "Vervaldatum Offerte"
+
+msgid "Only signed quotes can be confirmed."
+msgstr "Alleen ondertekende offertes kunnen worden bevestigd."
+
+msgid "Only confirmed orders can be marked as invoiced."
+msgstr "Alleen bevestigde orders kunnen als gefactureerd worden gemarkeerd."
+
+msgid "Cannot reset a signed or confirmed quote to draft."
+msgstr "Een ondertekende of bevestigde offerte kan niet worden teruggezet naar concept."
+
+msgid "You must accept the terms and conditions and the payment obligation."
+msgstr "U moet de algemene voorwaarden en de betalingsverplichting accepteren."
+
+msgid "This quote is not available for signing."
+msgstr "Deze offerte is niet beschikbaar voor ondertekening."
+
+msgid "Quote"
+msgstr "Offerte"
+
+msgid "Signature"
+msgstr "Handtekening"

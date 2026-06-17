@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data noupdate="1">
+
+    <!-- Mock provider for sandbox testing -->
+    <record id="voice_provider_mock" model="voice.provider">
+        <field name="name">Mock VoIP (Sandbox)</field>
+        <field name="provider_type">mock</field>
+        <field name="is_active" eval="True"/>
+        <field name="stt_provider">mock</field>
+        <field name="tts_provider">twiml</field>
+        <field name="recording_enabled" eval="False"/>
+        <field name="recording_consent_required" eval="True"/>
+        <field name="escalation_sentiment_threshold">angry</field>
+        <field name="max_no_input_attempts">2</field>
+        <field name="notes">Sandbox — no real calls. Use /voice/mock/call/ for testing.</field>
+    </record>
+
+    <!-- Default call flows -->
+    <record id="flow_support" model="voice.call.flow">
+        <field name="name">Customer Support</field>
+        <field name="code">support</field>
+        <field name="flow_type">support</field>
+        <field name="provider_id" ref="voice_provider_mock"/>
+        <field name="is_active" eval="True"/>
+        <field name="greeting_text">Hello! Thank you for calling support. How can I help you today?</field>
+        <field name="max_turns">5</field>
+        <field name="use_rag" eval="True"/>
+    </record>
+
+    <record id="flow_sales" model="voice.call.flow">
+        <field name="name">Sales Inquiry</field>
+        <field name="code">sales</field>
+        <field name="flow_type">sales</field>
+        <field name="provider_id" ref="voice_provider_mock"/>
+        <field name="is_active" eval="True"/>
+        <field name="greeting_text">Hi! Thank you for your interest. I'm here to help you find the right solution. What can I tell you about?</field>
+        <field name="max_turns">6</field>
+        <field name="use_rag" eval="True"/>
+    </record>
+
+    <record id="flow_callback" model="voice.call.flow">
+        <field name="name">Callback Request</field>
+        <field name="code">callback</field>
+        <field name="flow_type">callback</field>
+        <field name="provider_id" ref="voice_provider_mock"/>
+        <field name="is_active" eval="True"/>
+        <field name="greeting_text">Hi! We received your callback request. Please hold while we connect you.</field>
+        <field name="max_turns">3</field>
+        <field name="use_rag" eval="False"/>
+    </record>
+
+    <record id="flow_complaint" model="voice.call.flow">
+        <field name="name">Complaint Handling</field>
+        <field name="code">complaint</field>
+        <field name="flow_type">complaint</field>
+        <field name="provider_id" ref="voice_provider_mock"/>
+        <field name="is_active" eval="True"/>
+        <field name="greeting_text">Hello, I'm sorry to hear you're having an issue. I'm here to help resolve this for you.</field>
+        <field name="max_turns">4</field>
+        <field name="use_rag" eval="True"/>
+        <field name="escalation_message">I understand this is frustrating. Let me connect you with a senior agent who can resolve this immediately.</field>
+    </record>
+
+    <record id="flow_invoice" model="voice.call.flow">
+        <field name="name">Invoice / Billing</field>
+        <field name="code">invoice</field>
+        <field name="flow_type">invoice</field>
+        <field name="provider_id" ref="voice_provider_mock"/>
+        <field name="is_active" eval="True"/>
+        <field name="greeting_text">Hello! You've reached our billing support line. I can help with invoice questions, payment status, and account balances. How can I help you today?</field>
+        <field name="max_turns">5</field>
+        <field name="use_rag" eval="True"/>
+        <field name="escalation_message">Let me connect you with a member of our finance team who can assist you further.</field>
+        <field name="ai_system_prompt">You are a billing support assistant. Help callers with invoice queries, payment status, and account questions. Keep responses concise (max 2 sentences). Never share sensitive payment details; direct to a human agent for disputes.</field>
+    </record>
+
+    <record id="flow_planning" model="voice.call.flow">
+        <field name="name">Appointment / Planning</field>
+        <field name="code">planning</field>
+        <field name="flow_type">planning</field>
+        <field name="provider_id" ref="voice_provider_mock"/>
+        <field name="is_active" eval="True"/>
+        <field name="greeting_text">Hello! Thank you for calling our planning line. I can help you schedule or reschedule an appointment. What date and time works best for you?</field>
+        <field name="max_turns">6</field>
+        <field name="use_rag" eval="False"/>
+        <field name="escalation_message">Let me transfer you to our planning team to confirm your appointment directly.</field>
+        <field name="ai_system_prompt">You are an appointment scheduling assistant. Collect the caller's preferred date, time, and type of appointment. Be concise (max 2 sentences). If you cannot confirm in real time, offer to call back with confirmation.</field>
+    </record>
+
+    <record id="flow_rental" model="voice.call.flow">
+        <field name="name">Rental Availability</field>
+        <field name="code">rental</field>
+        <field name="flow_type">rental</field>
+        <field name="provider_id" ref="voice_provider_mock"/>
+        <field name="is_active" eval="True"/>
+        <field name="greeting_text">Hello! Thank you for calling our rental line. I can help you check availability and pricing. Which product or property are you interested in, and what dates do you have in mind?</field>
+        <field name="max_turns">6</field>
+        <field name="use_rag" eval="True"/>
+        <field name="escalation_message">Let me connect you with a rental specialist who can confirm availability and complete your booking.</field>
+        <field name="ai_system_prompt">You are a rental availability assistant. Help callers check product or property availability for requested dates. Use the knowledge base for current inventory. Be concise (max 2 sentences). For bookings, transfer to a human agent.</field>
+    </record>
+
+</data>
+</odoo>

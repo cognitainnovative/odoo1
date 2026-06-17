@@ -1,0 +1,108 @@
+// Platform Theme — Backend
+// IMPORTANT: this bundle must NOT define :root for the brand color variables.
+// The runtime values come from /web/platform/brand.css (per-company). If we
+// redefined :root here, this bundle loads AFTER that link and would override
+// the company colors with static defaults. So we only CONSUME the variables,
+// with an inline fallback (var(--plt-x, <default>)) so styling is still sane
+// if brand.css hasn't loaded yet.
+
+// Static, non-themed tokens only (these are not company-configurable):
+:root {
+  --plt-surface: #FFFFFF;
+  --plt-border: #E2E8F0;
+  --plt-text: #1E293B;
+  --plt-text-muted: #64748B;
+  --plt-success: #059669;
+  --plt-warning: #D97706;
+  --plt-danger: #DC2626;
+}
+
+// Top navbar — now driven by the brand primary (was hardcoded hex before).
+// High-specificity navbar override. Odoo 19's core navbar.scss sets the
+// background with its own specificity, so we scope under .o_web_client and
+// repeat the class to win the cascade without relying on load order alone.
+.o_web_client .o_main_navbar.o_main_navbar {
+  background-color: var(--plt-primary, #1E40AF) !important;
+  background-image: none !important;
+  border-bottom: 2px solid var(--plt-primary-light, #3B82F6) !important;
+
+  .o_menu_brand,
+  .o_nav_entry,
+  button.dropdown-toggle,
+  > a {
+    color: #FFFFFF !important;
+  }
+  .o_menu_brand { font-weight: 700; }
+}
+
+// Menu-section entries (app top-menu buttons) sit ON the navbar. Odoo 19 gives
+// them their own accent background (~rgb(113,99,158)); blend them into the brand
+// bar so the whole strip reads as one color. Hover/active get a subtle lift.
+.o_web_client .o_main_navbar .o_menu_sections {
+  .o-dropdown.dropdown-toggle,
+  .o_nav_entry,
+  button.dropdown-toggle {
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #FFFFFF !important;
+
+    &:hover,
+    &:focus,
+    &.show,
+    &.o_dropdown_active {
+      background-color: var(--plt-primary-light, #87564C) !important;
+      color: #FFFFFF !important;
+    }
+  }
+}
+
+// Primary button
+.btn-primary {
+  background-color: var(--plt-primary, #1E40AF) !important;
+  border-color: var(--plt-primary, #1E40AF) !important;
+
+  &:hover,
+  &:focus {
+    background-color: var(--plt-primary-light, #3B82F6) !important;
+    border-color: var(--plt-primary-light, #3B82F6) !important;
+  }
+}
+
+// Accent: links / active states
+.o_form_view .o_notebook .o_notebook_headers .nav-link.active {
+  color: var(--plt-accent, #0284C7) !important;
+  border-bottom-color: var(--plt-accent, #0284C7) !important;
+}
+
+// Kanban cards
+.o_kanban_record {
+  border-radius: 8px;
+  border: 1px solid var(--plt-border);
+  transition: box-shadow 0.15s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Form sheet
+.o_form_view {
+  background-color: var(--plt-bg, #F8FAFC);
+
+  .o_form_sheet {
+    background-color: var(--plt-surface);
+    border-radius: 10px;
+    border: 1px solid var(--plt-border);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  }
+}
+
+// List hover
+.o_list_view .o_data_row:hover td {
+  background-color: rgba(2, 132, 199, 0.06) !important;
+}
+
+// Runtime-configurable typography
+body, .o_web_client {
+  font-family: var(--plt-font, 'Inter', sans-serif);
+}

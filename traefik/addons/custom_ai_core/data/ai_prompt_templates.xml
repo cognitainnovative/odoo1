@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="tmpl_lead_summary" model="ai.prompt.template">
+        <field name="name">CRM Lead Summary</field>
+        <field name="code">crm_lead_summary</field>
+        <field name="category">crm</field>
+        <field name="version">1</field>
+        <field name="is_active" eval="True"/>
+        <field name="system_prompt">You are a helpful CRM assistant. Summarise the lead concisely for a sales manager.</field>
+        <field name="user_template">Summarise this lead in 2-3 sentences:
+Name: {name}
+Company: {company}
+Stage: {stage}
+Notes: {notes}</field>
+        <field name="output_format">text</field>
+    </record>
+
+    <record id="tmpl_email_draft" model="ai.prompt.template">
+        <field name="name">Email Reply Draft</field>
+        <field name="code">email_reply_draft</field>
+        <field name="category">email</field>
+        <field name="version">1</field>
+        <field name="is_active" eval="True"/>
+        <field name="system_prompt">You are a professional business email writer. Draft a clear, polite reply. Do not include a subject line.</field>
+        <field name="user_template">Draft a reply to this email:
+From: {sender}
+Subject: {subject}
+Body: {body}
+
+Tone: {tone}
+Key points to address: {points}</field>
+        <field name="output_format">text</field>
+    </record>
+
+    <record id="tmpl_helpdesk_classify" model="ai.prompt.template">
+        <field name="name">Helpdesk Ticket Classification</field>
+        <field name="code">helpdesk_classify</field>
+        <field name="category">helpdesk</field>
+        <field name="version">1</field>
+        <field name="is_active" eval="True"/>
+        <field name="system_prompt">You are a support classifier. Return JSON only.</field>
+        <field name="user_template">Classify this support ticket. Return JSON: {{"category": "...", "priority": "low|medium|high|urgent", "sentiment": "positive|neutral|frustrated|angry", "summary": "..."}}.
+Ticket: {ticket_text}</field>
+        <field name="output_format">json</field>
+    </record>
+
+    <record id="tmpl_helpdesk_reply" model="ai.prompt.template">
+        <field name="name">Helpdesk Reply Draft</field>
+        <field name="code">helpdesk_reply_draft</field>
+        <field name="category">helpdesk</field>
+        <field name="version">1</field>
+        <field name="is_active" eval="True"/>
+        <field name="system_prompt">You are a helpful support agent. Draft a professional, empathetic reply. Keep it concise.</field>
+        <field name="user_template">Draft a reply to this support ticket:
+Category: {category}
+Priority: {priority}
+Ticket: {ticket_text}
+Previous context: {context}</field>
+        <field name="output_format">text</field>
+    </record>
+
+</odoo>

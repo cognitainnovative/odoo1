@@ -1,0 +1,16 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_certification_manager,hr.employee.certification manager,model_hr_employee_certification,hr.group_hr_manager,1,1,1,1
+access_hr_certification_user,hr.employee.certification user,model_hr_employee_certification,base.group_user,1,0,0,0
+access_hr_certification_employee,hr.employee.certification employee,model_hr_employee_certification,hr.group_hr_user,1,1,1,0
+access_hr_equipment_manager,hr.employee.equipment manager,model_hr_employee_equipment,hr.group_hr_manager,1,1,1,1
+access_hr_equipment_user,hr.employee.equipment user,model_hr_employee_equipment,base.group_user,1,0,0,0
+access_hr_checklist_manager,hr.onboarding.checklist.item manager,model_hr_onboarding_checklist_item,hr.group_hr_manager,1,1,1,1
+access_hr_checklist_user,hr.onboarding.checklist.item user,model_hr_onboarding_checklist_item,hr.group_hr_user,1,1,1,0
+access_hr_sick_leave_manager,hr.sick.leave manager,model_hr_sick_leave,hr.group_hr_manager,1,1,1,1
+access_hr_sick_leave_user,hr.sick.leave user,model_hr_sick_leave,hr.group_hr_user,1,1,1,0
+access_hr_sick_leave_employee,hr.sick.leave employee,model_hr_sick_leave,base.group_user,1,1,1,0
+access_hr_payslip_manager,hr.employee.payslip manager,model_hr_employee_payslip,hr.group_hr_manager,1,1,1,1
+access_hr_payslip_user,hr.employee.payslip user,model_hr_employee_payslip,hr.group_hr_user,1,1,1,0
+access_hr_payslip_employee,hr.employee.payslip employee,model_hr_employee_payslip,base.group_user,1,0,0,0
+access_hr_announcement_manager,hr.announcement manager,model_hr_announcement,hr.group_hr_manager,1,1,1,1
+access_hr_announcement_user,hr.announcement user,model_hr_announcement,base.group_user,1,0,0,0

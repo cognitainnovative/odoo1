@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="menu_chatbot_root"
+              name="Live Chat"
+              sequence="43"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_chat_queue"
+              name="Escalation Queue"
+              parent="menu_chatbot_root"
+              action="action_chat_escalated"
+              sequence="5"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_chat_sessions"
+              name="All Sessions"
+              parent="menu_chatbot_root"
+              action="action_chat_session"
+              sequence="10"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_chat_visitors"
+              name="Visitors"
+              parent="menu_chatbot_root"
+              action="action_chat_visitor"
+              sequence="20"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_canned_replies"
+              name="Canned Replies"
+              parent="menu_chatbot_root"
+              action="action_canned_reply"
+              sequence="30"
+              groups="base.group_user"/>
+
+    <menuitem id="menu_chat_config"
+              name="Configuration"
+              parent="menu_chatbot_root"
+              action="action_chat_config"
+              sequence="50"
+              groups="base.group_system"/>
+
+</odoo>

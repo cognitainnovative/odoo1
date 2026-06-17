@@ -1,0 +1,120 @@
+## Platform Helm chart — default values
+## Override per environment: helm upgrade -f values-prod.yaml platform .
+
+global:
+  imagePullPolicy: IfNotPresent
+  storageClass: ""          # "" = cluster default
+  domain: platform.example.com
+  ingressClass: traefik     # change to nginx/alb as needed
+
+# ── PostgreSQL ─────────────────────────────────────────────────────────────
+postgres:
+  image: pgvector/pgvector:pg16
+  user: odoo
+  password: odoo             # override via sealed-secret / external secret
+  database: platform
+  storage: 20Gi
+  resources:
+    requests: { cpu: 250m, memory: 512Mi }
+    limits:   { cpu: 1,    memory: 2Gi  }
+
+# ── Redis ──────────────────────────────────────────────────────────────────
+redis:
+  image: redis:7-alpine
+  storage: 2Gi
+  resources:
+    requests: { cpu: 100m, memory: 128Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+
+# ── MinIO ──────────────────────────────────────────────────────────────────
+minio:
+  image: minio/minio:latest
+  rootUser: minioadmin
+  rootPassword: minioadmin   # override in prod
+  storage: 50Gi
+  ingress:
+    console: minio.{{ .Values.global.domain }}
+    api:     s3.{{ .Values.global.domain }}
+  resources:
+    requests: { cpu: 250m, memory: 512Mi }
+    limits:   { cpu: 1,    memory: 2Gi  }
+
+# ── Odoo ──────────────────────────────────────────────────────────────────
+odoo:
+  image:
+    repository: ghcr.io/your-org/platform-odoo
+    tag: "19.0"
+  replicas: 1
+  storage: 10Gi
+  adminUser: admin
+  adminPassword: admin       # override in prod
+  ingress:
+    host: "{{ .Values.global.domain }}"
+  resources:
+    requests: { cpu: 500m,  memory: 1Gi  }
+    limits:   { cpu: 2,     memory: 4Gi  }
+
+# ── Celery ────────────────────────────────────────────────────────────────
+celery:
+  image:
+    repository: ghcr.io/your-org/platform-celery
+    tag: latest
+  worker:
+    replicas: 2
+    concurrency: 4
+    queues: "default,ai,accounting,social,inventory,payroll,reminders,ocr"
+    resources:
+      requests: { cpu: 250m, memory: 512Mi }
+      limits:   { cpu: 1,    memory: 2Gi  }
+  beat:
+    resources:
+      requests: { cpu: 100m, memory: 256Mi }
+      limits:   { cpu: 500m, memory: 512Mi }
+
+# ── AI Gateway ────────────────────────────────────────────────────────────
+aiGateway:
+  image:
+    repository: ghcr.io/your-org/platform-ai-gateway
+    tag: latest
+  replicas: 1
+  ingress:
+    host: "ai.{{ .Values.global.domain }}"
+  defaultProvider: mock
+  redactPiiExternal: "true"
+  resources:
+    requests: { cpu: 250m, memory: 512Mi }
+    limits:   { cpu: 1,    memory: 1Gi  }
+
+# ── Integration Gateway ───────────────────────────────────────────────────
+integrationGateway:
+  image:
+    repository: ghcr.io/your-org/platform-integration-gateway
+    tag: latest
+  replicas: 1
+  ingress:
+    host: "hooks.{{ .Values.global.domain }}"
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits:   { cpu: 500m, memory: 512Mi }
+
+# ── Support App (React) ───────────────────────────────────────────────────
+supportApp:
+  image:
+    repository: ghcr.io/your-org/platform-support-app
+    tag: latest
+  replicas: 1
+  ingress:
+    host: "support.{{ .Values.global.domain }}"
+  resources:
+    requests: { cpu: 50m,  memory: 64Mi  }
+    limits:   { cpu: 200m, memory: 256Mi }
+
+# ── Secrets ───────────────────────────────────────────────────────────────
+# Set these via --set or a sealed secret / external secret operator.
+secrets:
+  anthropicApiKey: ""
+  openaiApiKey: ""
+  aiGatewaySecret: ""
+  whatsappAppSecret: ""
+  twilioAuthToken: ""
+  bankImportSecret: ""

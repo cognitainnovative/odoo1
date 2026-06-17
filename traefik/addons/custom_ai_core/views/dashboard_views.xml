@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ── AI: Usage audit log (pivot / graph) ── -->
+    <record id="action_ai_usage_pivot" model="ir.actions.act_window">
+        <field name="name">AI Usage — Tokens &amp; Calls</field>
+        <field name="res_model">ai.audit.log</field>
+        <field name="view_mode">pivot,graph,list</field>
+        <field name="context">{'group_by': ['provider_code', 'create_date:month']}</field>
+    </record>
+
+    <!-- ── AI: Recent errors ── -->
+    <record id="action_ai_errors" model="ir.actions.act_window">
+        <field name="name">AI Errors (Last 30 Days)</field>
+        <field name="res_model">ai.audit.log</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[
+            ('status','=','error'),
+            ('create_date','&gt;=',(context_today() + relativedelta(days=-30)).strftime('%Y-%m-%d'))
+        ]</field>
+    </record>
+
+    <!-- ── AI: Feedback / edit reasons ── -->
+    <record id="action_ai_feedback_review" model="ir.actions.act_window">
+        <field name="name">AI Feedback &amp; Edit Reasons</field>
+        <field name="res_model">ai.feedback</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('edit_reason','!=',False)]</field>
+    </record>
+
+    <!-- ── AI: Knowledge Base documents ── -->
+    <record id="action_ai_documents_pending" model="ir.actions.act_window">
+        <field name="name">Documents Pending Indexing</field>
+        <field name="res_model">ai.document</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('status','=','pending')]</field>
+    </record>
+
+    <!-- ── AI: Provider health ── -->
+    <record id="action_ai_provider_health" model="ir.actions.act_window">
+        <field name="name">AI Providers</field>
+        <field name="res_model">ai.provider</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- ── Menus under AI Core > Dashboard ── -->
+    <menuitem id="menu_ai_dashboard_root"
+              name="AI Dashboard"
+              parent="menu_ai_root"
+              sequence="1"
+              groups="base.group_system"/>
+
+    <menuitem id="menu_ai_usage_pivot"
+              name="Usage &amp; Tokens"
+              parent="menu_ai_dashboard_root"
+              action="action_ai_usage_pivot"
+              sequence="10"/>
+
+    <menuitem id="menu_ai_errors"
+              name="Recent Errors"
+              parent="menu_ai_dashboard_root"
+              action="action_ai_errors"
+              sequence="20"/>
+
+    <menuitem id="menu_ai_feedback_review"
+              name="Feedback &amp; Edit Reasons"
+              parent="menu_ai_dashboard_root"
+              action="action_ai_feedback_review"
+              sequence="30"/>
+
+    <menuitem id="menu_ai_documents_pending"
+              name="Pending Documents"
+              parent="menu_ai_dashboard_root"
+              action="action_ai_documents_pending"
+              sequence="40"/>
+
+    <menuitem id="menu_ai_provider_health"
+              name="Provider Status"
+              parent="menu_ai_dashboard_root"
+              action="action_ai_provider_health"
+              sequence="50"/>
+
+</odoo>

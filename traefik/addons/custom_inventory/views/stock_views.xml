@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- ═══ stock.warehouse.orderpoint — AI suggestion + Create PO ═══ -->
+    <record id="view_orderpoint_platform" model="ir.ui.view">
+        <field name="name">stock.warehouse.orderpoint.platform</field>
+        <field name="model">stock.warehouse.orderpoint</field>
+        <field name="inherit_id" ref="stock.view_warehouse_orderpoint_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//group" position="before">
+                <group string="AI Reorder Suggestions">
+                    <field name="ai_suggest_enabled"/>
+                    <field name="ai_suggested_qty" readonly="1"/>
+                    <field name="ai_suggestion_date" readonly="1"/>
+                    <field name="ai_suggestion_reason" readonly="1"
+                           invisible="not ai_suggestion_reason"/>
+                    <button name="action_ai_suggest_reorder" string="Generate AI Suggestion"
+                            type="object" class="btn-secondary"
+                            invisible="not ai_suggest_enabled"/>
+                    <button name="action_create_po_from_suggestion"
+                            string="Create Purchase Order"
+                            type="object" class="btn-primary"
+                            invisible="not ai_suggested_qty"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

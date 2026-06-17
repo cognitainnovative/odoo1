@@ -1,0 +1,181 @@
+# Dutch translations for custom_payroll_nl
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Payslip"
+msgstr "Loonstrook"
+
+msgid "Payslip Manual Override"
+msgstr "Handmatige Overschrijving Loonstrook"
+
+msgid "Draft"
+msgstr "Concept"
+
+msgid "Calculated"
+msgstr "Berekend"
+
+msgid "Confirmed"
+msgstr "Bevestigd"
+
+msgid "Approved"
+msgstr "Goedgekeurd"
+
+msgid "Published to Portal"
+msgstr "Gepubliceerd op Portaal"
+
+msgid "Gross Salary (€)"
+msgstr "Brutosalaris (€)"
+
+msgid "Overtime (€)"
+msgstr "Overwerk (€)"
+
+msgid "Bonus (€)"
+msgstr "Bonus (€)"
+
+msgid "Allowances (€)"
+msgstr "Toeslagen (€)"
+
+msgid "Expense Reimbursement (€)"
+msgstr "Onkostenvergoeding (€)"
+
+msgid "Vakantiegeld Accrual (€)"
+msgstr "Vakantiegeld Opbouw (€)"
+
+msgid "Vakantiegeld %"
+msgstr "Vakantiegeld %"
+
+msgid "Loonheffing (€)"
+msgstr "Loonheffing (€)"
+
+msgid "Pension Employee (€)"
+msgstr "Pensioen Werknemer (€)"
+
+msgid "LHK Applied"
+msgstr "LHK Toegepast"
+
+msgid "LHK Amount (€)"
+msgstr "LHK Bedrag (€)"
+
+msgid "Net Salary (€)"
+msgstr "Nettosalaris (€)"
+
+msgid "Pension Employer (€)"
+msgstr "Pensioen Werkgever (€)"
+
+msgid "AWF/WW Employer (€)"
+msgstr "AWF/WW Werkgever (€)"
+
+msgid "ZVW Employer (€)"
+msgstr "ZVW Werkgever (€)"
+
+msgid "Total Employer Cost (€)"
+msgstr "Totale Werkgeverskosten (€)"
+
+msgid "Calculation Detail (JSON)"
+msgstr "Berekeningsdetail (JSON)"
+
+msgid "Calculation Warnings"
+msgstr "Berekeningswaarschuwingen"
+
+msgid "Manual Overrides"
+msgstr "Handmatige Overschrijvingen"
+
+msgid "Journal Entry"
+msgstr "Journaalboeking"
+
+msgid "Gross Monthly Salary (€)"
+msgstr "Bruto Maandsalaris (€)"
+
+msgid "Hourly Wage (€)"
+msgstr "Uurloon (€)"
+
+msgid "Contract Hours/Week"
+msgstr "Contracturen/Week"
+
+msgid "Apply Loonheffingskorting"
+msgstr "Loonheffingskorting Toepassen"
+
+msgid "Pension Employee (%)"
+msgstr "Pensioen Werknemer (%)"
+
+msgid "Pension Employer (%)"
+msgstr "Pensioen Werkgever (%)"
+
+msgid "Holiday Allowance (%)"
+msgstr "Vakantiegeld (%)"
+
+msgid "Commute Distance (km one way)"
+msgstr "Reisafstand (km enkele reis)"
+
+msgid "Travel Days / Month"
+msgstr "Reisdagen / Maand"
+
+msgid "Other Allowances (€/month)"
+msgstr "Overige Toeslagen (€/maand)"
+
+msgid "Company Car"
+msgstr "Leaseauto"
+
+msgid "EV / Electric Car"
+msgstr "EV / Elektrische Auto"
+
+msgid "BSN (last 4 digits only)"
+msgstr "BSN (alleen laatste 4 cijfers)"
+
+msgid "Sofinummer / BSN Provided to HR"
+msgstr "Sofinummer / BSN Verstrekt aan HR"
+
+msgid "YTD Gross (€)"
+msgstr "YTD Bruto (€)"
+
+msgid "YTD Net (€)"
+msgstr "YTD Netto (€)"
+
+msgid "YTD Loonheffing (€)"
+msgstr "YTD Loonheffing (€)"
+
+msgid "YTD Vakantiegeld Accrued (€)"
+msgstr "YTD Vakantiegeld Opgebouwd (€)"
+
+msgid "YTD Year"
+msgstr "YTD Jaar"
+
+msgid "Field"
+msgstr "Veld"
+
+msgid "Original Value"
+msgstr "Originele Waarde"
+
+msgid "Override Value"
+msgstr "Overschrijvingswaarde"
+
+msgid "Reason"
+msgstr "Reden"
+
+msgid "Override By"
+msgstr "Overschreven Door"
+
+msgid "Override Date"
+msgstr "Overschrijvingsdatum"
+
+msgid "No rule version selected for this payslip."
+msgstr "Geen regelversie geselecteerd voor deze loonstrook."
+
+msgid "A reason is required for manual overrides."
+msgstr "Een reden is vereist voor handmatige overschrijvingen."
+
+msgid "Payroll override records cannot be modified."
+msgstr "Salarisoverschrijvingsrecords kunnen niet worden gewijzigd."

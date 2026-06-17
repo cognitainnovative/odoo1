@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Under Accounting > Accounting -->
+    <menuitem id="menu_accruals_provisions"
+              name="Accruals / Provisions"
+              parent="account.menu_finance_entries"
+              action="action_accrual_provision"
+              sequence="35"
+              groups="account.group_account_invoice"/>
+
+    <!-- Under Accounting > Accounting > Configuration -->
+    <menuitem id="menu_fiscal_years"
+              name="Fiscal Years"
+              parent="account.menu_finance_configuration"
+              action="action_fiscal_year"
+              sequence="60"
+              groups="account.group_account_manager"/>
+
+    <!-- Under Accounting > Accounting -->
+    <menuitem id="menu_fixed_assets"
+              name="Fixed Assets"
+              parent="account.menu_finance_entries"
+              action="action_fixed_asset"
+              sequence="40"
+              groups="account.group_account_invoice"/>
+
+    <menuitem id="menu_budgets"
+              name="Budgets"
+              parent="account.menu_finance_entries"
+              action="action_budget"
+              sequence="45"
+              groups="account.group_account_manager"/>
+
+    <menuitem id="menu_bv_annual_accounts"
+              name="BV Annual Accounts"
+              parent="account.menu_finance_entries"
+              action="action_bv_annual_accounts"
+              sequence="50"
+              groups="account.group_account_manager"/>
+
+    <!-- Under Accounting > Reporting -->
+    <menuitem id="menu_audit_export"
+              name="Audit File Export"
+              parent="account.menu_finance_reports"
+              action="action_audit_export_wizard"
+              sequence="60"
+              groups="account.group_account_manager"/>
+
+</odoo>

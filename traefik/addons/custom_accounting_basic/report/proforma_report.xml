@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_report_proforma_invoice" model="ir.actions.report">
+        <field name="name">Pro Forma Invoice</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">custom_accounting_basic.report_proforma_invoice</field>
+        <field name="report_file">custom_accounting_basic.report_proforma_invoice</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="print_report_name">'PRO FORMA - ' + (object.name or 'draft')</field>
+    </record>
+
+    <template id="report_proforma_invoice">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Pro forma header -->
+                        <div class="row mb-4">
+                            <div class="col-12 text-center">
+                                <h2 class="text-uppercase">
+                                    Pro Forma Invoice
+                                </h2>
+                                <p class="text-muted small">
+                                    This is a pro forma document.
+                                    It is not an official invoice and creates no financial obligation.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Party info -->
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <strong>From:</strong><br/>
+                                <span t-esc="o.company_id.name"/><br/>
+                                <span t-esc="o.company_id.street"/><br/>
+                                <span t-esc="o.company_id.zip"/>
+                                <span t-esc="o.company_id.city"/>
+                            </div>
+                            <div class="col-6">
+                                <strong>To:</strong><br/>
+                                <t t-if="o.partner_id">
+                                    <span t-esc="o.partner_id.name"/><br/>
+                                    <span t-esc="o.partner_id.street"/><br/>
+                                    <span t-esc="o.partner_id.zip"/>
+                                    <span t-esc="o.partner_id.city"/>
+                                </t>
+                            </div>
+                        </div>
+
+                        <!-- Reference / dates -->
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <strong>Reference:</strong>
+                                <span t-esc="o.name or '/'"/>
+                            </div>
+                            <div class="col-4">
+                                <strong>Date:</strong>
+                                <span t-esc="o.invoice_date or ''"/>
+                            </div>
+                            <div class="col-4">
+                                <strong>Valid Until:</strong>
+                                <span t-esc="o.invoice_date_due or ''"/>
+                            </div>
+                        </div>
+
+                        <!-- Line items -->
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Description</th>
+                                    <th class="text-right">Qty</th>
+                                    <th class="text-right">Unit Price</th>
+                                    <th class="text-right">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="o.invoice_line_ids.filtered(lambda l: l.display_type not in ('line_section', 'line_note') if l.display_type else True)" t-as="line">
+                                    <tr>
+                                        <td><span t-esc="line.name"/></td>
+                                        <td class="text-right"><span t-esc="line.quantity"/></td>
+                                        <td class="text-right">
+                                            <span t-esc="line.price_unit"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                        <td class="text-right">
+                                            <span t-esc="line.price_subtotal"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <!-- Totals -->
+                        <div class="row">
+                            <div class="col-6 offset-6">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td>Subtotal (excl. tax)</td>
+                                        <td class="text-right">
+                                            <span t-esc="o.amount_untaxed"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tax</td>
+                                        <td class="text-right">
+                                            <span t-esc="o.amount_tax"
+                                                  t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                        </td>
+                                    </tr>
+                                    <tr class="font-weight-bold">
+                                        <td><strong>Total (indication)</strong></td>
+                                        <td class="text-right">
+                                            <strong>
+                                                <span t-esc="o.amount_total"
+                                                      t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                            </strong>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Footer note -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <p class="text-muted small border-top pt-2">
+                                    <strong>This is a PRO FORMA invoice only.</strong>
+                                    No payment is due based on this document.
+                                    An official invoice will be issued upon confirmation.
+                                    Prices are indicative and subject to change.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

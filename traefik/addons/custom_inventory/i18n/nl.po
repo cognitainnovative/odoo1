@@ -1,0 +1,67 @@
+# Dutch translations for custom_inventory
+# Copyright (C) 2025 Cognita Innovative
+# License: LGPL-3
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Last-Translator: Cognita Innovative <dev@cognita-innovative.com>\n"
+"Language-Team: Dutch <nl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: nl\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Platform SKU"
+msgstr "Platform-SKU"
+
+msgid "Bundles"
+msgstr "Bundels"
+
+msgid "Fast Mover"
+msgstr "Snellopend Artikel"
+
+msgid "AI Reorder Suggestions"
+msgstr "AI-herbestellingsuggesties"
+
+msgid "AI Suggested Qty"
+msgstr "Door AI Voorgestelde Hoeveelheid"
+
+msgid "Suggestion Generated"
+msgstr "Suggestie Gegenereerd"
+
+msgid "Suggestion Reasoning"
+msgstr "Reden Suggestie"
+
+msgid "Product Bundle"
+msgstr "Productbundel"
+
+msgid "Bundle"
+msgstr "Bundel"
+
+msgid "Bundle Component"
+msgstr "Bundelcomponent"
+
+msgid "Component Product"
+msgstr "Componentproduct"
+
+msgid "Quantity"
+msgstr "Hoeveelheid"
+
+msgid "Stock Alert"
+msgstr "Voorraadalarm"
+
+msgid "Low Stock"
+msgstr "Lage Voorraad"
+
+msgid "Warehouse"
+msgstr "Magazijn"
+
+msgid "Minimum Quantity"
+msgstr "Minimumhoeveelheid"
+
+msgid "On Hand"
+msgstr "Op Voorraad"

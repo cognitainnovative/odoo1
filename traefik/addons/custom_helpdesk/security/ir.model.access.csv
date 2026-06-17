@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_helpdesk_skill_manager,helpdesk.skill manager,model_helpdesk_skill,custom_platform_security.group_support_manager,1,1,1,1
+access_helpdesk_skill_agent,helpdesk.skill agent,model_helpdesk_skill,custom_platform_security.group_support_agent,1,0,0,0
+access_helpdesk_team_manager,helpdesk.team manager,model_helpdesk_team,custom_platform_security.group_support_manager,1,1,1,1
+access_helpdesk_team_agent,helpdesk.team agent,model_helpdesk_team,custom_platform_security.group_support_agent,1,0,0,0
+access_helpdesk_stage_manager,helpdesk.stage manager,model_helpdesk_stage,custom_platform_security.group_support_manager,1,1,1,1
+access_helpdesk_stage_agent,helpdesk.stage agent,model_helpdesk_stage,custom_platform_security.group_support_agent,1,0,0,0
+access_helpdesk_sla_manager,helpdesk.sla manager,model_helpdesk_sla,custom_platform_security.group_support_manager,1,1,1,1
+access_helpdesk_sla_agent,helpdesk.sla agent,model_helpdesk_sla,custom_platform_security.group_support_agent,1,0,0,0
+access_helpdesk_ticket_manager,helpdesk.ticket manager,model_helpdesk_ticket,custom_platform_security.group_support_manager,1,1,1,1
+access_helpdesk_ticket_agent,helpdesk.ticket agent,model_helpdesk_ticket,custom_platform_security.group_support_agent,1,1,1,0
